@@ -149,7 +149,6 @@ class FootnoteFilter
       <a href="#" onclick="#{tm_footnotes_toggle('session_debug_info')};return false">Session</a> |
       <a href="#" onclick="#{tm_footnotes_toggle('cookies_debug_info')};return false">Cookies</a> |
       <a href="#" onclick="#{tm_footnotes_toggle('params_debug_info')};return false">Params</a> |
-      <a href="#" onclick="#{tm_footnotes_toggle('log_debug_info')};return false">Log</a> |
       <a href="#" onclick="#{tm_footnotes_toggle('general_debug_info')};return false">General Debug</a>
       <br/>(<a href="http://blog.inquirylabs.com/2006/09/28/textmate-footnotes-v16-released/"><b>TextMate Footnotes</b></a>)
       #{@extra_html}
@@ -164,10 +163,6 @@ class FootnoteFilter
       <fieldset id="params_debug_info" class="tm_footnotes_debug_info" style="display: none">
         <legend>Params</legend>
         <code>#{escape(@controller.params.inspect)}</code>
-      </fieldset>
-      <fieldset id="log_debug_info" class="tm_footnotes_debug_info" style="display: none">
-        <legend>Log</legend>
-        <code><pre>#{escape(log_tail)}</pre></code>
       </fieldset>
       <fieldset id="general_debug_info" class="tm_footnotes_debug_info" style="display: none">
         <legend>General (id="tm_debug")</legend>
@@ -199,11 +194,6 @@ class FootnoteFilter
       html += "<br/>"
     end
     html
-  end
-  
-  def log_tail
-    ansi = `tail -n 200 #{RAILS_DEFAULT_LOGGER.instance_variable_get("@logdev").filename}`
-    html = ansi.gsub(/\e\[.+?m/, '')
   end
   
   def asset_file_links(link_text, files)
