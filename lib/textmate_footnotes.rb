@@ -34,7 +34,7 @@ class FootnoteFilter
   
   def add_footnotes!
     if performed_render? and first_render?
-      if ["haml", "rhtml", "rxhtml"].include?(template_extension) && (content_type =~ /html/ || content_type.nil?) && !xhr?
+      if ["html.erb", "haml", "rhtml", "rxhtml"].include?(template_extension) && (content_type =~ /html/ || content_type.nil?) && !xhr?
         # If the user would like to be responsible for the styles, let them opt out of the styling here
         insert_styles unless FootnoteFilter.no_style
         insert_footnotes
@@ -77,11 +77,11 @@ class FootnoteFilter
   end
   
   def template_path
-    @template.first_render.sub(/\.(rhtml|rxhtml|rxml|rjs)$/, "")
+    @template.first_render.sub(/\.(html\.erb|rhtml|rxhtml|rxml|rjs)$/, "")
   end
   
   def template_extension
-    @template.first_render.scan(/\.(rhtml|rxhtml|rxml|rjs)$/).flatten.first ||
+    @template.first_render.scan(/\.(html\.erb|rhtml|rxhtml|rxml|rjs)$/).flatten.first ||
     @template.pick_template_extension(template_path).to_s
   end
   
@@ -90,7 +90,10 @@ class FootnoteFilter
   end
   
   def layout_file_name
-    File.expand_path(@template.send(:full_template_path, @controller.active_layout, "rhtml"))
+    ["html.erb", "rhtml"].each do |extension|
+      path = File.expand_path(@template.send(:full_template_path, @controller.active_layout, extension))
+      return path if File.exist?(path)
+    end
   end
   
   def content_type
