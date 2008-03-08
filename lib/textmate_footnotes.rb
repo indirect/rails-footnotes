@@ -15,15 +15,15 @@ class FootnoteFilter
   cattr_accessor :no_style, :abs_root, :textmate_prefix
   self.no_style = false
   self.textmate_prefix = "txmt://open?url=file://"
-  
+
   attr_accessor :body, :abs_root
-  
+
   def self.filter(controller)
     return if controller.render_without_footnotes
     filter = FootnoteFilter.new(controller)
     filter.add_footnotes!
   end
-  
+
   def initialize(controller)
     @controller = controller
     @template = controller.instance_variable_get("@template")
@@ -31,7 +31,7 @@ class FootnoteFilter
     @extra_html = ""
     self.abs_root = File.expand_path(RAILS_ROOT)
   end
-  
+
   def add_footnotes!
     if performed_render? and first_render?
       if ["html.erb", "haml", "rhtml", "rxhtml"].include?(template_extension) && (content_type =~ /html/ || content_type.nil?) && !xhr?
@@ -44,70 +44,70 @@ class FootnoteFilter
     # Discard footnotes if there are any problems
     RAILS_DEFAULT_LOGGER.error "Textmate Footnotes Exception: #{e}\n#{e.backtrace.join("\n")}"
   end
-  
+
   # Some controller classes come with the Controller:: module and some don't
   # (anyone know why? -- Duane)
   def controller_filename
     File.join(abs_root, "app", "controllers", "#{@controller.class.to_s.underscore}.rb").
     sub('/controllers/controllers/', '/controllers/')
   end
-  
+
   def controller_text
     @controller_text ||= IO.read(controller_filename)
   end
-  
+
   def index_of_method
     (controller_text =~ /def\s+#{@controller.action_name}[\s\(]/)
   end
-  
+
   def controller_line_number
     controller_text.line_from_index(index_of_method)
   end
-  
+
   def performed_render?
     @controller.instance_variable_get("@performed_render")
   end
-  
+
   def first_render?
     @template.respond_to?(:first_render) and @template.first_render
   end
-  
+
   def xhr?
     @controller.request.xhr?
   end
-  
+
   def template_path
     @template.first_render.sub(/\.(html\.erb|rhtml|rxhtml|rxml|rjs)$/, "")
   end
-  
+
   def template_extension
     @template.first_render.scan(/\.(html\.erb|rhtml|rxhtml|rxml|rjs)$/).flatten.first ||
     @template.pick_template_extension(template_path).to_s
   end
-  
+
   def template_file_name
     File.expand_path(@template.send(:full_template_path, template_path, template_extension))
   end
-  
+
   def layout_file_name
     ["html.erb", "rhtml"].each do |extension|
       path = File.expand_path(@template.send(:full_template_path, @controller.active_layout, extension))
       return path if File.exist?(path)
     end
   end
-  
+
   def content_type
     @controller.response.headers['Content-Type']
   end
-  
+
   def stylesheet_files
     @stylesheet_files ||= @body.scan(/<link[^>]+href\s*=\s*['"]([^>?'"]+)/im).flatten
   end
-  
+
   def javascript_files
     @javascript_files ||= @body.scan(/<script[^>]+src\s*=\s*['"]([^>?'"]+)/im).flatten
   end
-  
+
   def controller_url
     escape(
       textmate_prefix +
@@ -115,15 +115,15 @@ class FootnoteFilter
       (index_of_method ? "&line=#{controller_line_number + 1}&column=3" : "")
     )
   end
-  
+
   def view_url
     escape(textmate_prefix + template_file_name)
   end
-  
+
   def layout_url
     escape(textmate_prefix + layout_file_name)
   end
-  
+
   def insert_styles
     insert_text :before, /<\/head>/i, <<-HTML
     <!-- TextMate Footnotes Style -->
@@ -136,13 +136,13 @@ class FootnoteFilter
     <!-- End TextMate Footnotes Style -->
     HTML
   end
-  
+
   def insert_footnotes
-    
+
     def tm_footnotes_toggle(id)
       "s = document.getElementById('#{id}').style; if(s.display == 'none') { s.display = '' } else { s.display = 'none' }"
     end
-    
+
     footnotes_html = <<-HTML
     <!-- TextMate Footnotes -->
     <div style="clear:both"></div>
@@ -182,7 +182,7 @@ class FootnoteFilter
       insert_text :before, /<\/body>/i, footnotes_html
     end
   end
-  
+
   def textmate_links
     html = ""
     if ::MAC_OS_X
@@ -198,7 +198,7 @@ class FootnoteFilter
     end
     html
   end
-  
+
   def asset_file_links(link_text, files)
     return '' if files.size == 0
     links = files.map do |filename|
@@ -218,7 +218,7 @@ class FootnoteFilter
     # Return the link that will open the 'extra html' div
     %{ | <a href="#" onclick="#{tm_footnotes_toggle('tm_footnotes_' + link_text.underscore.gsub(' ', '_') )}; return false">#{link_text}</a>}
   end
-  
+
   def indent(indentation, text)
     lines = text.to_a
     initial_indentation = lines.first.scan(/^(\s+)/).flatten.first
@@ -250,7 +250,7 @@ class FootnoteFilter
       end
     @body.insert index, indent(indentation, new_text)
   end
-  
+
   def escape(text)
     text.gsub("&", "&amp;").gsub("<", "&lt;").gsub(">", "&gt;")
   end

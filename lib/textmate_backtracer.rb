@@ -1,6 +1,6 @@
 class Exception
   alias :original_clean_backtrace :clean_backtrace
-  
+
   def add_links_to_backtrace(lines)
     lines.collect do |line|
       expanded = line.gsub '#{RAILS_ROOT}', RAILS_ROOT
@@ -33,11 +33,10 @@ protected
   alias backtracer_original_template_path_for_local_rescue template_path_for_local_rescue
   def template_path_for_local_rescue(exception)
     if ActionView::TemplateError === exception
-      File.dirname(__FILE__) + "/../templates/rescues/template_error.rhtml"
+      File.dirname(__FILE__) + "/../templates/rescues/template_error.erb"
     else
       backtracer_original_template_path_for_local_rescue(exception)
     end
   end
-  
+
 end
-  

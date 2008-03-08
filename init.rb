@@ -15,6 +15,6 @@ if (ENV['RAILS_ENV'] == 'development')
   ::MAC_OS_X = (`uname`.chomp == "Darwin") rescue false
   require 'textmate_footnotes'
   require 'textmate_initialize'
-  
+
   require 'textmate_backtracer' if ::MAC_OS_X
 end
