@@ -1,14 +1,22 @@
+# The footnotes are applied by default to all actions. You can change this
+# behavior commenting the after_filter line below and putting it in Your
+# application. Then You can cherrypick in which actions it will appear.
+#
+# The support to render :footnotes => false was removed (usually You don't want
+# to keep such only-development-code in the middle of Your application).
+#
 class ActionController::Base
-  attr_accessor :render_without_footnotes
-
   after_filter FootnoteFilter
+end
 
-protected
-  alias footnotes_original_render render
-  def render(options = nil, deprecated_status = nil, &block) #:doc:
-    if options.is_a? Hash
-      @render_without_footnotes = (options.delete(:footnotes) == false)
+# Add routes config
+class ActionController::Routing::RouteSet
+  def filtered_routes(filter = {})
+    return [] unless filter.is_a?(Hash)
+    return routes.reject do |r| 
+      filter_diff = filter.diff(r.requirements)
+      route_diff  = r.requirements.diff(filter)
+      (filter_diff == filter) || (filter_diff != route_diff)
     end
-    footnotes_original_render(options, deprecated_status, &block)
   end
 end

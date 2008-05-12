@@ -1,25 +1,8 @@
-class String
-  def line_from_index(index)
-    lines = self.to_a
-    running_length = 0
-    lines.each_with_index do |line, i|
-      running_length += line.length
-      if running_length > index
-        return i
-      end
-    end
-  end
-end
-
 class FootnoteFilter
-  cattr_accessor :no_style, :abs_root, :textmate_prefix
+  cattr_accessor :no_style
   self.no_style = false
-  self.textmate_prefix = "txmt://open?url=file://"
-
-  attr_accessor :body, :abs_root
 
   def self.filter(controller)
-    return if controller.render_without_footnotes
     filter = FootnoteFilter.new(controller)
     filter.add_footnotes!
   end
@@ -29,39 +12,18 @@ class FootnoteFilter
     @template = controller.instance_variable_get("@template")
     @body = controller.response.body
     @extra_html = ""
-    self.abs_root = File.expand_path(RAILS_ROOT)
   end
 
   def add_footnotes!
     if performed_render? and first_render?
-      if ["html.erb", "haml", "rhtml", "rxhtml"].include?(template_extension) && (content_type =~ /html/ || content_type.nil?) && !xhr?
-        # If the user would like to be responsible for the styles, let them opt out of the styling here
+      if ['html','rhtml','xhtml','rxhtml'].include?(template_format.to_s) && (content_type =~ /html/ || content_type.nil?) && !@controller.request.xhr?
         insert_styles unless FootnoteFilter.no_style
         insert_footnotes
       end
     end
   rescue Exception => e
     # Discard footnotes if there are any problems
-    RAILS_DEFAULT_LOGGER.error "Textmate Footnotes Exception: #{e}\n#{e.backtrace.join("\n")}"
-  end
-
-  # Some controller classes come with the Controller:: module and some don't
-  # (anyone know why? -- Duane)
-  def controller_filename
-    File.join(abs_root, "app", "controllers", "#{@controller.class.to_s.underscore}.rb").
-    sub('/controllers/controllers/', '/controllers/')
-  end
-
-  def controller_text
-    @controller_text ||= IO.read(controller_filename)
-  end
-
-  def index_of_method
-    (controller_text =~ /def\s+#{@controller.action_name}[\s\(]/)
-  end
-
-  def controller_line_number
-    controller_text.line_from_index(index_of_method)
+    RAILS_DEFAULT_LOGGER.error "Footnotes Exception: #{e}\n#{e.backtrace.join("\n")}"
   end
 
   def performed_render?
@@ -72,88 +34,53 @@ class FootnoteFilter
     @template.respond_to?(:first_render) and @template.first_render
   end
 
-  def xhr?
-    @controller.request.xhr?
-  end
-
-  def template_path
-    @template.first_render.sub(/\.(html\.erb|rhtml|rxhtml|rxml|rjs)$/, "")
-  end
-
-  def template_extension
-    @template.first_render.scan(/\.(html\.erb|rhtml|rxhtml|rxml|rjs)$/).flatten.first ||
-    @template.pick_template_extension(template_path).to_s
-  end
-
-  def template_file_name
-    File.expand_path(@template.send(:full_template_path, template_path, template_extension))
-  end
-
-  def layout_file_name
-    ["html.erb", "rhtml"].each do |extension|
-      path = File.expand_path(@template.send(:full_template_path, @controller.active_layout, extension))
-      return path if File.exist?(path)
-    end
-  end
-
   def content_type
     @controller.response.headers['Content-Type']
   end
 
-  def stylesheet_files
-    @stylesheet_files ||= @body.scan(/<link[^>]+href\s*=\s*['"]([^>?'"]+)/im).flatten
+  def template_path
+    @template.first_render
   end
 
-  def javascript_files
-    @javascript_files ||= @body.scan(/<script[^>]+src\s*=\s*['"]([^>?'"]+)/im).flatten
+  def template_extension
+    @template.pick_template_extension(template_path)
   end
 
-  def controller_url
-    escape(
-      textmate_prefix +
-      controller_filename +
-      (index_of_method ? "&line=#{controller_line_number + 1}&column=3" : "")
-    )
-  end
-
-  def view_url
-    escape(textmate_prefix + template_file_name)
-  end
-
-  def layout_url
-    escape(textmate_prefix + layout_file_name)
+  def template_format
+    @template.respond_to?(:template_format) ? @template.template_format : template_extension # condition for Rails < 2.0 compatibiliy
   end
 
   def insert_styles
     insert_text :before, /<\/head>/i, <<-HTML
-    <!-- TextMate Footnotes Style -->
+    <!-- Footnotes Style -->
     <style type="text/css">
-      #tm_footnotes_debug {margin-top: 0.5em; text-align: center; color: #999;}
-      #tm_footnotes_debug a {text-decoration: none; color: #bbb;}
+      #tm_footnotes_debug {margin: 2em 0 1em 0; text-align: center; color: #777;}
+      #tm_footnotes_debug a {text-decoration: none; color: #777;}
       #tm_footnotes_debug pre {overflow: scroll;}
-      fieldset.tm_footnotes_debug_info {text-align: left; border: 1px dashed #aaa; padding: 1em; margin: 1em 2em 1em 2em; color: #777;}
+      fieldset.tm_footnotes_debug_info {text-align: left; border: 1px dashed #aaa; padding: 0.5em 1em 1em 1em; margin: 1em 2em 1em 2em; color: #777;}
     </style>
-    <!-- End TextMate Footnotes Style -->
+    <!-- End Footnotes Style -->
     HTML
   end
 
   def insert_footnotes
-
     def tm_footnotes_toggle(id)
       "s = document.getElementById('#{id}').style; if(s.display == 'none') { s.display = '' } else { s.display = 'none' }"
     end
 
     footnotes_html = <<-HTML
-    <!-- TextMate Footnotes -->
+    <!-- Footnotes -->
     <div style="clear:both"></div>
     <div id="tm_footnotes_debug">
-      #{textmate_links}
+      #{textmate_links if ::MAC_OS_X}
       Show:
       <a href="#" onclick="#{tm_footnotes_toggle('session_debug_info')};return false">Session</a> |
       <a href="#" onclick="#{tm_footnotes_toggle('cookies_debug_info')};return false">Cookies</a> |
       <a href="#" onclick="#{tm_footnotes_toggle('params_debug_info')};return false">Params</a> |
+      <a href="#" onclick="#{tm_footnotes_toggle('log_debug_info')};return false">Log</a> |
+      <a href="#" onclick="#{tm_footnotes_toggle('filters_debug_info')};return false">Filters</a> |
+      <a href="#" onclick="#{tm_footnotes_toggle('routes_debug_info')};return false">Routes</a> |
       <a href="#" onclick="#{tm_footnotes_toggle('general_debug_info')};return false">General Debug</a>
-      <br/>(<a href="http://blog.inquirylabs.com/2006/09/28/textmate-footnotes-v16-released/"><b>TextMate Footnotes</b></a>)
       #{@extra_html}
       <fieldset id="session_debug_info" class="tm_footnotes_debug_info" style="display: none">
         <legend>Session</legend>
@@ -167,12 +94,24 @@ class FootnoteFilter
         <legend>Params</legend>
         <code>#{escape(@controller.params.inspect)}</code>
       </fieldset>
+      <fieldset id="log_debug_info" class="tm_footnotes_debug_info" style="display: none">
+        <legend>Log</legend>
+        <code><pre>#{escape(log_tail)}</pre></code>
+      </fieldset>
+      <fieldset id="filters_debug_info" class="tm_footnotes_debug_info" style="display: none">
+        <legend>Filter chain for Controller #{@controller.controller_name}</legend>
+        <code><pre>#{mount_table(parsed_filters, :name, :type, :included_actions, :excluded_actions)}</pre></code>
+      </fieldset>
+      <fieldset id="routes_debug_info" class="tm_footnotes_debug_info" style="display:none;text-align:center;">
+        <legend>Routes for Controller #{@controller.controller_name}</legend>
+        <code><pre>#{mount_table(parsed_routes, :path, :name, :options, :requirements)}</pre></code>
+      </fieldset>
       <fieldset id="general_debug_info" class="tm_footnotes_debug_info" style="display: none">
         <legend>General (id="tm_debug")</legend>
-        <div id="tm_debug"></div>
+        <div id="tm_debug">You can use this tab to debug other parts of your application, for example Javascript.</div>
       </fieldset>
     </div>
-    <!-- End TextMate Footnotes -->
+    <!-- End Footnotes -->
     HTML
     if @body =~ %r{<div[^>]+id=['"]tm_footnotes['"][^>]*>}
       # Insert inside the "tm_footnotes" div if it exists
@@ -183,40 +122,61 @@ class FootnoteFilter
     end
   end
 
-  def textmate_links
-    html = ""
-    if ::MAC_OS_X
-      html = <<-HTML
-        Edit:
-        <a href="#{controller_url}">Controller</a> |
-        <a href="#{view_url}">View</a> |
-        <a href="#{layout_url}">Layout</a>
-      HTML
-      html += asset_file_links("Stylesheets", stylesheet_files) unless stylesheet_files.blank?
-      html += asset_file_links("Javascripts", javascript_files) unless javascript_files.blank?
-      html += "<br/>"
-    end
-    html
+  def log_tail
+    filename = RAILS_DEFAULT_LOGGER.instance_variable_get('@log') ? RAILS_DEFAULT_LOGGER.instance_variable_get('@log').path : RAILS_DEFAULT_LOGGER.instance_variable_get('@logdev').filename # condition for Rails < 2.0 compatibility 
+    file_string = File.open(filename).read.to_s
+    html = file_string[file_string.rindex('Processing '+@controller.controller_class_name+'#'+@controller.action_name),file_string.size].gsub(/\e\[.+?m/, '')
   end
 
-  def asset_file_links(link_text, files)
-    return '' if files.size == 0
-    links = files.map do |filename|
-      if filename =~ %r{^/}
-        full_filename = File.join(abs_root, "public", filename)
-        %{<a href="#{textmate_prefix}#{full_filename}">#{filename}</a>}
-      else
-        %{<a href="#{filename}">#{filename}</a>}
+  # Gets a bidimensional array with the labels of the "second" array data
+  def mount_table(*args)
+    return '' if args.empty?
+    array = args.delete_at(0)
+    header = '<tr><th>'+args.collect{|i| i.to_s.titlecase }.join('</th><th>')+'</th></tr>'
+    lines = array.collect{|i| '<tr><td>'+i.join('</td><td>')+'</td></tr>' }.join
+    
+    <<-TABLE
+    <table>
+      <thead>#{header}</thead>
+      <tbody style="text-align:left;">
+        #{lines}
+      </tbody>
+    </table>
+    TABLE
+  end
+
+  def parsed_routes
+    routes_with_name = ActionController::Routing::Routes.named_routes.to_a.flatten
+    return ActionController::Routing::Routes.filtered_routes(:controller => @controller.controller_name).collect do |route|
+      # Catch routes name if exists
+      i = routes_with_name.index(route)
+      name = i ? routes_with_name[i-1].to_s : ''
+
+      # Catch segments requirements
+      req = {}
+      route.segments.each do |segment|
+        next unless segment.is_a?(ActionController::Routing::DynamicSegment) && segment.regexp
+        req[segment.key.to_sym] = segment.regexp
       end
+
+      [name,route.segments.join,route.requirements.reject{|key,value| key == :controller}.inspect,req.inspect]
     end
-    @extra_html << <<-HTML
-      <fieldset id="tm_footnotes_#{link_text.underscore.gsub(' ', '_')}" class="tm_footnotes_debug_info" style="display: none">
-        <legend>#{link_text}</legend>
-        <ul><li>#{links.join("</li><li>")}</li></ul>
-      </fieldset>
-    HTML
-    # Return the link that will open the 'extra html' div
-    %{ | <a href="#" onclick="#{tm_footnotes_toggle('tm_footnotes_' + link_text.underscore.gsub(' ', '_') )}; return false">#{link_text}</a>}
+  end
+
+  def parsed_filters
+    controller_class = @controller.class
+
+    return controller_class.filter_chain.collect do |filter|
+      if excluded_actions = controller_class.excluded_actions[filter]
+        included_actions = []
+      else
+        included_actions = controller_class.included_actions[filter] || controller_class.action_methods
+        excluded_actions = []
+      end
+
+                              # condition for Rails < 2.0 compatibility
+      [filter.filter.inspect, (filter.respond_to?(:type) ? filter.type : filter.class).inspect, included_actions.map(&:to_sym).inspect, excluded_actions.map(&:to_sym).inspect]
+    end
   end
 
   def indent(indentation, text)
@@ -252,6 +212,6 @@ class FootnoteFilter
   end
 
   def escape(text)
-    text.gsub("&", "&amp;").gsub("<", "&lt;").gsub(">", "&gt;")
+    text.gsub('&', '&amp;').gsub('<', '&lt;').gsub('>', '&gt;')
   end
 end
