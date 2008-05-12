@@ -50,7 +50,7 @@ class MockRequest < OpenStruct.new(:xhr)
   alias_method :xhr?, :xhr
 end
 
-class FootnoteFilter
+class FootnotesFilter
   def controller_filename
     __FILE__
   end

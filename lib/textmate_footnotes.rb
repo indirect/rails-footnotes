@@ -1,9 +1,9 @@
-class FootnoteFilter
+class FootnotesFilter
   cattr_accessor :no_style
   self.no_style = false
 
   def self.filter(controller)
-    filter = FootnoteFilter.new(controller)
+    filter = FootnotesFilter.new(controller)
     filter.add_footnotes!
   end
 
@@ -17,7 +17,7 @@ class FootnoteFilter
   def add_footnotes!
     if performed_render? and first_render?
       if ['html','rhtml','xhtml','rxhtml'].include?(template_format.to_s) && (content_type =~ /html/ || content_type.nil?) && !@controller.request.xhr?
-        insert_styles unless FootnoteFilter.no_style
+        insert_styles unless FootnotesFilter.no_style
         insert_footnotes
       end
     end
@@ -72,7 +72,7 @@ class FootnoteFilter
     <!-- Footnotes -->
     <div style="clear:both"></div>
     <div id="tm_footnotes_debug">
-      #{textmate_links if ::MAC_OS_X}
+      #{textmate_links if FootnotesFilter.textmate_prefix}
       Show:
       <a href="#" onclick="#{tm_footnotes_toggle('session_debug_info')};return false">Session</a> |
       <a href="#" onclick="#{tm_footnotes_toggle('cookies_debug_info')};return false">Cookies</a> |

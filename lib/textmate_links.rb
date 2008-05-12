@@ -11,9 +11,8 @@ class String
   end
 end
 
-class FootnoteFilter
+class FootnotesFilter
   cattr_accessor :textmate_prefix
-  self.textmate_prefix = 'txmt://open?url=file://'
 
   # Some controller classes come with the Controller:: module and some don't
   # (anyone know why? -- Duane)
@@ -54,7 +53,7 @@ class FootnoteFilter
     escape(
       textmate_prefix +
       controller_filename +
-      (index_of_method ? "&line=#{controller_line_number + 1}&column=3" : "")
+      (index_of_method ? "&line=#{controller_line_number + 1}&column=3" : '')
     )
   end
 
@@ -73,9 +72,9 @@ class FootnoteFilter
       <a href="#{view_url}">View</a> |
       <a href="#{layout_url}">Layout</a>
     HTML
-    html += asset_file_links("Stylesheets", stylesheet_files) unless stylesheet_files.blank?
-    html += asset_file_links("Javascripts", javascript_files) unless javascript_files.blank?
-    html += "<br/>"
+    html += asset_file_links('Stylesheets', stylesheet_files) unless stylesheet_files.blank?
+    html += asset_file_links('Javascripts', javascript_files) unless javascript_files.blank?
+    html += '<br/>'
     return html
   end
 

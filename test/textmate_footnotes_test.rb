@@ -9,7 +9,7 @@ $html = DATA.read
 class TextmateFootnotesTest < Test::Unit::TestCase
   def setup
     @controller = MockController.new $html.dup
-    @footnote = FootnoteFilter.new(@controller)
+    @footnote = FootnotesFilter.new(@controller)
   end
 
   def test_mock_controller

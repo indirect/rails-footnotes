@@ -6,7 +6,7 @@
 # to keep such only-development-code in the middle of Your application).
 #
 class ActionController::Base
-  after_filter FootnoteFilter
+  after_filter FootnotesFilter
 end
 
 # Add routes config
