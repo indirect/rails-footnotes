@@ -1,5 +1,8 @@
+== Textmate Footnotes v3.1
+  * Working on Rails 2.1.
+
 == Textmate Footnotes v3.0
-Author: José Valim (jose.valim at gmail dot com)
+Author: José Valim (jose.valim@gmail.com)
 Site: http://www.pagestacker.com/
 Description:
   * Some code refactoring;

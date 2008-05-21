@@ -1,3 +1,5 @@
+require 'ostruct'
+
 class FootnotesFilter
   cattr_accessor :no_style
   self.no_style = false
@@ -9,14 +11,14 @@ class FootnotesFilter
 
   def initialize(controller)
     @controller = controller
-    @template = controller.instance_variable_get("@template")
+    @template = controller.instance_variable_get('@template')
     @body = controller.response.body
-    @extra_html = ""
+    @extra_html = ''
   end
 
   def add_footnotes!
-    if performed_render? and first_render?
-      if ['html','rhtml','xhtml','rxhtml'].include?(template_format.to_s) && (content_type =~ /html/ || content_type.nil?) && !@controller.request.xhr?
+    if performed_render? && first_render?
+      if [:html,:rhtml,:xhtml,:rxhtml].include?(@template.template_format.to_sym) && (content_type =~ /html/ || content_type.nil?) && !@controller.request.xhr?
         insert_styles unless FootnotesFilter.no_style
         insert_footnotes
       end
@@ -27,27 +29,15 @@ class FootnotesFilter
   end
 
   def performed_render?
-    @controller.instance_variable_get("@performed_render")
+    @controller.instance_variable_get('@performed_render')
   end
 
   def first_render?
-    @template.respond_to?(:first_render) and @template.first_render
+    @template.first_render
   end
 
   def content_type
     @controller.response.headers['Content-Type']
-  end
-
-  def template_path
-    @template.first_render
-  end
-
-  def template_extension
-    @template.pick_template_extension(template_path)
-  end
-
-  def template_format
-    @template.respond_to?(:template_format) ? @template.template_format : template_extension # condition for Rails < 2.0 compatibiliy
   end
 
   def insert_styles
@@ -99,11 +89,11 @@ class FootnotesFilter
         <code><pre>#{escape(log_tail)}</pre></code>
       </fieldset>
       <fieldset id="filters_debug_info" class="tm_footnotes_debug_info" style="display: none">
-        <legend>Filter chain for Controller #{@controller.controller_name}</legend>
-        <code><pre>#{mount_table(parsed_filters, :name, :type, :included_actions, :excluded_actions)}</pre></code>
+        <legend>Filter chain for #{@controller.class.to_s}</legend>
+        <code><pre>#{mount_table(parsed_filters, :name, :type, :actions)}</pre></code>
       </fieldset>
       <fieldset id="routes_debug_info" class="tm_footnotes_debug_info" style="display:none;text-align:center;">
-        <legend>Routes for Controller #{@controller.controller_name}</legend>
+        <legend>Routes for #{@controller.class.to_s}</legend>
         <code><pre>#{mount_table(parsed_routes, :path, :name, :options, :requirements)}</pre></code>
       </fieldset>
       <fieldset id="general_debug_info" class="tm_footnotes_debug_info" style="display: none">
@@ -123,8 +113,7 @@ class FootnotesFilter
   end
 
   def log_tail
-    filename = RAILS_DEFAULT_LOGGER.instance_variable_get('@log') ? RAILS_DEFAULT_LOGGER.instance_variable_get('@log').path : RAILS_DEFAULT_LOGGER.instance_variable_get('@logdev').filename # condition for Rails < 2.0 compatibility 
-    file_string = File.open(filename).read.to_s
+    file_string = File.open(RAILS_DEFAULT_LOGGER.instance_variable_get('@log').path).read.to_s
     html = file_string[file_string.rindex('Processing '+@controller.controller_class_name+'#'+@controller.action_name),file_string.size].gsub(/\e\[.+?m/, '')
   end
 
@@ -164,19 +153,18 @@ class FootnotesFilter
   end
 
   def parsed_filters
-    controller_class = @controller.class
-
-    return controller_class.filter_chain.collect do |filter|
-      if excluded_actions = controller_class.excluded_actions[filter]
-        included_actions = []
-      else
-        included_actions = controller_class.included_actions[filter] || controller_class.action_methods
-        excluded_actions = []
-      end
-
-                              # condition for Rails < 2.0 compatibility
-      [filter.filter.inspect, (filter.respond_to?(:type) ? filter.type : filter.class).inspect, included_actions.map(&:to_sym).inspect, excluded_actions.map(&:to_sym).inspect]
+    return @controller.class.filter_chain.collect do |filter|
+      [filter.method.inspect, filter.type.inspect, controller_filtered_actions(filter).inspect]
     end
+  end
+
+  # This methods creates a mock controller, gives it an action name and check if
+  # the action should run in filter.
+  def controller_filtered_actions(filter)
+    return @controller.class.action_methods.select { |action|
+      mock_controller = OpenStruct.new(:action_name => action)
+      filter.send!(:should_run_callback?, mock_controller)   
+    }.map(&:to_sym)
   end
 
   def indent(indentation, text)
@@ -184,11 +172,11 @@ class FootnotesFilter
     initial_indentation = lines.first.scan(/^(\s+)/).flatten.first
     lines.map do |line|
       if initial_indentation.nil?
-        " " * indentation + line
+        ' ' * indentation + line
       elsif line.index(initial_indentation) == 0
-        " " * indentation + line[initial_indentation.size..-1]
+        ' ' * indentation + line[initial_indentation.size..-1]
       else
-        " " * indentation + line
+        ' ' * indentation + line
       end
     end.join
   end

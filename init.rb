@@ -34,6 +34,6 @@ if (ENV['RAILS_ENV'] == 'development')
 
   if ::MAC_OS_X
     FootnotesFilter.textmate_prefix = 'txmt://open?url=file://'
-    require 'textmate_backtracer' unless Rails::VERSION::MAJOR < 2
+    require 'textmate_backtracer'
   end
 end

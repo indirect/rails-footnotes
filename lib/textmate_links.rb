@@ -28,17 +28,29 @@ class FootnotesFilter
   def index_of_method
     (controller_text =~ /def\s+#{@controller.action_name}[\s\(]/)
   end
-  
+
   def controller_line_number
     controller_text.line_from_index(index_of_method)
   end
-  
+
+  def template_path
+    @template.first_render
+  end
+
+  def template_extension(path)
+    @template.finder.pick_template_extension(path)
+  end
+
+  def template_base_path(path)
+    @template.finder.pick_template(path, template_extension(path))
+  end
+
   def template_file_name
-    File.expand_path(@template.send(:full_template_path, template_path, template_extension))
+    File.expand_path(template_base_path(template_path))
   end
 
   def layout_file_name
-    File.expand_path(@template.send(:full_template_path, @controller.active_layout, @template.pick_template_extension(@controller.active_layout)))
+    File.expand_path(template_base_path(@controller.active_layout))
   end
 
   def stylesheet_files

@@ -10,6 +10,8 @@ Even more, it contain links to open files directly in textmate and if Rails get 
 Installation
 ============
 
+The newest versions of the plugin only works in Rails 2.1 (including its RC). Scroll down to check how to install early versions.
+
 If you just want a static copy of the plugin:
 
     cd myapp
@@ -19,26 +21,18 @@ If you just want a static copy of the plugin:
 If you are using Git for your own app, then you could use Git sub-modules or the
 tool [Braid](http://github.com/evilchelu/braid/tree/master).
 
-Known Issues
-============
+Early versions
+==============
 
-In Rails 1.x, the after_filter appear first than before_filter in the Filters tab. Then the results:
+If you are running on Rails 2.0.x or Rails 1.x, you should use Footnotes v3.0:
 
-    :c, after_filter
-    :d, after_filter
-    :e, after_filter
-    :a, before_filter
-    :b, before_filter
+    cd myapp
+    git clone git://github.com/drnic/rails-footnotes.git vendor/plugins/footnotes
+    cd vendor/plugins/footnotes
+    git checkout v3.0
+    rm -rf ./.git
 
-Would exactly mean:
-
-    :a, before_filter
-    :b, before_filter
-    :c, after_filter
-    :d, after_filter
-    :e, after_filter
-
-Nonetheless, always consider upgrading Your app to Rails 2.x. =)
+Remember that in Rails 1.x, the after_filters appear first than before_filter in the Filters tab.
     
 Original Author
 ===============
