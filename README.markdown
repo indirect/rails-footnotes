@@ -1,5 +1,5 @@
-Footnotes plugin for Rails
---------------------------
+Footnotes plugin for Rails (v3.1)
+---------------------------------
 
 If you are developing in Rails you should know the plugin!
 
@@ -17,7 +17,7 @@ If you just want a static copy of the plugin:
     cd myapp
     git clone git://github.com/drnic/rails-footnotes.git vendor/plugins/footnotes
     rm -rf vendor/plugins/footnotes/.git
-    
+
 If you are using Git for your own app, then you could use Git sub-modules or the
 tool [Braid](http://github.com/evilchelu/braid/tree/master).
 
@@ -32,8 +32,8 @@ If you are running on Rails 2.0.x or Rails 1.x, you should use Footnotes v3.0:
     git checkout v3.0
     rm -rf ./.git
 
-Remember that in Rails 1.x, the after_filters appear first than before_filter in the Filters tab.
-    
+Remember that in Rails 1.x, after filters appear first than before filters in the Filters tab.
+
 Original Author
 ===============
 
