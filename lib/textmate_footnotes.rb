@@ -161,8 +161,10 @@ class FootnotesFilter
   # This methods creates a mock controller, gives it an action name and check if
   # the action should run in filter.
   def controller_filtered_actions(filter)
+    mock_controller = OpenStruct.new
     return @controller.class.action_methods.select { |action|
-      mock_controller = OpenStruct.new(:action_name => action)
+      mock_controller.action_name = action
+      filter.options[:if] = nil #remove conditions (this would call a Proc on the mock_controller)
       filter.send!(:should_run_callback?, mock_controller)   
     }.map(&:to_sym)
   end
