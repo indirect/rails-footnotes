@@ -164,7 +164,7 @@ class FootnotesFilter
     mock_controller = OpenStruct.new
     return @controller.class.action_methods.select { |action|
       mock_controller.action_name = action
-      filter.options[:if] = nil #remove conditions (this would call a Proc on the mock_controller)
+      filter.options.merge!(:if => nil, :unless => nil) #remove conditions (this would call a Proc on the mock_controller)
       filter.send!(:should_run_callback?, mock_controller)   
     }.map(&:to_sym)
   end
