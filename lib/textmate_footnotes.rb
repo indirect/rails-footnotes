@@ -47,6 +47,7 @@ class FootnotesFilter
       #tm_footnotes_debug {margin: 2em 0 1em 0; text-align: center; color: #777;}
       #tm_footnotes_debug a {text-decoration: none; color: #777;}
       #tm_footnotes_debug pre {overflow: scroll;}
+      #tm_footnotes_debug legend, #tm_footnotes_debug fieldset {background-color: #FFF;}
       fieldset.tm_footnotes_debug_info {text-align: left; border: 1px dashed #aaa; padding: 0.5em 1em 1em 1em; margin: 1em 2em 1em 2em; color: #777;}
     </style>
     <!-- End Footnotes Style -->
