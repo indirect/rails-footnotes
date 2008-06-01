@@ -10,7 +10,7 @@ Even more, it contain links to open files directly in textmate and if Rails get 
 Installation
 ============
 
-The newest versions of the plugin only works in Rails 2.1 (including its RC). Scroll down to check how to install early versions.
+The newest versions of the plugin only works in Rails 2.1 and above. Scroll down to check how to install early versions.
 
 If you just want a static copy of the plugin:
 
@@ -38,11 +38,13 @@ Original Author
 ===============
 
 Duane Johnson (duane.johnson@gmail.com)
+http://blog.inquirylabs.com/
 
 Maintainer
 ==========
 
 José Valim (jose.valim@gmail.com)
+http://josevalim.blogspot.com
 
 License
 =======

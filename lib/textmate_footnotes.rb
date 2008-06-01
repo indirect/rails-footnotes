@@ -68,9 +68,9 @@ class FootnotesFilter
       <a href="#" onclick="#{tm_footnotes_toggle('session_debug_info')};return false">Session</a> |
       <a href="#" onclick="#{tm_footnotes_toggle('cookies_debug_info')};return false">Cookies</a> |
       <a href="#" onclick="#{tm_footnotes_toggle('params_debug_info')};return false">Params</a> |
-      <a href="#" onclick="#{tm_footnotes_toggle('log_debug_info')};return false">Log</a> |
       <a href="#" onclick="#{tm_footnotes_toggle('filters_debug_info')};return false">Filters</a> |
       <a href="#" onclick="#{tm_footnotes_toggle('routes_debug_info')};return false">Routes</a> |
+      <a href="#" onclick="#{tm_footnotes_toggle('log_debug_info')};return false">Log</a> |
       <a href="#" onclick="#{tm_footnotes_toggle('general_debug_info')};return false">General Debug</a>
       #{@extra_html}
       <fieldset id="session_debug_info" class="tm_footnotes_debug_info" style="display: none">
@@ -85,10 +85,6 @@ class FootnotesFilter
         <legend>Params</legend>
         <code>#{escape(@controller.params.inspect)}</code>
       </fieldset>
-      <fieldset id="log_debug_info" class="tm_footnotes_debug_info" style="display: none">
-        <legend>Log</legend>
-        <code><pre>#{escape(log_tail)}</pre></code>
-      </fieldset>
       <fieldset id="filters_debug_info" class="tm_footnotes_debug_info" style="display: none">
         <legend>Filter chain for #{@controller.class.to_s}</legend>
         <code><pre>#{mount_table(parsed_filters, :name, :type, :actions)}</pre></code>
@@ -96,6 +92,10 @@ class FootnotesFilter
       <fieldset id="routes_debug_info" class="tm_footnotes_debug_info" style="display:none;text-align:center;">
         <legend>Routes for #{@controller.class.to_s}</legend>
         <code><pre>#{mount_table(parsed_routes, :path, :name, :options, :requirements)}</pre></code>
+      </fieldset>
+      <fieldset id="log_debug_info" class="tm_footnotes_debug_info" style="display: none">
+        <legend>Log</legend>
+        <code><pre>#{escape(log_tail)}</pre></code>
       </fieldset>
       <fieldset id="general_debug_info" class="tm_footnotes_debug_info" style="display: none">
         <legend>General (id="tm_debug")</legend>
