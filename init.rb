@@ -18,12 +18,12 @@
 # support opening files like Textmate, e.g. txmt://open?url=file://, you can put
 # in your environment file the following line:
 #
-#   FootnotesFilter.textmate_prefix = "editor://open?file://"
+#   Footnotes::Filter.textmate_prefix = "editor://open?file://"
 #
 # If You want to use your own stylesheet, you can disable the Footnotes
 # stylesheet with:
 #
-#   FootnotesFilter.no_style = true
+#   Footnotes::Filter.no_style = true
 #
 # Footnotes try to append at the end of the page, but if your page have a div
 # with id "tm_footnotes", Footnotes will be inserted into this div.
@@ -31,17 +31,17 @@
 # In Footnotes 3.1, you also have the ability to cherry pick which notes do you
 # want to use, simply doing:
 #
-#   FootnotesFilter.notes = [:session, :cookies, :params, :filters, :routes, :log, :general]
+#   Footnotes::Filter.notes = [:session, :cookies, :params, :filters, :routes, :log, :general]
 #
 if (ENV['RAILS_ENV'] == 'development')
   # Windows doesn't have 'uname', so rescue false
-  ::MAC_OS_X = (`uname`.chomp == 'Darwin') rescue false
+  ::MAC_OS_X = RUBY_PLATFORM.include?('darwin')
   require 'textmate_footnotes'
   require 'textmate_links'
   require 'textmate_initialize'
 
   if ::MAC_OS_X
-    FootnotesFilter.textmate_prefix = 'txmt://open?url=file://'
+    Footnotes::Filter.textmate_prefix = 'txmt://open?url=file://'
     require 'textmate_backtracer'
   end
 end

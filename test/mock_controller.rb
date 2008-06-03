@@ -1,7 +1,7 @@
 require 'ostruct'
 
 RAILS_ROOT.replace File.dirname(__FILE__)
-::MAC_OS_X = (`uname`.chomp == "Darwin") rescue false
+::MAC_OS_X = RUBY_PLATFORM.include?('darwin')
 
 class MockController
   attr_accessor :template, :session, :params, :cookies

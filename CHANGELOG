@@ -1,6 +1,6 @@
 == Textmate Footnotes v3.1
-  * Ability to cherry pick notes with:
-      FootnotesFilter.notes = [:session, :cookies, :params, :filters, :routes, :log, :general]
+  * Code refactoring (using modules, except backtracer)
+  * Ability to cherry pick notes
   * Working on Rails 2.1
 
 == Textmate Footnotes v3.0
