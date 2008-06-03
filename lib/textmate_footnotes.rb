@@ -1,12 +1,16 @@
 require 'ostruct'
 
 class FootnotesFilter
-  cattr_accessor :no_style
+  cattr_accessor :no_style, :notes
   self.no_style = false
+  self.notes = [:session, :cookies, :params, :filters, :routes, :log, :general]
 
+  #
+  # Controller methods
+  #
   def self.filter(controller)
     filter = FootnotesFilter.new(controller)
-    filter.add_footnotes!
+    filter.add_footnotes!   
   end
 
   def initialize(controller)
@@ -40,91 +44,62 @@ class FootnotesFilter
     @controller.response.headers['Content-Type']
   end
 
-  def insert_styles
-    insert_text :before, /<\/head>/i, <<-HTML
-    <!-- Footnotes Style -->
-    <style type="text/css">
-      #tm_footnotes_debug {margin: 2em 0 1em 0; text-align: center; color: #777;}
-      #tm_footnotes_debug a {text-decoration: none; color: #777;}
-      #tm_footnotes_debug pre {overflow: scroll;}
-      #tm_footnotes_debug legend, #tm_footnotes_debug fieldset {background-color: #FFF;}
-      fieldset.tm_footnotes_debug_info {text-align: left; border: 1px dashed #aaa; padding: 0.5em 1em 1em 1em; margin: 1em 2em 1em 2em; color: #777;}
-    </style>
-    <!-- End Footnotes Style -->
-    HTML
+  #
+  # Fieldset methods
+  #
+  def session_debug_info
+    escape(@controller.session.instance_variable_get("@data").inspect)
   end
 
-  def insert_footnotes
-    def tm_footnotes_toggle(id)
-      "s = document.getElementById('#{id}').style; if(s.display == 'none') { s.display = '' } else { s.display = 'none' }"
-    end
-
-    footnotes_html = <<-HTML
-    <!-- Footnotes -->
-    <div style="clear:both"></div>
-    <div id="tm_footnotes_debug">
-      #{textmate_links if FootnotesFilter.textmate_prefix}
-      Show:
-      <a href="#" onclick="#{tm_footnotes_toggle('session_debug_info')};return false">Session</a> |
-      <a href="#" onclick="#{tm_footnotes_toggle('cookies_debug_info')};return false">Cookies</a> |
-      <a href="#" onclick="#{tm_footnotes_toggle('params_debug_info')};return false">Params</a> |
-      <a href="#" onclick="#{tm_footnotes_toggle('filters_debug_info')};return false">Filters</a> |
-      <a href="#" onclick="#{tm_footnotes_toggle('routes_debug_info')};return false">Routes</a> |
-      <a href="#" onclick="#{tm_footnotes_toggle('log_debug_info')};return false">Log</a> |
-      <a href="#" onclick="#{tm_footnotes_toggle('general_debug_info')};return false">General Debug</a>
-      #{@extra_html}
-      <fieldset id="session_debug_info" class="tm_footnotes_debug_info" style="display: none">
-        <legend>Session</legend>
-        #{escape(@controller.session.instance_variable_get("@data").inspect)}
-      </fieldset>
-      <fieldset id="cookies_debug_info" class="tm_footnotes_debug_info" style="display: none">
-        <legend>Cookies</legend>
-        <code>#{escape(@controller.send(:cookies).inspect)}</code>
-      </fieldset>
-      <fieldset id="params_debug_info" class="tm_footnotes_debug_info" style="display: none">
-        <legend>Params</legend>
-        <code>#{escape(@controller.params.inspect)}</code>
-      </fieldset>
-      <fieldset id="filters_debug_info" class="tm_footnotes_debug_info" style="display: none">
-        <legend>Filter chain for #{@controller.class.to_s}</legend>
-        <code><pre>#{mount_table(parsed_filters, :name, :type, :actions)}</pre></code>
-      </fieldset>
-      <fieldset id="routes_debug_info" class="tm_footnotes_debug_info" style="display:none;text-align:center;">
-        <legend>Routes for #{@controller.class.to_s}</legend>
-        <code><pre>#{mount_table(parsed_routes, :path, :name, :options, :requirements)}</pre></code>
-      </fieldset>
-      <fieldset id="log_debug_info" class="tm_footnotes_debug_info" style="display: none">
-        <legend>Log</legend>
-        <code><pre>#{escape(log_tail)}</pre></code>
-      </fieldset>
-      <fieldset id="general_debug_info" class="tm_footnotes_debug_info" style="display: none">
-        <legend>General (id="tm_debug")</legend>
-        <div id="tm_debug">You can use this tab to debug other parts of your application, for example Javascript.</div>
-      </fieldset>
-    </div>
-    <!-- End Footnotes -->
-    HTML
-    if @body =~ %r{<div[^>]+id=['"]tm_footnotes['"][^>]*>}
-      # Insert inside the "tm_footnotes" div if it exists
-      insert_text :after, %r{<div[^>]+id=['"]tm_footnotes['"][^>]*>}, footnotes_html
-    else
-      # Otherwise, try to insert as the last part of the html body
-      insert_text :before, /<\/body>/i, footnotes_html
-    end
+  def cookies_debug_info
+    escape(@controller.send(:cookies).inspect)
   end
 
+  def params_debug_info
+    escape(@controller.params.inspect)
+  end
+
+  def filters_debug_info
+    "<pre>#{mount_table(parsed_filters, :name, :type, :actions)}</pre>"
+  end
+
+  def routes_debug_info
+    "<pre>#{mount_table(parsed_routes, :path, :name, :options, :requirements)}</pre>"
+  end
+
+  def log_debug_info
+    "<pre>#{escape(log_tail)}</pre>"
+  end
+
+  def general_debug_info
+    'You can use this tab to debug other parts of your application, for example Javascript.'
+  end
+
+  #
+  # Helpers used to mount the fieldsets
+  #
   def log_tail
     file_string = File.open(RAILS_DEFAULT_LOGGER.instance_variable_get('@log').path).read.to_s
-    html = file_string[file_string.rindex('Processing '+@controller.controller_class_name+'#'+@controller.action_name),file_string.size].gsub(/\e\[.+?m/, '')
+
+    # We try to select the specified action from the log
+    # If we can't find it, we get the last 100 lines
+    #
+    if rindex = file_string.rindex('Processing '+@controller.controller_class_name+'#'+@controller.action_name)
+      file_string[rindex..-1].gsub(/\e\[.+?m/, '')
+    else
+      lines = file_string.split("\n")
+      index = [lines.size-100,0].max
+      lines[index..-1].join("\n")
+    end
   end
 
-  # Gets a bidimensional array with the labels of the "second" array data
-  def mount_table(*args)
+  # Gets a bidimensional array with the labels of the "second" array (columns)
+  #
+  def mount_table(array, *args)
     return '' if args.empty?
-    array = args.delete_at(0)
-    header = '<tr><th>'+args.collect{|i| i.to_s.titlecase }.join('</th><th>')+'</th></tr>'
-    lines = array.collect{|i| '<tr><td>'+i.join('</td><td>')+'</td></tr>' }.join
-    
+    header = '<tr><th>' + args.collect{|i| escape(i.to_s.titlecase) }.join('</th><th>') + '</th></tr>'
+    lines = array.collect{|i| "<tr><td>#{i.join('</td><td>')}</td></tr>" }.join
+
     <<-TABLE
     <table>
       <thead>#{header}</thead>
@@ -149,7 +124,7 @@ class FootnotesFilter
         req[segment.key.to_sym] = segment.regexp
       end
 
-      [name,route.segments.join,route.requirements.reject{|key,value| key == :controller}.inspect,req.inspect]
+      [escape(name), route.segments.join, route.requirements.reject{|key,value| key == :controller}.inspect, req.inspect]
     end
   end
 
@@ -161,6 +136,7 @@ class FootnotesFilter
 
   # This methods creates a mock controller, gives it an action name and check if
   # the action should run in filter.
+  #
   def controller_filtered_actions(filter)
     mock_controller = OpenStruct.new
     return @controller.class.action_methods.select { |action|
@@ -170,25 +146,95 @@ class FootnotesFilter
     }.map(&:to_sym)
   end
 
-  def indent(indentation, text)
-    lines = text.to_a
-    initial_indentation = lines.first.scan(/^(\s+)/).flatten.first
-    lines.map do |line|
-      if initial_indentation.nil?
-        ' ' * indentation + line
-      elsif line.index(initial_indentation) == 0
-        ' ' * indentation + line[initial_indentation.size..-1]
-      else
-        ' ' * indentation + line
-      end
-    end.join
+  #
+  # Insertion methods
+  #
+  def insert_footnotes   
+    footnotes_html = <<-HTML
+    <!-- Footnotes -->
+    <div style="clear:both"></div>
+    <div id="tm_footnotes_debug">
+      #{textmate_links if FootnotesFilter.textmate_prefix}
+      Show:
+      #{footnotes_links}
+      #{@extra_html}
+      #{footnotes_fieldsets}
+    </div>
+    <!-- End Footnotes -->
+    HTML
+    if @body =~ %r{<div[^>]+id=['"]tm_footnotes['"][^>]*>}
+      # Insert inside the "tm_footnotes" div if it exists
+      insert_text :after, %r{<div[^>]+id=['"]tm_footnotes['"][^>]*>}, footnotes_html
+    else
+      # Otherwise, try to insert as the last part of the html body
+      insert_text :before, /<\/body>/i, footnotes_html
+    end
+  end
+
+  # Defines the title for each fieldset
+  #
+  def footnotes_titles
+    return {
+      :session => "Session",
+      :cookies => "Cookies",
+      :params => "Parameters",
+      :filters => "Filter chain for #{@controller.class.to_s}",
+      :routes => "Routes for #{@controller.class.to_s}",
+      :log => "Log",
+      :general => "General (id=\"tm_debug\")"
+    }
+  end
+
+  # Generates links based on specified tabs
+  #
+  def footnotes_links
+    def tm_footnotes_toggle(id)
+      "s = document.getElementById('#{id}').style; if(s.display == 'none') { s.display = '' } else { s.display = 'none' }"
+    end
+
+    self.notes.collect{ |section|
+      next unless footnotes_titles.key?(section)
+      section_name = section.to_s
+      "<a href=\"#\" onclick=\"#{tm_footnotes_toggle(section_name+'_debug_info')};return false\">#{section_name.titleize}</a>"
+    }.join(" | \n")
+  end
+
+  # Generates fieldsets based on specified tabs
+  #
+  def footnotes_fieldsets
+    self.notes.collect{ |section|
+      next unless footnotes_titles.key?(section)
+      section_name = section.to_s
+      <<-HTML
+      <fieldset id="#{section_name}_debug_info" class="tm_footnotes_debug_info" style="display: none">
+        <legend>#{footnotes_titles[section]}</legend>
+        <code>#{eval(section_name+'_debug_info')}</code>
+      </fieldset>
+      HTML
+    }
+  end
+
+  def insert_styles
+    insert_text :before, /<\/head>/i, <<-HTML
+    <!-- Footnotes Style -->
+    <style type="text/css">
+      #tm_footnotes_debug {margin: 2em 0 1em 0; text-align: center; color: #777;}
+      #tm_footnotes_debug a {text-decoration: none; color: #777;}
+      #tm_footnotes_debug pre {overflow: scroll; margin: 0;}
+      #tm_footnotes_debug table td {padding: 0 4px;}
+      #tm_footnotes_debug legend, #tm_footnotes_debug fieldset {background-color: #FFF;}
+      fieldset.tm_footnotes_debug_info {text-align: left; border: 1px dashed #aaa; padding: 0.5em 1em 1em 1em; margin: 1em 2em 1em 2em; color: #777;}
+    </style>
+    <!-- End Footnotes Style -->
+    HTML
   end
 
   # Inserts text in to the body of the document
   # +pattern+ is a Regular expression which, when matched, will cause +new_text+
   # to be inserted before or after the match.  If no match is found, +new_text+ is appended
   # to the body instead. +position+ may be either :before or :after
-  def insert_text(position, pattern, new_text, indentation = 4)
+  #
+  def insert_text(position, pattern, new_text)
     index = case pattern
       when Regexp
         if match = @body.match(pattern)
@@ -199,7 +245,7 @@ class FootnotesFilter
       else
         pattern
       end
-    @body.insert index, indent(indentation, new_text)
+    @body.insert index, new_text
   end
 
   def escape(text)

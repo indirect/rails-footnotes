@@ -5,7 +5,7 @@ If you are developing in Rails you should know the plugin!
 
 It displays footnotes in your application for easy debugging, such as sessions, request parameters, cookies, log tail, filter chain and routes. 
 
-Even more, it contain links to open files directly in textmate and if Rails get an error, it appends Textmate links to the backtrace file lines.
+Even more, it contains links to open files directly in textmate. And if Rails get an error, it appends Textmate links to backtrace file lines.
 
 Installation
 ============
@@ -34,17 +34,22 @@ If you are running on Rails 2.0.x or Rails 1.x, you should use Footnotes v3.0:
 
 Remember that in Rails 1.x, after filters appear first than before filters in the Filters tab.
 
+Usage
+=====
+
+Detailed info about usage can be found in init.rb
+
 Original Author
 ===============
 
 Duane Johnson (duane.johnson@gmail.com)
 http://blog.inquirylabs.com/
 
-Maintainer
-==========
+Current developer
+=================
 
 José Valim (jose.valim@gmail.com)
-http://josevalim.blogspot.com
+http://josevalim.blogspot.com/
 
 License
 =======

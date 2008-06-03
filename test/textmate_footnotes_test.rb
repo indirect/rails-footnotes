@@ -40,29 +40,12 @@ class TextmateFootnotesTest < Test::Unit::TestCase
     assert_not_equal $html, @controller.response.body
   end
 
-  def test_indent
-    before = "text\n  one\n  two"
-    after  = "  text\n    one\n    two"
-
-    assert_equal after, @footnote.indent(2, before)
-
-    before = " text\n  one\n  two"
-    after  = "  text\n   one\n   two"
-
-    assert_equal after, @footnote.indent(2, before)
-
-    before = "  text\none\ntwo"
-    after  = "  text\n  one\n  two"
-
-    assert_equal after, @footnote.indent(2, before)
-  end
-
   def test_insert_text
-    @footnote.insert_text :after, /<head>/, "Graffiti", 0
+    @footnote.insert_text :after, /<head>/, "Graffiti"
     after = "    <head>Graffiti\n"
     assert_equal after, @footnote.body.to_a[2]
 
-    @footnote.insert_text :before, /<\/body>/, "Notes", 0
+    @footnote.insert_text :before, /<\/body>/, "Notes"
     after = "    Notes</body>\n"
     assert_equal after, @footnote.body.to_a[12]
   end
