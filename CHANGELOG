@@ -1,4 +1,5 @@
 == Textmate Footnotes v3.1
+  * Added MySQL Query Analyzer
   * Code refactoring (using modules, except backtracer)
   * Ability to cherry pick notes
   * Working on Rails 2.1

@@ -1,4 +1,4 @@
-# Footnotes is divided in four files:
+# Footnotes is divided in five files:
 #
 # * textmate_footnotes.rb: Is the core and adds the debug options at the bottom
 #   of each page;
@@ -10,6 +10,8 @@
 #   files in textmate;
 #
 # * textmate_backtracer.rb: Append links to Textmate in backtrace pages. 
+#
+# * textmate_analyzer.rb: Append explain queries in log when using MySQL.
 #
 # The footnotes are applied in all actions under development. If You want to
 # change this behaviour, check the textmate_initialize.rb file.
@@ -38,6 +40,7 @@ if (ENV['RAILS_ENV'] == 'development')
   ::MAC_OS_X = RUBY_PLATFORM.include?('darwin')
   require 'textmate_footnotes'
   require 'textmate_links'
+  require 'textmate_analyzer'
   require 'textmate_initialize'
 
   if ::MAC_OS_X
