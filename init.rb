@@ -33,7 +33,7 @@
 # In Footnotes 3.1, you also have the ability to cherry pick which notes do you
 # want to use, simply doing:
 #
-#   Footnotes::Filter.notes = [:session, :cookies, :params, :filters, :routes, :log, :general]
+#   Footnotes::Filter.notes = [:session, :cookies, :params, :filters, :routes, :queries, :log, :general]
 #
 if (ENV['RAILS_ENV'] == 'development')
   # Windows doesn't have 'uname', so rescue false

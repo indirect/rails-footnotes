@@ -75,13 +75,13 @@ module Footnotes
         <a href="#{view_url}">View</a> |
         <a href="#{layout_url}">Layout</a>
       HTML
-      html += asset_file_links('Stylesheets', stylesheet_files) unless stylesheet_files.blank?
-      html += asset_file_links('Javascripts', javascript_files) unless javascript_files.blank?
+      html += asset_file_links(:stylesheets, stylesheet_files) unless stylesheet_files.blank?
+      html += asset_file_links(:javascripts, javascript_files) unless javascript_files.blank?
       html += '<br/>'
       return html
     end
 
-    def asset_file_links(link_text, files)
+    def asset_file_links(link_sym, files)
       return '' if files.size == 0
       links = files.map do |filename|
         if filename =~ %r{^/}
@@ -91,14 +91,10 @@ module Footnotes
           %{<a href="#{filename}">#{filename}</a>}
         end
       end
-      @extra_html << <<-HTML
-        <fieldset id="tm_footnotes_#{link_text.underscore.gsub(' ', '_')}" class="tm_footnotes_debug_info" style="display: none">
-          <legend>#{link_text}</legend>
-          <ul><li>#{links.join("</li><li>")}</li></ul>
-        </fieldset>
-      HTML
+      @extra_html << footnote_fieldset(link_sym, "<ul><li>#{links.join("</li><li>")}</li></ul>")
+
       # Return the link that will open the 'extra html' div
-      %{ | <a href="#" onclick="#{footnotes_toggle('tm_footnotes_' + link_text.underscore.gsub(' ', '_') )}; return false">#{link_text}</a>}
+      " | #{footnote_link(link_sym, links.length)}"
     end
     
     def lines_from_index(string, index)

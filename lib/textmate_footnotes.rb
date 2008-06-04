@@ -2,17 +2,19 @@ require 'ostruct'
 
 module Footnotes
   class Filter
-    cattr_accessor :no_style, :notes
+    cattr_accessor :no_style, :notes, :sql
 
     self.no_style = false
-    self.notes = [:session, :cookies, :params, :filters, :routes, :log, :general]
+    self.notes = [:session, :cookies, :params, :filters, :routes, :queries, :log, :general]
+    self.sql = []
 
     #
     # Controller methods
     #
     def self.filter(controller)
       filter = Footnotes::Filter.new(controller)
-      filter.add_footnotes!   
+      filter.add_footnotes!
+      filter.reset!
     end
 
     def initialize(controller)
@@ -20,6 +22,7 @@ module Footnotes
       @template = controller.instance_variable_get('@template')
       @body = controller.response.body
       @extra_html = ''
+      @script = ''
     end
 
     def add_footnotes!
@@ -45,28 +48,48 @@ module Footnotes
     def content_type
       @controller.response.headers['Content-Type']
     end
+    
+    def reset!
+      self.sql = []
+    end
 
     #
     # Fieldset methods
     #
     def session_debug_info
-      escape(@controller.session.instance_variable_get("@data").inspect)
+      sessions = @controller.session.instance_variable_get("@data").symbolize_keys
+      [escape(sessions.inspect), sessions.length]
     end
 
     def cookies_debug_info
-      escape(@controller.send(:cookies).inspect)
+      cookies = @controller.send(:cookies).symbolize_keys
+      [escape(cookies.inspect), cookies.length]
     end
 
     def params_debug_info
-      escape(@controller.params.inspect)
+      params = @controller.params.symbolize_keys
+      [escape(params.inspect), params.length]
     end
 
     def filters_debug_info
-      "<pre>#{mount_table(parsed_filters, :name, :type, :actions)}</pre>"
+      filters = parsed_filters.unshift([:name, :type, :actions])
+      ["<pre>#{mount_table(filters)}</pre>", filters.length]
     end
 
     def routes_debug_info
-      "<pre>#{mount_table(parsed_routes, :path, :name, :options, :requirements)}</pre>"
+      routes = parsed_routes.unshift([:path, :name, :options, :requirements])
+      ["<pre>#{mount_table(routes)}</pre>", routes.length]
+    end
+
+    def queries_debug_info
+      html = ''
+      self.sql.collect do |item|
+        html << "<b>#{item[0].to_s.upcase}</b>\n"
+        html << "#{item[1] || 'SQL'} (#{sprintf('%f',item[2])}s)\n"
+        html << "#{item[3].gsub(/(\s)+/,' ').gsub('`','')}\n"
+        html << mount_table(item[4])
+      end
+      ["<pre>#{html}</pre>", self.sql.length]
     end
 
     def log_debug_info
@@ -97,17 +120,15 @@ module Footnotes
 
     # Gets a bidimensional array with the labels of the "second" array (columns)
     #
-    def mount_table(array, *args)
-      return '' if args.empty?
-      header = '<tr><th>' + args.collect{|i| escape(i.to_s.titlecase) }.join('</th><th>') + '</th></tr>'
+    def mount_table(array)
+      return '' if array.empty?
+      header = '<tr><th>' + array.shift.collect{|i| escape(i.to_s.humanize) }.join('</th><th>') + '</th></tr>'
       lines = array.collect{|i| "<tr><td>#{i.join('</td><td>')}</td></tr>" }.join
 
       <<-TABLE
       <table>
         <thead>#{header}</thead>
-        <tbody style="text-align:left;">
-          #{lines}
-        </tbody>
+        <tbody>#{lines}</tbody>
       </table>
       TABLE
     end
@@ -158,9 +179,9 @@ module Footnotes
       <div id="tm_footnotes_debug">
         #{textmate_links if Footnotes::Filter.textmate_prefix}
         Show:
-        #{footnotes_links}
+        #{footnotes_content}
         #{@extra_html}
-        #{footnotes_fieldsets}
+        <script type="text/javascript">function untoogle(){#{@script}}</script>
       </div>
       <!-- End Footnotes -->
       HTML
@@ -173,59 +194,76 @@ module Footnotes
       end
     end
 
-    # Defines the title for each fieldset
+    # Generates footnotes script, links and content
     #
-    def footnotes_titles
+    def footnotes_content
+      links = []
+      content = ''
+
+      self.notes.each{ |section|
+        next unless footnotes_info.key?(section)
+
+        # Call the method with the results
+        result, total = eval("#{section.to_s}_debug_info")
+        links << footnote_link(section, total)
+        content << footnote_fieldset(section, result)
+      }
+
+      "#{links.join(" | \n")}#{content}"
+    end
+
+    # Defines the title and link names for each note
+    #
+    def footnotes_info
       return {
-        :session => "Session",
-        :cookies => "Cookies",
-        :params => "Parameters",
-        :filters => "Filter chain for #{@controller.class.to_s}",
-        :routes => "Routes for #{@controller.class.to_s}",
-        :log => "Log",
-        :general => "General (id=\"tm_debug\")"
+        :session => { :title => "Session", :link => "Session" },
+        :cookies => { :title => "Cookies", :link => "Cookies (%d)" },
+        :params => { :title => "Parameters", :link => "Params (%d)" },
+        :filters => { :title => "Filter chain for #{@controller.class.to_s}", :link => "Filters" },
+        :routes => { :title => "Routes for #{@controller.class.to_s}", :link => "Routes" },
+        :queries => { :title => "Queries", :link => "Queries (%d)" },
+        :log => { :title => "Log", :link => "Log" },
+        :general => { :title => "General (id=\"tm_debug\")", :link => "General Debug" },
+        :javascripts => { :title => "Javascripts", :link => "Javascripts (%d)" },
+        :stylesheets => { :title => "Stylesheets", :link => "Stylesheets (%d)" }
       }
     end
 
-    # Generates links based on specified tabs
+    # Generate script that close notes when another is select
     #
-    def footnotes_links
-      self.notes.collect{ |section|
-        next unless footnotes_titles.key?(section)
-        section_name = section.to_s
-        "<a href=\"#\" onclick=\"#{footnotes_toggle(section_name+'_debug_info')};return false\">#{section_name.titleize}</a>"
-      }.join(" | \n")
+    def footnote_script(section)
+      @script << "document.getElementById('#{section.to_s}_debug_info').style.display = 'none'\n"
     end
 
-    # Generates fieldsets based on specified tabs
-    #
-    def footnotes_fieldsets
-      self.notes.collect{ |section|
-        next unless footnotes_titles.key?(section)
-        section_name = section.to_s
-        <<-HTML
-        <fieldset id="#{section_name}_debug_info" class="tm_footnotes_debug_info" style="display: none">
-          <legend>#{footnotes_titles[section]}</legend>
-          <code>#{eval(section_name+'_debug_info')}</code>
-        </fieldset>
-        HTML
-      }
+    def footnote_link(section, value = 0)
+      footnote_script(section)
+      name = section.to_s
+      "<a href=\"#\" onclick=\"untoogle();document.getElementById('#{name}_debug_info').style.display = 'block';location.href ='##{name}_debug_info';return false;\">#{(footnotes_info[section][:link] % value).humanize}</a>"
     end
 
-    def footnotes_toggle(id)
-      "s = document.getElementById('#{id}').style; if(s.display == 'none') { s.display = '' } else { s.display = 'none' }"
+    def footnote_fieldset(section, value)
+      name = section.to_s
+      <<-HTML
+      <fieldset id="#{name}_debug_info" class="tm_footnotes_debug_info" style="display: none">
+        <legend>#{footnotes_info[section][:title]}</legend>
+        <code>#{value}</code>
+      </fieldset>
+      HTML
     end
 
     def insert_styles
       insert_text :before, /<\/head>/i, <<-HTML
       <!-- Footnotes Style -->
       <style type="text/css">
-        #tm_footnotes_debug {margin: 2em 0 1em 0; text-align: center; color: #777;}
-        #tm_footnotes_debug a {text-decoration: none; color: #777;}
+        #tm_footnotes_debug {margin: 2em 0 1em 0; text-align: center; color: #444; line-height: 16px;}
+        #tm_footnotes_debug a {text-decoration: none; color: #444;}
         #tm_footnotes_debug pre {overflow: scroll; margin: 0;}
-        #tm_footnotes_debug table td {padding: 0 4px;}
+        #tm_footnotes_debug thead {text-align: center;}
+        #tm_footnotes_debug table td {padding: 0 5px;}
+        #tm_footnotes_debug tbody {text-align: left;}
         #tm_footnotes_debug legend, #tm_footnotes_debug fieldset {background-color: #FFF;}
-        fieldset.tm_footnotes_debug_info {text-align: left; border: 1px dashed #aaa; padding: 0.5em 1em 1em 1em; margin: 1em 2em 1em 2em; color: #777;}
+        #queries_debug_info thead, #queries_debug_info tbody {text-align: center; color:#FF0000;}
+        fieldset.tm_footnotes_debug_info {text-align: left; border: 1px dashed #aaa; padding: 0.5em 1em 1em 1em; margin: 1em 2em 1em 2em; color: #444;}
       </style>
       <!-- End Footnotes Style -->
       HTML

@@ -1,13 +1,20 @@
-== Textmate Footnotes v3.1
-  * Added MySQL Query Analyzer
-  * Code refactoring (using modules, except backtracer)
-  * Ability to cherry pick notes
-  * Working on Rails 2.1
-
-== Textmate Footnotes v3.0
+TODO:
+  * Use YAML files to load configuration files
+  * Create a profiler tab
+  
+== Footnotes v3.2
 Author: José Valim (jose.valim@gmail.com)
 Site: http://www.pagestacker.com/
-Description:
+  * Added numbers to tabs;
+  * Added Queries note;
+  * Added MySQL Query Analyzer.
+
+== Footnotes v3.1
+  * Code refactoring (using modules, except backtracer);
+  * Ability to cherry pick notes;
+  * Working on Rails 2.1.
+
+== Footnotes v3.0
   * Some code refactoring;
   * Stylesheets bug fixed: was showing not only css in Stylesheets div;
   * Logtail fix: working with Rails 2.0 logger and in all OS, since it's Regexp based;
@@ -17,8 +24,8 @@ Description:
 
 == Textmate Footnotes v2.0
 Copyright (c) 2006 InquiryLabs, Inc.
-Site: http://inquirylabs.com/
 Author: Duane Johnson (duane.johnson@gmail.com)
+Site: http://inquirylabs.com/
 Description:
   Creates clickable footnotes on each rendered page, as well as clickable
   links in the backtrace should an error occur in your Rails app. Links take
