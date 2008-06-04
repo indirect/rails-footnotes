@@ -87,7 +87,7 @@ module Footnotes
         html << "<b>#{item[0].to_s.upcase}</b>\n"
         html << "#{item[1] || 'SQL'} (#{sprintf('%f',item[2])}s)\n"
         html << "#{item[3].gsub(/(\s)+/,' ').gsub('`','')}\n"
-        html << mount_table(item[4])
+        html << mount_table(item[4]) if item[4]
       end
       ["<pre>#{html}</pre>", self.sql.length]
     end
