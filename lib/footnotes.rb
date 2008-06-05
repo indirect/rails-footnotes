@@ -98,6 +98,15 @@ module Footnotes
           function untoogle(){
             #{untoogle}
           }
+          function toogle(id){
+            s = document.getElementById(id).style;
+            before = s.display;
+            untoogle();
+            if(before != 'block'){
+              s.display = 'block';
+              location.href ='#'+id;
+            }
+          }
           /* Additional Javascript */
           #{@notes.map(&:javascript).compact.join("\n")}
         </script>
@@ -165,7 +174,7 @@ module Footnotes
         onclick = ''
       else
         href = '#'
-        onclick = "untoogle();document.getElementById('#{sym}_debug_info').style.display = 'block';location.href ='##{sym}_debug_info';return false;"
+        onclick = "toogle('#{sym}_debug_info');return false;"
       end
 
       "<a href=\"#{href}\" onclick=\"#{onclick}\">#{content}</a>"
