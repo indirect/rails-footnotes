@@ -59,9 +59,11 @@ Creating your own notes
 
 Create your notes to integrate with Footnotes is easy.
 
-# Create a Footnotes::Notes::YoursExampleNote class
-# Implement the necessary methods (check abstract_note.rb file in lib/notes)
-# Append yours example note in Footnotes::Filter.notes (usually at the end of your environment file or an initializer):
+1. Create a Footnotes::Notes::YoursExampleNote class
+
+2. Implement the necessary methods (check abstract_note.rb file in lib/notes)
+
+3. Append yours example note in Footnotes::Filter.notes (usually at the end of your environment file or an initializer):
 
   Footnotes::Filter.notes += [:yours_example]
 
@@ -115,13 +117,13 @@ Who?
 *Current Developer (v3.0 and above)*
 
 José Valim (jose.valim@gmail.com)
-"http://josevalim.blogspot.com/":http://josevalim.blogspot.com/
+http://josevalim.blogspot.com/
 
 
 *Original Author (v2.0)*
 
 Duane Johnson (duane.johnson@gmail.com)
-"http://blog.inquirylabs.com/":http://blog.inquirylabs.com/
+http://blog.inquirylabs.com/
 
 
 *License*
