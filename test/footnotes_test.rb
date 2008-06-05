@@ -1,7 +1,7 @@
 require 'test/unit'
 require File.dirname(__FILE__) + '/../../../../config/environment'
 
-require File.dirname(__FILE__) + '/../lib/textmate_footnotes'
+require File.dirname(__FILE__) + '/../lib/footnotes'
 require File.dirname(__FILE__) + '/mock_controller'
 
 $html = DATA.read

@@ -1,10 +1,12 @@
 TODO:
-  * Use YAML files to load configuration files
-  * Create a profiler tab
+  * Create ProfilerNote
+  * Create Rakefile
+  * Create Tests
   
 == Footnotes v3.2
 Author: José Valim (jose.valim@gmail.com)
 Site: http://www.pagestacker.com/
+  * Now you can easily add your own notes;
   * Added numbers to tabs;
   * Added Queries note;
   * Added MySQL Query Analyzer.
