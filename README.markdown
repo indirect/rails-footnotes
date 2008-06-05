@@ -18,8 +18,7 @@ If you just want a static copy of the plugin:
     git clone git://github.com/drnic/rails-footnotes.git vendor/plugins/footnotes
     rm -rf vendor/plugins/footnotes/.git
 
-If you are using Git for your own app, then you could use Git sub-modules or the
-tool [Braid](http://github.com/evilchelu/braid/tree/master).
+If you are using Git for your own app, then you could use Git sub-modules or the tool [Braid](http://github.com/evilchelu/braid/tree/master).
 
 Early versions
 ==============
@@ -43,7 +42,7 @@ Usage notes
 
   Footnotes::Filter.prefix = "editor://open?file://"
 
-Another option is to automatically register the protocol in your browser and/or OS. To do this in Firefox, please read: http://kb.mozillazine.org/Register_protocol
+  Another option is to automatically register the protocol in your browser and/or OS. More information [here](http://kb.mozillazine.org/Register_protocol).
 
 * If you want to use your own stylesheet, you can disable the Footnotes stylesheet with:
 
@@ -58,7 +57,7 @@ Another option is to automatically register the protocol in your browser and/or 
 Creating your own notes
 =======================
 
-Create your notes to integrate with Footnotes is easy:
+Create your notes to integrate with Footnotes is easy.
 
 # Create a Footnotes::Notes::YoursExampleNote class
 # Implement the necessary methods (check abstract_note.rb file in lib/notes)
@@ -66,61 +65,65 @@ Create your notes to integrate with Footnotes is easy:
 
   Footnotes::Filter.notes += [:yours_example]
 
-To create a note that shows info about the user logged in your application (@current_user) you just have to do this:
+To create a note that shows info about the user logged in your application (@current_user) you just have to do:
 
-  module Footnotes
-    module Notes
-      class CurrentUserNote < AbstractNote
-        # Always receives a controller
-        #
-        def initialize(controller)
-          @current_user = controller.instance_variable_get("@current_user")
-        end
+<pre><code>module Footnotes
+  module Notes
+    class CurrentUserNote < AbstractNote
+      # Always receives a controller
+      #
+      def initialize(controller)
+        @current_user = controller.instance_variable_get("@current_user")
+      end
 
-        # Specifies the symbol that represent this note
-        # This is the one you will have to add to Footnotes::Filter.notes
-        #
-        def self.to_sym
-          :current_user
-        end
+      # Specifies the symbol that represent this note
+      # This is the one you will have to add to Footnotes::Filter.notes
+      #
+      def self.to_sym
+        :current_user
+      end
 
-        # The name that will appear as link
-        # If title is nil, the other methods are not called
-        #
-        def title
-          'Current User' if @current_user
-        end
+      # The name that will appear as link
+      # If title is nil, the other methods are not called
+      #
+      def title
+        'Current User' if @current_user
+      end
 
-        # The name that will appear as legend in fieldsets
-        #
-        def legend
-          "Current user: #{@current_user.name}"
-        end
+      # The name that will appear as legend in fieldsets
+      #
+      def legend
+        "Current user: #{@current_user.name}"
+      end
 
-        # The fieldset content
-        #
-        def content
-          escape(@current_user.inspect)
-        end
+      # The fieldset content
+      #
+      def content
+        escape(@current_user.inspect)
       end
     end
   end
+end</code></pre>
   
+Then put in your environment:
+
   Footnotes::Filter.notes += [:current_user]
 
-Current Developer (v3.0 and above)
-==================================
+Who?
+====
+
+*Current Developer (v3.0 and above)*
 
 José Valim (jose.valim@gmail.com)
-http://josevalim.blogspot.com/
+"http://josevalim.blogspot.com/":http://josevalim.blogspot.com/
 
-Original Author (v2.0)
-======================
+
+*Original Author (v2.0)*
 
 Duane Johnson (duane.johnson@gmail.com)
-http://blog.inquirylabs.com/
+"http://blog.inquirylabs.com/":http://blog.inquirylabs.com/
 
-License
-=======
+
+*License*
 
 See MIT License.
