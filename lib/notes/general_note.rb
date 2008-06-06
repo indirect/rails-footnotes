@@ -12,7 +12,7 @@ module Footnotes
       end
 
       def legend
-        'General (id="tm_debug")'
+        'General (id="general_debug_info")'
       end
 
       def content
