@@ -4,7 +4,8 @@ module Footnotes
   module Notes
     class FilesNote < AbstractNote
       def initialize(controller)
-        @files = scan_text(controller.response.body)
+        body = controller.response.body
+        @files = body.is_a?(String) ? scan_text(body) : []
         parse_files!
       end
 
