@@ -1,12 +1,13 @@
 module Footnotes
   class Filter
     @@no_style = false
+    @@multiple_notes = false
     # Edit notes
     @@notes = [ :controller, :view, :layout, :stylesheets, :javascripts ]
     # Show notes
     @@notes += [:session, :cookies, :params, :filters, :routes, :queries, :log, :general]
 
-    cattr_accessor :no_style, :notes, :prefix
+    cattr_accessor :no_style, :notes, :prefix, :multiple_notes
 
     def self.filter(controller)
       filter = Footnotes::Filter.new(controller)
@@ -72,14 +73,14 @@ module Footnotes
       insert_text :before, /<\/head>/i, <<-HTML
       <!-- Footnotes Style -->
       <style type="text/css">
-        #tm_footnotes_debug {margin: 2em 0 1em 0; text-align: center; color: #444; line-height: 16px;}
-        #tm_footnotes_debug a {text-decoration: none; color: #444; line-height: 18px;}
-        #tm_footnotes_debug pre {overflow: scroll; margin: 0;}
-        #tm_footnotes_debug thead {text-align: center;}
-        #tm_footnotes_debug table td {padding: 0 5px;}
-        #tm_footnotes_debug tbody {text-align: left;}
-        #tm_footnotes_debug legend, #tm_footnotes_debug fieldset {background-color: #FFF;}
-        fieldset.tm_footnotes_debug_info {text-align: left; border: 1px dashed #aaa; padding: 0.5em 1em 1em 1em; margin: 1em 2em 1em 2em; color: #444;}
+        #footnotes_debug {margin: 2em 0 1em 0; text-align: center; color: #444; line-height: 16px;}
+        #footnotes_debug a {text-decoration: none; color: #444; line-height: 18px;}
+        #footnotes_debug pre {overflow: scroll; margin: 0;}
+        #footnotes_debug table {text-align: center;}
+        #footnotes_debug table td {padding: 0 5px;}
+        #footnotes_debug tbody {text-align: left;}
+        #footnotes_debug legend {background-color: #FFF;}
+        #footnotes_debug fieldset {text-align: left; border: 1px dashed #aaa; padding: 0.5em 1em 1em 1em; margin: 1em 2em; color: #444; background-color: #FFF;}
         /* Aditional Stylesheets */
         #{@notes.map(&:stylesheet).compact.join("\n")}
       </style>
@@ -91,21 +92,19 @@ module Footnotes
       footnotes_html = <<-HTML
       <!-- Footnotes -->
       <div style="clear:both"></div>
-      <div id="tm_footnotes_debug">
+      <div id="footnotes_debug">
         #{links}
         #{fieldsets}
         <script type="text/javascript">
-          function untoogle(){
-            #{untoogle}
+          function footnotes_close(){
+            #{close unless @@multiple_notes}
           }
-          function toogle(id){
+          function footnotes_toogle(id){
             s = document.getElementById(id).style;
             before = s.display;
-            untoogle();
-            if(before != 'block'){
-              s.display = 'block';
-              location.href ='#'+id;
-            }
+            footnotes_close();
+            s.display = (before != 'block') ? 'block' : 'none'
+            location.href = '#footnotes_debug';
           }
           /* Additional Javascript */
           #{@notes.map(&:javascript).compact.join("\n")}
@@ -113,9 +112,9 @@ module Footnotes
       </div>
       <!-- End Footnotes -->
       HTML
-      if @body =~ %r{<div[^>]+id=['"]tm_footnotes['"][^>]*>}
-        # Insert inside the "tm_footnotes" div if it exists
-        insert_text :after, %r{<div[^>]+id=['"]tm_footnotes['"][^>]*>}, footnotes_html
+      if @body =~ %r{<div[^>]+id=['"]footnotes_holder['"][^>]*>}
+        # Insert inside the "footnotes_holder" div if it exists
+        insert_text :after, %r{<div[^>]+id=['"]footnotes_holder['"][^>]*>}, footnotes_html
       else
         # Otherwise, try to insert as the last part of the html body
         insert_text :before, /<\/body>/i, footnotes_html
@@ -144,7 +143,7 @@ module Footnotes
       @notes.each do |note|
         next unless note.fieldset?
         content << <<-HTML
-          <fieldset id="#{note}_debug_info" class="tm_footnotes_debug_info" style="display: none">
+          <fieldset id="#{note}_debug_info" style="display: none">
             <legend>#{note.legend}</legend>
             <code>#{note.content}</code>
           </fieldset>
@@ -153,18 +152,18 @@ module Footnotes
       content
     end
 
-    def untoogle
+    def close
       javascript = ''
       @notes.each do |note|
-        next unless note.untoogle?
-        javascript << untoogle_helper(note)
+        next unless note.fieldset?
+        javascript << close_helper(note)
       end
       javascript
     end
 
     # Helpers
     #
-    def untoogle_helper(name)
+    def close_helper(name)
       "document.getElementById('#{name}_debug_info').style.display = 'none'\n"
     end
 
@@ -174,7 +173,7 @@ module Footnotes
         onclick = ''
       else
         href = '#'
-        onclick = "toogle('#{sym}_debug_info');return false;"
+        onclick = "footnotes_toogle('#{sym}_debug_info');return false;"
       end
 
       "<a href=\"#{href}\" onclick=\"#{onclick}\">#{content}</a>"

@@ -100,12 +100,6 @@ module Footnotes
         self.valid? && self.legend
       end
 
-      # Specifies when should create a untoogle script for it.
-      #
-      def untoogle?
-        self.valid? && !self.link
-      end
-
       # Return if this note is incuded in Footnotes::Filter.notes.
       #
       def included?

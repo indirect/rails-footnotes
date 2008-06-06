@@ -48,7 +48,9 @@ Usage notes
 
   Footnotes::Filter.no_style = true
 
-* Footnotes are appended at the end of the page, but if your page has a div with id "tm_footnotes", Footnotes will be inserted into this div.
+* Footnotes are appended at the end of the page, but if your page has a div with id "footnotes_holder", Footnotes will be inserted into this div.
+
+* If you want to open multiple notes at the same time, set Footnotes::Filter.multiple_notes = true
 
 * Finally, you can cherry pick which notes you want to use, simply doing:
 
