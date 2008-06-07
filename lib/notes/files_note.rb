@@ -4,8 +4,7 @@ module Footnotes
   module Notes
     class FilesNote < AbstractNote
       def initialize(controller)
-        body = controller.response.body
-        @files = body.is_a?(String) ? scan_text(body) : []
+        @files = scan_text(controller.response.body)
         parse_files!
       end
 
@@ -18,7 +17,7 @@ module Footnotes
       end
 
       def content
-        "<ul><li>#{@files.join("</li><li>")}</li></ul>"
+        @files.empty? ? "" : "<ul><li>#{@files.join("</li><li>")}</li></ul>"
       end
 
       def valid?

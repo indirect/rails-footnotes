@@ -6,6 +6,13 @@ require 'action_controller/test_process'
 
 class FootnotesController < ActionController::Base; attr_accessor :template, :performed_render; end
 
+module Footnotes::Notes
+  class TestNote < AbstractNote
+    def self.to_sym; :test; end
+    def valid?; true; end
+  end
+end
+
 class FootnotesTest < Test::Unit::TestCase
   def setup
     @controller = FootnotesController.new
@@ -13,7 +20,7 @@ class FootnotesTest < Test::Unit::TestCase
     @controller.response = ActionController::TestResponse.new
     @controller.response.body = $html.dup
 
-    Footnotes::Filter.notes = [:abstract]
+    Footnotes::Filter.notes = [:test]
     Footnotes::Filter.multiple_notes = false
     @footnotes = Footnotes::Filter.new(@controller)
   end
@@ -65,27 +72,27 @@ class FootnotesTest < Test::Unit::TestCase
 
   def test_notes_are_initialized
     footnotes_perform!
-    abstract_note = @footnotes.instance_variable_get('@notes').first
-    assert 'Footnotes::Notes::AbstractNote', abstract_note.class
-    assert :abstract, abstract_note.to_sym
+    test_note = @footnotes.instance_variable_get('@notes').first
+    assert 'Footnotes::Notes::TestNote', test_note.class
+    assert :test, test_note.to_sym
   end
 
   def test_notes_links
     footnotes_perform!
-    @footnotes.instance_variable_get('@notes').first.expects(:valid?).times(3)
+    @footnotes.instance_variable_get('@notes').first.expects(:row).times(2)
     footnotes_perform!
   end
 
   def test_notes_fieldset
     footnotes_perform!
-    @footnotes.instance_variable_get('@notes').first.expects(:fieldset?).times(2)
+    @footnotes.instance_variable_get('@notes').first.expects(:fieldset?).times(3)
     footnotes_perform!
   end
 
   def test_multiple_notes
     Footnotes::Filter.multiple_notes = true
     footnotes_perform!
-    @footnotes.instance_variable_get('@notes').first.expects(:valid?).times(2)
+    @footnotes.instance_variable_get('@notes').first.expects(:fieldset?).times(2)
     footnotes_perform!
   end
 
@@ -96,8 +103,15 @@ class FootnotesTest < Test::Unit::TestCase
   end
 
   def test_links_helper
-    assert_equal '<a href="#" onclick="footnotes_toogle(\'abstract_debug_info\');return false;">content</a>', @footnotes.send(:link_helper, :abstract, :content, nil)
-    assert_equal '<a href="link" onclick="">content</a>', @footnotes.send(:link_helper, :abstract, :content, :link)
+    note = Footnotes::Notes::TestNote.new
+    note.expects(:title).times(3).returns(:title)
+    assert_equal '<a href="#" onclick="">title</a>', @footnotes.send(:link_helper, note)
+
+    note.expects(:fieldset?).times(1).returns(true)
+    assert_equal '<a href="#" onclick="footnotes_toogle(\'test_debug_info\');return false;">title</a>', @footnotes.send(:link_helper, note)
+
+    note.expects(:link).times(1).returns(:link)
+    assert_equal '<a href="link" onclick="">title</a>', @footnotes.send(:link_helper, note)
   end
 
   def test_insert_style

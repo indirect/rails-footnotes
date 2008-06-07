@@ -25,7 +25,8 @@ module Footnotes
     def initialize_notes!
       @notes = []
       @@notes.flatten.each do |note|
-        @notes << eval("Footnotes::Notes::#{note.to_s.camelize}Note").new(@controller)
+        instance_note = eval("Footnotes::Notes::#{note.to_s.camelize}Note").new(@controller)
+        @notes << instance_note if instance_note.valid?
       end
     end
 
@@ -126,9 +127,8 @@ module Footnotes
       links = Hash.new([])
       order = []
       @notes.each do |note|
-        next unless note.valid?
         order << note.row
-        links[note.row] += [link_helper(note.to_sym, note.title, note.link)]
+        links[note.row] += [link_helper(note)]
       end
 
       html = ''
@@ -157,27 +157,25 @@ module Footnotes
       javascript = ''
       @notes.each do |note|
         next unless note.fieldset?
-        javascript << close_helper(note.to_sym)
+        javascript << close_helper(note)
       end
       javascript
     end
 
     # Helpers
     #
-    def close_helper(name)
-      "document.getElementById('#{name}_debug_info').style.display = 'none'\n"
+    def close_helper(note)
+      "document.getElementById('#{note.to_sym}_debug_info').style.display = 'none'\n"
     end
 
-    def link_helper(sym, content, link)
-      if link
-        href = link
-        onclick = ''
-      else
+    def link_helper(note)
+      onclick = ''
+      unless href = note.link
         href = '#'
-        onclick = "footnotes_toogle('#{sym}_debug_info');return false;"
+        onclick = "footnotes_toogle('#{note.to_sym}_debug_info');return false;" if note.fieldset?
       end
 
-      "<a href=\"#{href}\" onclick=\"#{onclick}\">#{content}</a>"
+      "<a href=\"#{href}\" onclick=\"#{onclick}\">#{note.title}</a>"
     end
 
     # Inserts text in to the body of the document

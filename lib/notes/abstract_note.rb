@@ -82,10 +82,10 @@ module Footnotes
         self.title
       end
 
-      # Specifies when should create a fieldset for it.
+      # Specifies when should create a fieldset for it, considering it's valid.
       #
       def fieldset?
-        self.valid? && self.legend
+        self.legend
       end
 
       # Return if this note is incuded in Footnotes::Filter.notes.
