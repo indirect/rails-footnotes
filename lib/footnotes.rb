@@ -19,19 +19,23 @@ module Footnotes
       @controller = controller
       @template = controller.instance_variable_get('@template')
       @body = controller.response.body
-      @notes = []
       initialize_notes!
     end
 
     def initialize_notes!
+      @notes = []
       @@notes.flatten.each do |note|
         @notes << eval("Footnotes::Notes::#{note.to_s.camelize}Note").new(@controller)
       end
     end
 
+    def reset!
+      @notes.map(&:reset!)
+    end
+
     def add_footnotes!
       if performed_render? && first_render?
-        if valid_format? && valid_content_type? && !xhr?
+        if valid_format? && valid_content_type? && @body.is_a?(String) && !xhr?
           insert_styles unless Footnotes::Filter.no_style
           insert_footnotes
         end
@@ -40,7 +44,8 @@ module Footnotes
       # Discard footnotes if there are any problems
       RAILS_DEFAULT_LOGGER.error "Footnotes Exception: #{e}\n#{e.backtrace.join("\n")}"
     end
-
+    
+    protected
     def performed_render?
       @controller.instance_variable_get('@performed_render')
     end
@@ -60,10 +65,6 @@ module Footnotes
 
     def xhr?
       @controller.request.xhr?
-    end
-    
-    def reset!
-      @notes.map(&:reset!)
     end
 
     #
@@ -156,7 +157,7 @@ module Footnotes
       javascript = ''
       @notes.each do |note|
         next unless note.fieldset?
-        javascript << close_helper(note)
+        javascript << close_helper(note.to_s)
       end
       javascript
     end
