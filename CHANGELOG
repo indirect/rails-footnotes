@@ -1,11 +1,10 @@
 TODO:
   * Create ProfilerNote
-  * Create Rakefile
-  * Create Tests
 
 == Footnotes v3.2.1
 Author: José Valim (jose.valim@gmail.com)
 Site: http://www.pagestacker.com/
+  * Added some tests
   * Redefined Footnotes CSS and Javascripts to use concise names.
   
 == Footnotes v3.2

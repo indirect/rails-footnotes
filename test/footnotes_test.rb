@@ -12,8 +12,6 @@ require 'action_controller/test_process'
 require File.dirname(__FILE__) + '/../lib/footnotes'
 require File.dirname(__FILE__) + '/../lib/notes/abstract_note'
 
-$html = DATA.read
-
 class FootnotesController < ActionController::Base; attr_accessor :template, :performed_render; end
 
 class FootnotesTest < Test::Unit::TestCase
@@ -152,7 +150,7 @@ class FootnotesTest < Test::Unit::TestCase
     end
 end
 
-__END__
+$html = <<HTML
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
     <head>
@@ -167,3 +165,4 @@ __END__
         <p>You will be glad to know that no changes need to be made to any of your CSS files.</p>
     </body>
 </html>
+HTML

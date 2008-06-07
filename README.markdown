@@ -1,5 +1,5 @@
-Footnotes plugin for Rails (v3.2)
----------------------------------
+Footnotes plugin for Rails (v3.2.1)
+-----------------------------------
 
 If you are developing in Rails you should know the plugin!
 
