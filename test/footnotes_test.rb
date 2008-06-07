@@ -1,16 +1,8 @@
-require 'test/unit'
-require 'rubygems'
-require 'mocha'
+require File.dirname(__FILE__) + '/test_helper'
 
-ENV["RAILS_ENV"] = "test"
-
-require 'active_support'
 require 'action_controller'
 require 'action_controller/test_case'
 require 'action_controller/test_process'
-
-require File.dirname(__FILE__) + '/../lib/footnotes'
-require File.dirname(__FILE__) + '/../lib/notes/abstract_note'
 
 class FootnotesController < ActionController::Base; attr_accessor :template, :performed_render; end
 
@@ -66,7 +58,9 @@ class FootnotesTest < Test::Unit::TestCase
   def test_not_included_when_body_is_not_a_string
     @controller.response.body = Proc.new{ Time.now }
     @footnotes = Footnotes::Filter.new(@controller)
-    footnotes_perform!
+    assert_nothing_raised do
+      footnotes_perform!
+    end
   end
 
   def test_notes_are_initialized

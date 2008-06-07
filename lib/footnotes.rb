@@ -144,7 +144,7 @@ module Footnotes
       @notes.each do |note|
         next unless note.fieldset?
         content << <<-HTML
-          <fieldset id="#{note}_debug_info" style="display: none">
+          <fieldset id="#{note.to_sym}_debug_info" style="display: none">
             <legend>#{note.legend}</legend>
             <code>#{note.content}</code>
           </fieldset>
@@ -157,7 +157,7 @@ module Footnotes
       javascript = ''
       @notes.each do |note|
         next unless note.fieldset?
-        javascript << close_helper(note.to_s)
+        javascript << close_helper(note.to_sym)
       end
       javascript
     end

@@ -11,12 +11,6 @@ module Footnotes
           :abstract
         end
 
-        # Return the Note symbol as string.
-        #
-        def to_s
-          self.to_sym.to_s
-        end
-
         # Return if Note is included in notes array.
         #
         def included?
@@ -34,12 +28,6 @@ module Footnotes
       #
       def to_sym
         self.class.to_sym
-      end
-
-      # Returns the string that represents this note.
-      #
-      def to_s
-        self.class.to_s
       end
 
       # Specifies in which row should appear the title.
@@ -103,7 +91,7 @@ module Footnotes
       # Return if this note is incuded in Footnotes::Filter.notes.
       #
       def included?
-        self.included?
+        self.class.included?
       end
 
       # Some helpers to generate notes.
