@@ -20,7 +20,11 @@ module Footnotes
       def content
         "<ul><li>#{@files.join("</li><li>")}</li></ul>"
       end
-      
+
+      def valid?
+        prefix?
+      end
+
       protected
         def scan_text(text)
           []

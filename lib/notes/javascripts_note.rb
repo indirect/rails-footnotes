@@ -8,13 +8,13 @@ module Footnotes
       end
 
       def title
-        "Javascripts (#{@files.length})" if prefix?
+        "Javascripts (#{@files.length})"
       end
 
       def legend
         'Javascripts'
       end
-      
+
       protected
         def scan_text(text)
           text.scan(/<script[^>]+src\s*=\s*['"]([^>?'"]+\.js)/im).flatten

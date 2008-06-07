@@ -16,7 +16,7 @@ module Footnotes
       end
 
       def title
-        'Controller' if prefix?
+        'Controller'
       end
 
       def link
@@ -26,7 +26,11 @@ module Footnotes
           (index_of_method ? "&line=#{controller_line_number + 1}&column=3" : '')
         )
       end
-      
+
+      def valid?
+        prefix?
+      end
+
       protected
         # Some controller classes come with the Controller:: module and some don't
         # (anyone know why? -- Duane)

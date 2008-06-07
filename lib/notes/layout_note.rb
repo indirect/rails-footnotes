@@ -8,7 +8,7 @@ module Footnotes
       end
 
       def title
-        'Layout' if prefix?
+        'Layout'
       end
 
       def link
@@ -16,9 +16,9 @@ module Footnotes
       end
 
       def valid?
-        !@controller.active_layout.nil?
+        @controller.active_layout && prefix?
       end
-      
+
       protected
         def layout_file_name
           File.expand_path(template_base_path(@controller.active_layout))

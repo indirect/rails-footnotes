@@ -88,16 +88,22 @@ To create a note that shows info about the user logged in your application (@cur
       end
 
       # The name that will appear as link
-      # If title is nil, the other methods are not called
       #
       def title
-        'Current User' if @current_user
+        'Current User'
       end
 
       # The name that will appear as legend in fieldsets
       #
       def legend
         "Current user: #{@current_user.name}"
+      end
+      
+      # This Note is only valid if we actually found an user
+      # If it's not valid, it won't be displayed
+      #
+      def valid?
+        @current_user
       end
 
       # The fieldset content

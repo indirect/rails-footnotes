@@ -17,11 +17,15 @@ module Footnotes
       end
 
       def title
-        'View' if prefix?
+        'View'
       end
 
       def link
         escape(Footnotes::Filter.prefix + template_file_name)
+      end
+
+      def valid?
+        template_path && prefix?
       end
 
       protected
