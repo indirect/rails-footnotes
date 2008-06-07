@@ -38,7 +38,11 @@ class AbstractNoteTest < Test::Unit::TestCase
   def test_respond_to_link
     assert_respond_to @note, :link
   end
-  
+
+  def test_respond_to_onclick
+    assert_respond_to @note, :onclick
+  end
+
   def test_respond_to_stylesheet
     assert_respond_to @note, :stylesheet
   end
@@ -71,6 +75,7 @@ class AbstractNoteTest < Test::Unit::TestCase
   
   def test_footnotes_mount_table
     assert_equal '', @note.send(:mount_table,[])
+    assert_equal '', @note.send(:mount_table,[['h1','h2','h3']])
 
     tab = <<-TABLE
           <table>

@@ -52,10 +52,16 @@ module Footnotes
       def content
       end
 
-      # If not nil, use this as link within the given title.
-      # Otherwise, it will create a fieldset for it.
+      # Set href field for Footnotes links.
+      # If it's nil, Footnotes will use '#'.
       # 
       def link
+      end
+
+      # Set onclick field for Footnotes links.
+      # If it's nil, Footnotes will make it open the fieldset.
+      # 
+      def onclick
       end
 
       # Insert here any additional stylesheet.
@@ -114,14 +120,16 @@ module Footnotes
         # The first array is used as label.
         #
         def mount_table(array)
+          header = array.shift
           return '' if array.empty?
-          header = array.shift.collect{|i| escape(i.to_s.humanize) }
-          lines = array.collect{|i| "<tr><td>#{i.join('</td><td>')}</td></tr>" }
+
+          header = header.collect{|i| escape(i.to_s.humanize) }
+          rows = array.collect{|i| "<tr><td>#{i.join('</td><td>')}</td></tr>" }
 
           <<-TABLE
           <table>
             <thead><tr><th>#{header.join('</th><th>')}</th></tr></thead>
-            <tbody>#{lines.join}</tbody>
+            <tbody>#{rows.join}</tbody>
           </table>
           TABLE
         end

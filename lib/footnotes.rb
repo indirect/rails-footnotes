@@ -169,10 +169,10 @@ module Footnotes
     end
 
     def link_helper(note)
-      onclick = ''
+      onclick = note.onclick
       unless href = note.link
         href = '#'
-        onclick = "footnotes_toogle('#{note.to_sym}_debug_info');return false;" if note.fieldset?
+        onclick ||= "footnotes_toogle('#{note.to_sym}_debug_info');return false;" if note.fieldset?
       end
 
       "<a href=\"#{href}\" onclick=\"#{onclick}\">#{note.title}</a>"
