@@ -4,7 +4,7 @@ module Footnotes
   module Notes
     class SessionNote < AbstractNote
       def initialize(controller)
-        @session = controller.session.instance_variable_get("@data").symbolize_keys
+        @session = (controller.session.instance_variable_get("@data") || {}).symbolize_keys
       end
 
       def self.to_sym
