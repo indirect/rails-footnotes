@@ -19,34 +19,44 @@ module Footnotes
       @controller = controller
       @template = controller.instance_variable_get('@template')
       @body = controller.response.body
-      initialize_notes!
+      @notes = []
     end
 
-    def initialize_notes!
-      @notes = []
-      @@notes.flatten.each do |note|
-        instance_note = eval("Footnotes::Notes::#{note.to_s.camelize}Note").new(@controller)
-        @notes << instance_note if instance_note.valid?
-      end
+    def add_footnotes!
+      add_footnotes_without_validation! if valid?
+    rescue Exception => e
+      # Discard footnotes if there are any problems
+      log_error("Footnotes Exception", e)
     end
 
     def reset!
       @notes.map(&:reset!)
     end
 
-    def add_footnotes!
-      if performed_render? && first_render?
-        if valid_format? && valid_content_type? && @body.is_a?(String) && !xhr?
-          insert_styles unless Footnotes::Filter.no_style
-          insert_footnotes
+    protected
+    def valid?
+      performed_render? && first_render? && valid_format? && valid_content_type? && @body.is_a?(String) && !xhr?
+    end
+
+    def add_footnotes_without_validation!
+      initialize_notes!
+      insert_styles unless @@no_style
+      insert_footnotes
+    end
+
+    def initialize_notes!
+      @@notes.flatten.each do |note|
+        begin
+          instance_note = eval("Footnotes::Notes::#{note.to_s.camelize}Note").new(@controller)
+          @notes << instance_note if instance_note.valid?
+        rescue Exception => e
+          # Discard note if it has a problem
+          log_error("Footnotes #{note.to_s.camelize}Note Exception", e)
+          next
         end
       end
-    rescue Exception => e
-      # Discard footnotes if there are any problems
-      RAILS_DEFAULT_LOGGER.error "Footnotes Exception: #{e}\n#{e.backtrace.join("\n")}"
     end
-    
-    protected
+
     def performed_render?
       @controller.instance_variable_get('@performed_render')
     end
@@ -195,6 +205,10 @@ module Footnotes
           pattern
         end
       @body.insert index, new_text
+    end
+
+    def log_error(title, exception)
+      RAILS_DEFAULT_LOGGER.error "#{title}: #{exception}\n#{exception.backtrace.join("\n")}"
     end
   end
 end
