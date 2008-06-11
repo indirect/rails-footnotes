@@ -119,7 +119,7 @@ module Footnotes
         # Gets a bidimensional array and create a table.
         # The first array is used as label.
         #
-        def mount_table(array)
+        def mount_table(array, options = {})
           header = array.shift
           return '' if array.empty?
 
@@ -127,11 +127,15 @@ module Footnotes
           rows = array.collect{|i| "<tr><td>#{i.join('</td><td>')}</td></tr>" }
 
           <<-TABLE
-          <table>
+          <table #{hash_to_xml_attributes(options)}>
             <thead><tr><th>#{header.join('</th><th>')}</th></tr></thead>
             <tbody>#{rows.join}</tbody>
           </table>
           TABLE
+        end
+
+        def hash_to_xml_attributes(hash)
+          return hash.collect{ |key, value| "#{key.to_s}=\"#{value.gsub('"','\"')}\"" }.join(' ')
         end
     end
   end
