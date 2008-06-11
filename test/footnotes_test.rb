@@ -98,8 +98,8 @@ class FootnotesTest < Test::Unit::TestCase
 
   def test_notes_are_reset
     footnotes_perform!
-    @footnotes.instance_variable_get('@notes').first.expects(:reset!)
-    @footnotes.send(:reset!)
+    @footnotes.instance_variable_get('@notes').first.class.expects(:close!)
+    @footnotes.send(:close!)
   end
 
   def test_links_helper

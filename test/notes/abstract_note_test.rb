@@ -6,6 +6,11 @@ class AbstractNoteTest < Test::Unit::TestCase
     Footnotes::Filter.notes = [:abstract]
   end
 
+  def test_respond_to_start_and_close
+    assert_respond_to Footnotes::Notes::AbstractNote, :start!
+    assert_respond_to Footnotes::Notes::AbstractNote, :close!
+  end
+  
   def test_respond_to_sym
     assert_equal :abstract, Footnotes::Notes::AbstractNote.to_sym
     assert_equal :abstract, @note.to_sym
@@ -75,19 +80,19 @@ class AbstractNoteTest < Test::Unit::TestCase
   
   def test_footnotes_mount_table
     assert_equal '', @note.send(:mount_table,[])
-    assert_equal '', @note.send(:mount_table,[['h1','h2','h3']])
+    assert_equal '', @note.send(:mount_table,[['h1','h2','h3']], :class => 'table')
 
     tab = <<-TABLE
-          <table>
+          <table class="table">
             <thead><tr><th>H1</th></tr></thead>
             <tbody><tr><td>r1c1</td></tr></tbody>
           </table>
           TABLE
 
-    assert_equal tab, @note.send(:mount_table,[['h1'],['r1c1']])
+    assert_equal tab, @note.send(:mount_table,[['h1'],['r1c1']], :class => 'table')
 
     tab = <<-TABLE
-          <table>
+          <table >
             <thead><tr><th>H1</th><th>H2</th><th>H3</th></tr></thead>
             <tbody><tr><td>r1c1</td><td>r1c2</td><td>r1c3</td></tr></tbody>
           </table>
@@ -96,7 +101,7 @@ class AbstractNoteTest < Test::Unit::TestCase
     assert_equal tab, @note.send(:mount_table,[['h1','h2','h3'],['r1c1','r1c2','r1c3']])
 
     tab = <<-TABLE
-          <table>
+          <table >
             <thead><tr><th>H1</th><th>H2</th><th>H3</th></tr></thead>
             <tbody><tr><td>r1c1</td><td>r1c2</td><td>r1c3</td></tr><tr><td>r2c1</td><td>r2c2</td><td>r2c3</td></tr></tbody>
           </table>

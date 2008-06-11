@@ -3,16 +3,31 @@ module Footnotes
     @@no_style = false
     @@multiple_notes = false
     # Edit notes
-    @@notes = [ :controller, :view, :layout, :stylesheets, :javascripts ]
+    @@notes = [ :components, :controller, :view, :layout, :stylesheets, :javascripts ]
     # Show notes
-    @@notes += [:session, :cookies, :params, :filters, :routes, :queries, :log, :general]
+    @@notes += [ :session, :cookies, :params, :filters, :routes, :queries, :log, :general ]
 
     cattr_accessor :no_style, :notes, :prefix, :multiple_notes
 
-    def self.filter(controller)
-      filter = Footnotes::Filter.new(controller)
-      filter.add_footnotes!
-      filter.reset!
+    class << self
+      def before(controller)
+        Footnotes::Filter.start!
+      end
+
+      def after(controller)
+        filter = Footnotes::Filter.new(controller)
+        filter.add_footnotes!
+        filter.close!
+      end
+
+      def start!
+        @@notes.flatten.each do |note|
+          klass = eval("Footnotes::Notes::#{note.to_s.camelize}Note") if note.is_a?(Symbol) || note.is_a?(String)
+          klass.start! if klass.respond_to?(:start!)
+        end
+      rescue Exception => e
+        log_error("Footnotes Exception", e)
+      end
     end
 
     def initialize(controller)
@@ -29,13 +44,13 @@ module Footnotes
       log_error("Footnotes Exception", e)
     end
 
-    def reset!
-      @notes.map(&:reset!)
+    def close!
+      @notes.map{|note| note.class.close!}
     end
 
     protected
     def valid?
-      performed_render? && first_render? && valid_format? && valid_content_type? && @body.is_a?(String) && !xhr?
+      performed_render? && first_render? && valid_format? && valid_content_type? && @body.is_a?(String) && !component_request? && !xhr?
     end
 
     def add_footnotes_without_validation!
@@ -47,8 +62,8 @@ module Footnotes
     def initialize_notes!
       @@notes.flatten.each do |note|
         begin
-          instance_note = eval("Footnotes::Notes::#{note.to_s.camelize}Note").new(@controller)
-          @notes << instance_note if instance_note.valid?
+          note = eval("Footnotes::Notes::#{note.to_s.camelize}Note").new(@controller) if note.is_a?(Symbol) || note.is_a?(String)
+          @notes << note if note.respond_to?(:valid?) && note.valid?
         rescue Exception => e
           # Discard note if it has a problem
           log_error("Footnotes #{note.to_s.camelize}Note Exception", e)
@@ -72,6 +87,10 @@ module Footnotes
     def valid_content_type?
       c = @controller.response.headers['Content-Type']
       (c.nil? || c =~ /html/)
+    end
+
+    def component_request?
+      @controller.instance_variable_get('@parent_controller')
     end
 
     def xhr?
@@ -144,7 +163,7 @@ module Footnotes
       html = ''
       order.uniq!
       order.each do |row|
-        html << "#{row.to_s.capitalize}: #{links[row].join(" | \n")}<br />"
+        html << "#{row.is_a?(String) ? row : row.to_s.camelize}: #{links[row].join(" | \n")}<br />"
       end
       html
     end

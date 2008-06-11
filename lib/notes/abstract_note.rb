@@ -16,8 +16,20 @@ module Footnotes
         def included?
           Footnotes::Filter.notes.include?(self.to_sym)
         end
+
+        # Action to be called to start the Note.
+        # This is applied as a before_filter.
+        #
+        def start!
+        end
+
+        # Action to be called after the Note was used.
+        # This is applied as an after_filter.
+        #
+        def close!
+        end
       end
-      
+
       # Initialize notes.
       # Always receives a controller.
       #
@@ -74,11 +86,6 @@ module Footnotes
       # This is directly inserted into a <script> tag.
       #
       def javascript
-      end
-
-      # Action to be called after the Note was used.
-      #
-      def reset!
       end
 
       # Specifies when should create a note for it.

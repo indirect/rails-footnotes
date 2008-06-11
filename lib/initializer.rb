@@ -9,5 +9,6 @@ end
 # application. Then you can cherrypick in which actions it will appear.
 #
 class ActionController::Base
+  prepend_before_filter Footnotes::Filter
   after_filter Footnotes::Filter
 end
