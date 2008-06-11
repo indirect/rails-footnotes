@@ -2,11 +2,12 @@ require "#{File.dirname(__FILE__)}/abstract_note"
 require "#{File.dirname(__FILE__)}/controller_note"
 require "#{File.dirname(__FILE__)}/view_note"
 require "#{File.dirname(__FILE__)}/params_note"
-require "#{File.dirname(__FILE__)}/queries_note"
 
 module Footnotes
   module Notes
     module ComponentsNote
+      def self.new(controller = nil); end
+
       def initialize(controller)
         super
         @controller = controller
