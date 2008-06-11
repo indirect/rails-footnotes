@@ -29,7 +29,7 @@ module Footnotes
         #
         def parse_filters
           return @controller.class.filter_chain.collect do |filter|
-            [filter.method.inspect, filter.type.inspect, controller_filtered_actions(filter).inspect]
+            [parse_method(filter.method), filter.type.inspect, controller_filtered_actions(filter).inspect]
           end
         end
 
@@ -47,6 +47,10 @@ module Footnotes
 
             filter.send!(:should_run_callback?, mock_controller)   
           }.map(&:to_sym)
+        end
+        
+        def parse_method(method)
+          escape(method.inspect.gsub(RAILS_ROOT, ''))
         end
     end
   end
