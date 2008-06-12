@@ -25,7 +25,7 @@ module Footnotes
       end
 
       def valid?
-        template_path && prefix?
+        template_path && prefix? && @template.respond_to?(:finder)
       end
 
       protected

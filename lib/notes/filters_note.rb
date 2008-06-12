@@ -49,7 +49,7 @@ module Footnotes
           }.map(&:to_sym)
         end
         
-        def parse_method(method)
+        def parse_method(method = '')
           escape(method.inspect.gsub(RAILS_ROOT, ''))
         end
     end
