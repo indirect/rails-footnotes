@@ -21,7 +21,7 @@ module Footnotes
       end
       
       def content
-        "<pre>#{mount_table(@parsed_routes.unshift([:path, :name, :options, :requirements]))}</pre>"
+        "#{mount_table(@parsed_routes.unshift([:path, :name, :options, :requirements]))}"
       end
       
       protected
