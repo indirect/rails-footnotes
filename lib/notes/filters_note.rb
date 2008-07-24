@@ -21,7 +21,7 @@ module Footnotes
       end
 
       def content
-        "<pre>#{mount_table(@parsed_filters.unshift([:name, :type, :actions]))}</pre>"
+        "#{mount_table(@parsed_filters.unshift([:name, :type, :actions]))}"
       end
 
       protected

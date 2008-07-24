@@ -175,7 +175,7 @@ module Footnotes
         content << <<-HTML
           <fieldset id="#{note.to_sym}_debug_info" style="display: none">
             <legend>#{note.legend}</legend>
-            <code>#{note.content}</code>
+            <div>#{note.content}</div>
           </fieldset>
         HTML
       end
