@@ -25,7 +25,12 @@ module Footnotes
 
       protected
         def log_tail
-          file_string = File.open(RAILS_DEFAULT_LOGGER.instance_variable_get('@log').path).read.to_s
+          filename = if RAILS_DEFAULT_LOGGER.instance_variable_get('@log')
+            RAILS_DEFAULT_LOGGER.instance_variable_get('@log').path
+          else 
+            RAILS_DEFAULT_LOGGER.instance_variable_get('@logdev').filename
+          end
+          file_string = File.open(filename).read.to_s
 
           # We try to select the specified action from the log
           # If we can't find it, we get the last 100 lines

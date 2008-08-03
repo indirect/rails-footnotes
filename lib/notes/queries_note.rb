@@ -64,7 +64,7 @@ module Footnotes
 
           if adapter_name == 'MySQL' && operation == :select
             log_silence do
-              explain = execute_without_analyzer("explain #{sql}", name)
+              explain = execute_without_analyzer("EXPLAIN #{sql}", name)
             end
             explain = Footnotes::Extensions::QueryAnalyzer.parse_explain(explain)
           end
