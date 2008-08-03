@@ -36,7 +36,7 @@ Remember that in Rails 1.x, after filters appear first than before filters in th
 Usage
 =====
 
-* Footnotes are applied in all actions under development. If You want to change this behaviour, check the initializer.rb file.
+* Footnotes are applied in all actions under development. If You want to change this behaviour, check the loader.rb file.
 
 * Some features only work by default if you are under MacOSX and using Textmate.
   If your editor supports out-of-the-box opening files like Textmate, e.g. txmt://open?url=file://path/to/file, you can put in your environment file the following line:
