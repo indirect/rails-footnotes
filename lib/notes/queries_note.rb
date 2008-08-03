@@ -23,18 +23,20 @@ module Footnotes
       end
 
       def stylesheet
-        '.queries_debug_table thead, .queries_debug_table tbody {text-align: center; color:#FF0000;}'
+        '.queries_debug_table thead, .queries_debug_table tbody {text-align: center; color:#DD0000;}'
       end
 
       def content
         html = ''
         @@sql.collect do |item|
-          html << "<b>#{item[0].to_s.upcase}</b>\n"
-          html << "#{item[1] || 'SQL'} (#{sprintf('%f',item[2])}s)\n"
-          html << "#{item[3].gsub(/(\s)+/,' ').gsub('`','')}\n"
-          html << (item[4] ? mount_table(item[4], :class => 'queries_debug_table') : "\n")
+          html << "<b>#{item[0].to_s.upcase}</b><br />"
+          html << "#{item[1] || 'SQL'} (#{sprintf('%f',item[2])}s)<br />"
+          html << "#{item[3].gsub(/(\s)+/,' ').gsub('`','')}<br />"
+          html << (item[4] ? mount_table(item[4], :class => 'queries_debug_table', :style => 'margin:10px') : "<br />")
+          html << "<br />"
         end
-        "<pre>#{html}</pre>"
+
+        html
       end
     end
   end

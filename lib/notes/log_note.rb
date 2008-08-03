@@ -18,9 +18,9 @@ module Footnotes
       def legend
         'Log'
       end
-      
+
       def content
-        "<pre>#{escape(log_tail)}</pre>"
+        escape(log_tail).gsub("\n","<br />")
       end
 
       protected

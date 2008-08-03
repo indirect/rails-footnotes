@@ -21,7 +21,7 @@ module Footnotes
       end
 
       def content
-        "#{mount_table(@parsed_filters.unshift([:name, :type, :actions]))}"
+        mount_table(@parsed_filters.unshift([:name, :type, :actions]))
       end
 
       protected
@@ -54,7 +54,7 @@ module Footnotes
         end
     end
   end
-  
+
   module Extensions
     class MockController < Struct.new(:action_name); end
   end
