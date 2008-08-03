@@ -23,54 +23,94 @@ module Footnotes
       end
 
       def stylesheet
-        '.queries_debug_table thead, .queries_debug_table tbody {text-align: center; color:#DD0000;}'
+<<-STYLESHEET
+  #queries_debug_info table td, #queries_debug_info table th{border:1px solid #A00; padding:0 3px; text-align:center;}
+  #queries_debug_info table thead, #queries_debug_info table tbody {color:#A00;}
+  #queries_debug_info p {background-color:#F3F3FF; border:1px solid #CCC; margin:12px; padding:4px 6px;}
+  #queries_debug_info a:hover {text-decoration:underline;
+STYLESHEET
+      end
+
+      def javascript
+<<-JAVASCRIPT
+  function queries_toogle(type, id){
+    s = document.getElementById('q'+type+'_'+id).style
+    s.display = (s.display != 'block') ? 'block' : 'none'
+    location.href = '#qtitle_'+id
+  }
+JAVASCRIPT
       end
 
       def content
         html = ''
-        @@sql.collect do |item|
-          html << "<b>#{item[0].to_s.upcase}</b><br />"
-          html << "#{item[1] || 'SQL'} (#{sprintf('%f',item[2])}s)<br />"
-          html << "#{item[3].gsub(/(\s)+/,' ').gsub('`','')}<br />"
-          html << (item[4] ? mount_table(item[4], :class => 'queries_debug_table', :style => 'margin:10px') : "<br />")
-          html << "<br />"
+
+        @@sql.each_with_index do |item, i|
+html << <<-HTML
+  <b id="qtitle_#{i}">#{escape(item.type.to_s.upcase)}</b> (<a href="#" style="color:#A00;" onclick="queries_toogle('table',#{i});return false">explain</a> | <a href="#" style="color:#00A;" onclick="queries_toogle('trace',#{i});return false">trace</a>)<br />
+  #{escape(item.name || 'SQL')} (#{sprintf('%f', item.time)}s)<br />
+  #{escape(item.query.gsub(/(\s)+/, ' ').gsub('`', ''))}<br />
+  #{mount_table(parse_explain(item.explain), :id => "qtable_#{i}", :style => 'margin:10px;display:none;') if item.explain}
+  <p id="qtrace_#{i}" style="display:none;">#{parse_trace(item.trace) if item.trace}</p><br />
+HTML
         end
 
-        html
+        return html
       end
+
+      protected
+        def parse_explain(results)
+          table = []
+          table << results.fetch_fields.map(&:name)
+          results.each{|row| table << row}
+          table
+        end
+
+        def parse_trace(trace)
+          trace.map do |t|
+            s = t.split(':')
+            "<a href=\"#{escape("#{Footnotes::Filter.prefix}#{RAILS_ROOT}/#{s[0]}&line=#{s[1].to_i}")}\">#{escape(t)}</a><br />"
+          end.join
+        end
     end
   end
 
   module Extensions
-    module QueryAnalyzer
-      def self.parse_explain(results)
-        table = []
-        table << results.fetch_fields.map(&:name)
-        results.each{|row| table << row}
-        table
-      end
+    class Sql
+      attr_accessor :type, :name, :time, :query, :explain, :trace
 
+      def initialize(type, name, time, query, explain)
+        @type = type
+        @name = name
+        @time = time
+        @query = query
+        @explain = explain
+
+        # Strip, select those ones from app and reject first two, because they are from the plugin
+        @trace = Kernel.caller.collect(&:strip).select{|i| i.gsub!(/^#{RAILS_ROOT}\//im, '') }[2..-1]
+      end
+    end
+
+    module QueryAnalyzer
       def self.included(base)
         base.class_eval do
           alias_method_chain :execute, :analyzer
         end
       end
 
-      def execute_with_analyzer(sql, name = nil)
+      def execute_with_analyzer(query, name = nil)
         query_results = nil
-        time = Benchmark.realtime { query_results = execute_without_analyzer(sql, name) }
+        time = Benchmark.realtime { query_results = execute_without_analyzer(query, name) }
 
-        if sql =~ /^(select)|(create)|(update)|(delete)\b/i
-          operation = $&.downcase.to_sym
+        if query =~ /^(select|create|update|delete)\b/i
+          type = $&.downcase.to_sym
           explain = nil
 
-          if adapter_name == 'MySQL' && operation == :select
+          if adapter_name == 'MySQL' && type == :select
             log_silence do
-              explain = execute_without_analyzer("EXPLAIN #{sql}", name)
+              explain = execute_without_analyzer("EXPLAIN #{query}", name)
             end
-            explain = Footnotes::Extensions::QueryAnalyzer.parse_explain(explain)
           end
-          Footnotes::Notes::QueriesNote.sql << [operation, name, time, sql, explain]
+          Footnotes::Notes::QueriesNote.sql << Footnotes::Extensions::Sql.new(type, name, time, query, explain)
         end
 
         query_results
@@ -90,6 +130,7 @@ module Footnotes
         result
       end
     end
+
   end
 end
 

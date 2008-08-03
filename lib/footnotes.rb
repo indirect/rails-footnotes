@@ -43,15 +43,20 @@ module Footnotes
       # Process notes, discarding only the note if any problem occurs
       #
       def each_with_rescue(notes)
+        delete_me = []
+
         notes.each do |note|
           begin
             yield note
           rescue Exception => e
             # Discard note if it has a problem
-            self.class.log_error("Footnotes #{note.to_s.camelize}Note Exception", e)
+            log_error("Footnotes #{note.to_s.camelize}Note Exception", e)
+            delete_me << note
             next
           end
         end
+
+        delete_me.each{ |note| notes.delete(note) }
       end
 
       # Logs the error using specified title and format
@@ -134,7 +139,7 @@ module Footnotes
         <style type="text/css">
           #footnotes_debug {margin: 2em 0 1em 0; text-align: center; color: #444; line-height: 16px;}
           #footnotes_debug a {text-decoration: none; color: #444; line-height: 18px;}
-          #footnotes_debug table {text-align: center; overflow: scroll; margin: 0;}
+          #footnotes_debug table {text-align: center;}
           #footnotes_debug table td {padding: 0 5px;}
           #footnotes_debug tbody {text-align: left;}
           #footnotes_debug legend {background-color: #FFF;}
@@ -147,12 +152,15 @@ module Footnotes
       end
 
       def insert_footnotes
+        # Fieldsets method should be called first
+        content = fieldsets
+
         footnotes_html = <<-HTML
         <!-- Footnotes -->
         <div style="clear:both"></div>
         <div id="footnotes_debug">
           #{links}
-          #{fieldsets}
+          #{content}
           <script type="text/javascript">
             function footnotes_close(){
               #{close unless @@multiple_notes}
