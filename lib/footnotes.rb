@@ -18,7 +18,7 @@ module Footnotes
       # It's a before filter prepend in the controller
       #
       def before(controller)
-        Footnotes::Filter.start!
+        Footnotes::Filter.start!(controller)
       end
 
       # Method that calls Footnotes to attach its contents
@@ -26,17 +26,17 @@ module Footnotes
       def after(controller)
         filter = Footnotes::Filter.new(controller)
         filter.add_footnotes!
-        filter.close!
+        filter.close!(controller)
       end
 
-      # Calls the class method start! in each notes
+      # Calls the class method start! in each note
       # Sometimes notes need to set variables or clean the environment to work properly
-      # This method allows this type of setup
+      # This method allows this kind of setup
       #
-      def start!
+      def start!(controller)
         each_with_rescue(@@notes.flatten) do |note|
           klass = eval("Footnotes::Notes::#{note.to_s.camelize}Note") if note.is_a?(Symbol) || note.is_a?(String)
-          klass.start! if klass.respond_to?(:start!)
+          klass.start!(controller) if klass.respond_to?(:start!)
         end
       end
 
@@ -81,9 +81,13 @@ module Footnotes
       log_error("Footnotes Exception", e)
     end
 
-    def close!
+    # Calls the class method close! in each note
+    # Sometimes notes need to finish their work even after being read
+    # This method allows this kind of work
+    #
+    def close!(controller)
       each_with_rescue(@notes) do |note|
-        note.class.close!
+        note.class.close!(controller)
       end
     end
 

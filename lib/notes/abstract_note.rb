@@ -20,13 +20,13 @@ module Footnotes
         # Action to be called to start the Note.
         # This is applied as a before_filter.
         #
-        def start!
+        def start!(controller = nil)
         end
 
         # Action to be called after the Note was used.
         # This is applied as an after_filter.
         #
-        def close!
+        def close!(controller = nil)
         end
       end
 

@@ -6,8 +6,8 @@ module Footnotes
       @@sql = []
       cattr_accessor :sql
 
-      def self.start!
-        @@sql = []
+      def self.start!(controller)
+        @@sql = [] unless controller.instance_variable_get('@parent_controller')
       end
 
       def self.to_sym

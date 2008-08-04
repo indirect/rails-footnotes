@@ -43,7 +43,6 @@ module Footnotes
       if component_request?
         initialize_component_notes!
         Footnotes::Filter.notes.unshift(*@notes)
-        close!
       else
         add_footnotes_without_component!
         Footnotes::Filter.notes.delete_if {|note| note.class.to_s =~ /(ComponentNote)$/}
@@ -51,18 +50,19 @@ module Footnotes
     end
 
     protected
-    def initialize_component_notes!
-      @@component_notes.flatten.each do |note|
-        begin
-          note = eval("Footnotes::Notes::#{note.to_s.camelize}ComponentNote").new(@controller) if note.is_a?(Symbol) || note.is_a?(String)
-          @notes << note if note.respond_to?(:valid?) && note.valid?
-        rescue Exception => e
-          # Discard note if it has a problem
-          log_error("Footnotes #{note.to_s.camelize}ComponentNote Exception", e)
-          next
+      def initialize_component_notes!
+        @@component_notes.flatten.each do |note|
+          begin
+            note = eval("Footnotes::Notes::#{note.to_s.camelize}ComponentNote").new(@controller) if note.is_a?(Symbol) || note.is_a?(String)
+            @notes << note if note.respond_to?(:valid?) && note.valid?
+          rescue Exception => e
+            # Discard note if it has a problem
+            log_error("Footnotes #{note.to_s.camelize}ComponentNote Exception", e)
+            next
+          end
         end
       end
-    end
+
   end
 end
 
