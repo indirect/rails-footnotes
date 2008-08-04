@@ -1,10 +1,16 @@
 TODO:
   * Create ProfilerNote
 
-== Footnotes v3.2.1
+== Footnotes v3.2.2
 Author: José Valim (jose.valim@gmail.com)
 Site: http://www.pagestacker.com/
-  * Added some tests
+  * Added trace to QueriesNote;
+  * Fixed incompatibility with Ultrasphinx (thanks to mhartl);
+  * Added W3C compatibility (thanks to tapajos);
+  * Added support to other log mechanisms in LogNote.
+
+== Footnotes v3.2.1
+  * Added some tests;
   * Redefined Footnotes CSS and Javascripts to use concise names.
   
 == Footnotes v3.2

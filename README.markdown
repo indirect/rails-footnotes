@@ -1,4 +1,4 @@
-Footnotes plugin for Rails (v3.2.1)
+Footnotes plugin for Rails (v3.2.2)
 -----------------------------------
 
 If you are developing in Rails you should know the plugin!
@@ -101,7 +101,7 @@ To create a note that shows info about the user logged in your application (@cur
       def legend
         "Current user: #{@current_user.name}"
       end
-      
+
       # This Note is only valid if we actually found an user
       # If it's not valid, it won't be displayed
       #
