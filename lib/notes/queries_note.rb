@@ -27,7 +27,7 @@ module Footnotes
   #queries_debug_info table td, #queries_debug_info table th{border:1px solid #A00; padding:0 3px; text-align:center;}
   #queries_debug_info table thead, #queries_debug_info table tbody {color:#A00;}
   #queries_debug_info p {background-color:#F3F3FF; border:1px solid #CCC; margin:12px; padding:4px 6px;}
-  #queries_debug_info a:hover {text-decoration:underline;
+  #queries_debug_info a:hover {text-decoration:underline;}
 STYLESHEET
       end
 
