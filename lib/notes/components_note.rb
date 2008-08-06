@@ -57,7 +57,7 @@ module Footnotes
             @notes << note if note.respond_to?(:valid?) && note.valid?
           rescue Exception => e
             # Discard note if it has a problem
-            log_error("Footnotes #{note.to_s.camelize}ComponentNote Exception", e)
+            self.class.log_error("Footnotes #{note.to_s.camelize}ComponentNote Exception", e)
             next
           end
         end

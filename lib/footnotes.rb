@@ -78,7 +78,7 @@ module Footnotes
       add_footnotes_without_validation! if valid?
     rescue Exception => e
       # Discard footnotes if there are any problems
-      log_error("Footnotes Exception", e)
+      self.class.log_error("Footnotes Exception", e)
     end
 
     # Calls the class method close! in each note
