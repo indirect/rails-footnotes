@@ -91,19 +91,6 @@ To create a note that shows info about the user logged in your application (@cur
         @current_user = controller.instance_variable_get("@current_user")
       end
 
-      # Specifies the symbol that represent this note
-      # This is the one you will have to add to Footnotes::Filter.notes
-      #
-      def self.to_sym
-        :current_user
-      end
-
-      # The name that will appear as link
-      #
-      def title
-        'Current User'
-      end
-
       # The name that will appear as legend in fieldsets
       #
       def legend

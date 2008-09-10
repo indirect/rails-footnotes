@@ -6,10 +6,18 @@ require "#{File.dirname(__FILE__)}/params_note"
 module Footnotes
   module Notes
     module ComponentsNote
-      def self.new(controller = nil); end
+      def self.included(base)
+        base.extend ClassMethods
+      end
 
-      def self.to_sym
-        @note_sym ||= "#{self.title.underscore}_#{(rand*1000).to_i}".to_sym
+      module ClassMethods
+        def to_sym
+          @note_sym ||= "#{self.title.underscore}_component_#{(rand*1000).to_i}".to_sym
+        end
+
+        def title
+          @note_title ||= self.name.match(/^Footnotes::Notes::(\w+)ComponentNote$/)[1]
+        end
       end
 
       def initialize(controller)
