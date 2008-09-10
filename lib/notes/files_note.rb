@@ -8,10 +8,6 @@ module Footnotes
         parse_files!
       end
 
-      def self.to_sym
-        :files
-      end
-
       def row
         :edit
       end

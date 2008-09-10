@@ -7,15 +7,7 @@ module Footnotes
         @controller = controller
       end
 
-      def self.to_sym
-        :log
-      end
-
       def title
-        'Log'
-      end
-
-      def legend
         'Log'
       end
 

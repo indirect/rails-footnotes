@@ -3,10 +3,6 @@ require "#{File.dirname(__FILE__)}/abstract_note"
 module Footnotes
   module Notes
     class GeneralNote < AbstractNote
-      def self.to_sym
-        :general
-      end
-
       def title
         'General Debug'
       end

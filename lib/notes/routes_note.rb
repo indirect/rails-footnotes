@@ -8,10 +8,6 @@ module Footnotes
         @parsed_routes = parse_routes
       end
 
-      def self.to_sym
-        :routes
-      end
-
       def title
         'Routes'
       end

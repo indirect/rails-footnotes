@@ -8,6 +8,13 @@ module Footnotes
     module ComponentsNote
       def self.new(controller = nil); end
 
+      def self.to_sym
+        return @note_sym if @note_sym
+
+        m = self.name.match(/^Footnotes::Notes::(\w+)Note$/)
+        @note_sym = "#{m[1].underscore}_#{(rand*1000).to_i}".to_sym
+      end
+
       def initialize(controller)
         super
         @controller = controller
@@ -16,11 +23,7 @@ module Footnotes
       def row
         "#{@controller.controller_name.camelize}##{@controller.action_name.camelize} Component"
       end
-
-      def to_sym
-        @spicy_sym ||= "#{@controller.controller_name}_#{@controller.action_name}_#{self.class.to_sym}_#{(rand*1000).to_i}_component"
-      end
-      
+     
       def legend
         "#{super} for #{row}"
       end

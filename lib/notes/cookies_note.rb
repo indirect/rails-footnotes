@@ -7,10 +7,6 @@ module Footnotes
         @cookies = (controller.__send__(:cookies) || {}).symbolize_keys
       end
 
-      def self.to_sym
-        :cookies
-      end
-
       def title
         "Cookies (#{@cookies.length})"
       end

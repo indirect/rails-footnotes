@@ -8,7 +8,10 @@ module Footnotes
         # Returns the symbol that represents this note.
         #
         def to_sym
-          :abstract
+          return @note_sym if @note_sym
+
+          m = self.name.match(/^Footnotes::Notes::(\w+)Note$/)
+          @note_sym = m[1].underscore.to_sym
         end
 
         # Return if Note is included in notes array.
@@ -49,20 +52,22 @@ module Footnotes
         :show
       end
 
-      # If not nil, append the value returned in the specified row.
+      # If valid?, append the value returned in the specified row.
       #
       def title
       end
 
-      # If not nil, create a fieldset with the value returned as legend.
+      # If fieldset?, create a fieldset with the value returned as legend.
       #
       def legend
+        self.title
       end
 
-      # When title is specified, this will be the content of the fieldset.
+      # If content is defined, fieldset? returns true and the value of content
+      # is displayed when the Note is clicked. See fieldset? below for more info.
       #
-      def content
-      end
+      # def content
+      # end
 
       # Set href field for Footnotes links.
       # If it's nil, Footnotes will use '#'.
@@ -98,7 +103,7 @@ module Footnotes
       # Specifies when should create a fieldset for it, considering it's valid.
       #
       def fieldset?
-        self.legend
+        self.respond_to?(:content)
       end
 
       # Return if this note is incuded in Footnotes::Filter.notes.

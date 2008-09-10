@@ -3,10 +3,6 @@ require "#{File.dirname(__FILE__)}/files_note"
 module Footnotes
   module Notes
     class JavascriptsNote < FilesNote
-      def self.to_sym
-        :javascripts
-      end
-
       def title
         "Javascripts (#{@files.length})"
       end

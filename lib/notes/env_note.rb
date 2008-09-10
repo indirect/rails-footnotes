@@ -7,15 +7,7 @@ module Footnotes
         @env = controller.request.env.dup
       end
 
-      def self.to_sym
-        :env
-      end
-
       def title
-        'Env'
-      end
-
-      def legend
         'Env'
       end
 

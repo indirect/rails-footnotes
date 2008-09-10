@@ -8,10 +8,6 @@ module Footnotes
         @template = controller.instance_variable_get('@template')
       end
 
-      def self.to_sym
-        :layout
-      end
-
       def row
         :edit
       end

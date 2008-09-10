@@ -5,11 +5,7 @@ module Footnotes
     class FiltersNote < AbstractNote
       def initialize(controller)
         @controller = controller
-        @parsed_filters = parse_filters()
-      end
-
-      def self.to_sym
-        :filters
+        @parsed_filters = parse_filters
       end
 
       def title
