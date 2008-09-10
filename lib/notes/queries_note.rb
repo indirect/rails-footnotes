@@ -18,10 +18,6 @@ module Footnotes
         "Queries (#{@@sql.length})"
       end
 
-      def legend
-        'Queries'
-      end
-
       def stylesheet
 <<-STYLESHEET
   #queries_debug_info table td, #queries_debug_info table th{border:1px solid #A00; padding:0 3px; text-align:center;}

@@ -8,10 +8,6 @@ module Footnotes
         @parsed_filters = parse_filters
       end
 
-      def title
-        'Filters'
-      end
-
       def legend
         "Filter chain for #{@controller.class.to_s}"
       end

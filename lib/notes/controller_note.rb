@@ -11,10 +11,6 @@ module Footnotes
         :edit
       end
 
-      def title
-        'Controller'
-      end
-
       def link
         escape(
           Footnotes::Filter.prefix +

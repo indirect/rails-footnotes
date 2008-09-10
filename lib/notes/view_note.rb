@@ -12,10 +12,6 @@ module Footnotes
         :edit
       end
 
-      def title
-        'View'
-      end
-
       def link
         escape(Footnotes::Filter.prefix + filename)
       end

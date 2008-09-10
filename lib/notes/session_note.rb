@@ -7,10 +7,6 @@ module Footnotes
         @session = (controller.session.instance_variable_get("@data") || {}).symbolize_keys
       end
 
-      def title
-        'Session'
-      end
-
       def content
         escape(@session.inspect)
       end

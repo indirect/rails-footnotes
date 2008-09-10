@@ -11,10 +11,6 @@ module Footnotes
         "Params (#{@params.length})"
       end
 
-      def legend
-        'Parameters'
-      end
-
       def content
         escape(@params.inspect)
       end

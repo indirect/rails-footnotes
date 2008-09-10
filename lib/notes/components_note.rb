@@ -9,10 +9,7 @@ module Footnotes
       def self.new(controller = nil); end
 
       def self.to_sym
-        return @note_sym if @note_sym
-
-        m = self.name.match(/^Footnotes::Notes::(\w+)Note$/)
-        @note_sym = "#{m[1].underscore}_#{(rand*1000).to_i}".to_sym
+        @note_sym ||= "#{self.title.underscore}_#{(rand*1000).to_i}".to_sym
       end
 
       def initialize(controller)

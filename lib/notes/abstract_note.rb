@@ -6,15 +6,24 @@ module Footnotes
 
       class << self
         # Returns the symbol that represents this note.
+        # It's the name of the class, underscored and without _note.
+        #
+        # For example, for ControllerNote it will return :controller.
         #
         def to_sym
-          return @note_sym if @note_sym
-
-          m = self.name.match(/^Footnotes::Notes::(\w+)Note$/)
-          @note_sym = m[1].underscore.to_sym
+          @note_sym ||= self.title.underscore.to_sym
         end
 
-        # Return if Note is included in notes array.
+        # Returns the title that represents this note.
+        # It's the name of the class without Note.
+        #
+        # For example, for ControllerNote it will return Controller.
+        #
+        def title
+          @note_title ||= self.name.match(/^Footnotes::Notes::(\w+)Note$/)[1]
+        end
+
+        # Return true if Note is included in notes array.
         #
         def included?
           Footnotes::Filter.notes.include?(self.to_sym)
@@ -46,21 +55,24 @@ module Footnotes
       end
 
       # Specifies in which row should appear the title.
-      # The default is show.
+      # The default is :show.
       #
       def row
         :show
       end
 
-      # If valid?, append the value returned in the specified row.
+      # If valid?, create a tab on Footnotes Footer with the title returned.
+      # By default, returns the title of the class (defined above).
       #
       def title
+        self.class.title
       end
 
       # If fieldset?, create a fieldset with the value returned as legend.
+      # By default, returns the title of the class (defined above).
       #
       def legend
-        self.title
+        self.class.title
       end
 
       # If content is defined, fieldset? returns true and the value of content
@@ -94,10 +106,10 @@ module Footnotes
       end
 
       # Specifies when should create a note for it.
-      # By default, if title exists, it's valid.
+      # By default, it's valid.
       #
       def valid?
-        self.title
+        true
       end
 
       # Specifies when should create a fieldset for it, considering it's valid.

@@ -7,10 +7,6 @@ module Footnotes
         "Stylesheets (#{@files.length})"
       end
 
-      def legend
-        'Stylesheets'
-      end
-
       protected
         def scan_text(text)
           text.scan(/<link[^>]+href\s*=\s*['"]([^>?'"]+\.css)/im).flatten

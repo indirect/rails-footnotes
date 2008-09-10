@@ -12,10 +12,6 @@ module Footnotes
         :edit
       end
 
-      def title
-        'Layout'
-      end
-
       def link
         escape(Footnotes::Filter.prefix + layout_filename)
       end

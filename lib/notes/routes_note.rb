@@ -8,10 +8,6 @@ module Footnotes
         @parsed_routes = parse_routes
       end
 
-      def title
-        'Routes'
-      end
-
       def legend
         "Routes for #{@controller.class.to_s}"
       end

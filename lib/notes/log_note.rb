@@ -7,10 +7,6 @@ module Footnotes
         @controller = controller
       end
 
-      def title
-        'Log'
-      end
-
       def content
         escape(log_tail).gsub("\n","<br />")
       end

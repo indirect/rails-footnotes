@@ -11,10 +11,6 @@ module Footnotes
         "Cookies (#{@cookies.length})"
       end
 
-      def legend
-        'Cookies'
-      end
-
       def content
         escape(@cookies.inspect)
       end
