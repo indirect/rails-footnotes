@@ -1,4 +1,4 @@
-Footnotes plugin for Rails (v3.2.2)
+Footnotes plugin for Rails (v3.3)
 -----------------------------------
 
 If you are developing in Rails you should know the plugin!
@@ -22,6 +22,14 @@ If you are using Git for your own app, then you could use Git sub-modules or the
 
 Early versions
 ==============
+
+The current version is only Rails Edge (aka Rails 2.2) compatible. If you are running on Rails 2.1.x, you should use Footnotes v3.2.2:
+
+    cd myapp
+    git clone git://github.com/drnic/rails-footnotes.git vendor/plugins/footnotes
+    cd vendor/plugins/footnotes
+    git checkout v3.2.2
+    rm -rf ./.git
 
 If you are running on Rails 2.0.x or Rails 1.x, you should use Footnotes v3.0:
 

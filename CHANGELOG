@@ -1,9 +1,15 @@
 TODO:
   * Create ProfilerNote
+  * Javascript injection for partials
 
-== Footnotes v3.2.2
+== Footnotes v3.3
 Author: José Valim (jose.valim@gmail.com)
 Site: http://www.pagestacker.com/
+      http://josevalim.blogspot.com/
+  * Rails Edge (aka 2.2) compatibility;
+  * Initial Ruby 1.9 compatibility.
+
+== Footnotes v3.2.2
   * Added trace to QueriesNote;
   * Fixed incompatibility with Ultrasphinx (thanks to mhartl);
   * Added W3C compatibility (thanks to tapajos);

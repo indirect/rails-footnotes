@@ -45,7 +45,7 @@ module Footnotes
             #remove conditions (this would call a Proc on the mock_controller)
             filter.options.merge!(:if => nil, :unless => nil) 
 
-            filter.send!(:should_run_callback?, mock_controller)   
+            filter.__send__(:should_run_callback?, mock_controller)   
           }.map(&:to_sym)
         end
         

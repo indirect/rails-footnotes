@@ -66,4 +66,4 @@ module Footnotes
   end
 end
 
-Footnotes::Filter.send :include, Footnotes::Components if Footnotes::Filter.notes.include?(:components)
+Footnotes::Filter.__send__ :include, Footnotes::Components if Footnotes::Filter.notes.include?(:components)

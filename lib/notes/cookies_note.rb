@@ -4,7 +4,7 @@ module Footnotes
   module Notes
     class CookiesNote < AbstractNote
       def initialize(controller)
-        @cookies = (controller.send(:cookies) || {}).symbolize_keys
+        @cookies = (controller.__send__(:cookies) || {}).symbolize_keys
       end
 
       def self.to_sym

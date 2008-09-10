@@ -50,6 +50,6 @@ module Footnotes
   end
 end
 
-Exception.send :include, Footnotes::Extensions::Exception
-ActionView::TemplateError.send :include, Footnotes::Extensions::ActionView
-ActionController::Base.send :include, Footnotes::Extensions::ActionController
+Exception.__send__ :include, Footnotes::Extensions::Exception
+ActionView::TemplateError.__send__ :include, Footnotes::Extensions::ActionView
+ActionController::Base.__send__ :include, Footnotes::Extensions::ActionController

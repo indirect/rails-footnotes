@@ -114,7 +114,7 @@ module Footnotes
       end
 
       def first_render?
-        @template.first_render
+        @template.__send__(:_first_render)
       end
 
       def valid_format?
@@ -122,7 +122,7 @@ module Footnotes
       end
 
       def valid_content_type?
-        c = @controller.response.headers['Content-Type']
+        c = @controller.response.headers['Content-Type'].to_s
         (c.nil? || c =~ /html/)
       end
 

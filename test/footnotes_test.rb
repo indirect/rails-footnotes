@@ -164,7 +164,7 @@ class FootnotesTest < Test::Unit::TestCase
     # Then we call add_footnotes!
     #
     def footnotes_perform!
-      @controller.template.expects(:first_render).returns(true)
+      @controller.template.expects(:_first_render).returns(true)
       @controller.performed_render = true
       @controller.template.expects(:template_format).returns('html')
 
