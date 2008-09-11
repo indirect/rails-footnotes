@@ -40,9 +40,11 @@ module Footnotes
   end
 
   module Components
+
     def self.included(base)
       base.class_eval do
         alias_method_chain :add_footnotes!, :component
+        Footnotes::Filter.notes.delete(:components)
         @@component_notes = [ :controller, :view, :params ]
       end
     end
