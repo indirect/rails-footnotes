@@ -8,7 +8,7 @@ module Footnotes
     @@notes += [ :session, :cookies, :params, :filters, :routes, :env, :queries, :log, :general ]
 
     # :no_style       => If you don't want the style to be appended to your pages
-    # :notes          => Class variable that holds the ntoes to be processed
+    # :notes          => Class variable that holds the notes to be processed
     # :prefix         => Prefix appended to FootnotesLinks
     # :multiple_notes => Set to true if you want to open several notes at the same time
     cattr_accessor :no_style, :notes, :prefix, :multiple_notes
@@ -137,6 +137,7 @@ module Footnotes
       #
       # Insertion methods
       #
+
       def insert_styles
         insert_text :before, /<\/head>/i, <<-HTML
         <!-- Footnotes Style -->
@@ -191,7 +192,7 @@ module Footnotes
         end
       end
 
-      # Process notes to gets its links
+      # Process notes to gets their links
       #
       def links
         links = Hash.new([])
@@ -209,7 +210,7 @@ module Footnotes
         html
       end
 
-      # Process notes to get its contents
+      # Process notes to get their content
       #
       def fieldsets
         content = ''
@@ -247,7 +248,7 @@ module Footnotes
         "document.getElementById('#{note.to_sym}_debug_info').style.display = 'none'\n"
       end
 
-      # Helper that create the link and javascript code when note is clicked
+      # Helper that creates the link and javascript code when note is clicked
       #
       def link_helper(note)
         onclick = note.onclick
