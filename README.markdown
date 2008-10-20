@@ -10,7 +10,7 @@ Even more, it contains links to open files directly in textmate. And if Rails ge
 Installation
 ============
 
-The newest versions of the plugin only works in Rails 2.1 and above. Scroll down to check how to install early versions.
+The current version is only Rails Edge (aka Rails 2.2) compatible. Scroll down to check how to install early versions.
 
 If you just want a static copy of the plugin:
 
@@ -23,7 +23,7 @@ If you are using Git for your own app, then you could use Git sub-modules or the
 Early versions
 ==============
 
-The current version is only Rails Edge (aka Rails 2.2) compatible. If you are running on Rails 2.1.x, you should use Footnotes v3.2.2:
+If you are running on Rails 2.1.x, you should use Footnotes v3.2.2:
 
     cd myapp
     git clone git://github.com/drnic/rails-footnotes.git vendor/plugins/footnotes
