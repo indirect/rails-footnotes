@@ -69,7 +69,7 @@ module Footnotes
 
     def initialize(controller)
       @controller = controller
-      @template = controller.instance_variable_get('@template')
+      @template = controller.instance_variable_get(:@template)
       @body = controller.response.body
       @notes = []
     end
@@ -110,11 +110,11 @@ module Footnotes
       end
 
       def performed_render?
-        @controller.instance_variable_get('@performed_render')
+        @controller.instance_variable_get(:@performed_render)
       end
 
       def first_render?
-        @template.__send__(:_first_render)
+        @template.instance_variable_get(:@_first_render)
       end
 
       def valid_format?
@@ -127,7 +127,7 @@ module Footnotes
       end
 
       def component_request?
-        @controller.instance_variable_get('@parent_controller')
+        @controller.instance_variable_get(:@parent_controller)
       end
 
       def xhr?
