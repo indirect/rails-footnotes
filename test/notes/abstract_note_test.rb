@@ -36,10 +36,6 @@ class AbstractNoteTest < Test::Unit::TestCase
     assert_respond_to @note, :legend
   end
 
-  def test_respond_to_content
-    assert_respond_to @note, :content
-  end
-
   def test_respond_to_link
     assert_respond_to @note, :link
   end
@@ -58,7 +54,7 @@ class AbstractNoteTest < Test::Unit::TestCase
 
   def test_respond_to_valid?
     assert_respond_to @note, :valid?
-    assert !@note.valid?
+    assert @note.valid?
   end
 
   def test_respond_to_fieldset?
