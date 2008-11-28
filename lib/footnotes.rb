@@ -123,7 +123,7 @@ module Footnotes
 
       def valid_content_type?
         c = @controller.response.headers['Content-Type'].to_s
-        (c.nil? || c =~ /html/)
+        (c.empty? || c =~ /html/)
       end
 
       def component_request?

@@ -20,7 +20,7 @@ class FootnotesTest < Test::Unit::TestCase
     @controller.response = ActionController::TestResponse.new
     @controller.response.body = $html.dup
 
-    Footnotes::Filter.notes = [:test]
+    Footnotes::Filter.notes = [ :test ]
     Footnotes::Filter.multiple_notes = false
     @footnotes = Footnotes::Filter.new(@controller)
   end
@@ -99,7 +99,7 @@ class FootnotesTest < Test::Unit::TestCase
   def test_notes_are_reset
     footnotes_perform!
     @footnotes.instance_variable_get('@notes').first.class.expects(:close!)
-    @footnotes.send(:close!)
+    @footnotes.send(:close!, @controller)
   end
 
   def test_links_helper
@@ -164,9 +164,9 @@ class FootnotesTest < Test::Unit::TestCase
     # Then we call add_footnotes!
     #
     def footnotes_perform!
-      @controller.template.expects(:_first_render).returns(true)
-      @controller.performed_render = true
+      @controller.template.expects(:instance_variable_get).returns(true)
       @controller.template.expects(:template_format).returns('html')
+      @controller.performed_render = true
 
       @footnotes.add_footnotes!
     end
