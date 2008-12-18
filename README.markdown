@@ -1,11 +1,11 @@
 Footnotes plugin for Rails (v3.3)
------------------------------------
+---------------------------------
 
 If you are developing in Rails you should know the plugin!
 
-It displays footnotes in your application for easy debugging, such as sessions, request parameters, cookies, log tail, filter chain and routes. 
+It displays footnotes in your application for easy debugging, such as sessions, request parameters, cookies, filter chain, routes, queries, etc. 
 
-Even more, it contains links to open files directly in textmate. And if Rails get an error, it appends Textmate links to backtrace file lines.
+Even more, it contains links to open files directly in your editor (default is textmate). And if Rails get an error, it also appends text editor links to backtrace file lines.
 
 Installation
 ============
@@ -15,10 +15,8 @@ The current version is only Rails Edge (aka Rails 2.2) compatible. Scroll down t
 If you just want a static copy of the plugin:
 
     cd myapp
-    git clone git://github.com/drnic/rails-footnotes.git vendor/plugins/footnotes
+    git clone git://github.com/josevalim/rails-footnotes.git vendor/plugins/footnotes
     rm -rf vendor/plugins/footnotes/.git
-
-If you are using Git for your own app, then you could use Git sub-modules or the tool [Braid](http://github.com/evilchelu/braid/tree/master).
 
 Early versions
 ==============
@@ -26,20 +24,18 @@ Early versions
 If you are running on Rails 2.1.x, you should use Footnotes v3.2.2:
 
     cd myapp
-    git clone git://github.com/drnic/rails-footnotes.git vendor/plugins/footnotes
+    git clone git://github.com/josevalim/rails-footnotes.git vendor/plugins/footnotes
     cd vendor/plugins/footnotes
     git checkout v3.2.2
     rm -rf ./.git
 
-If you are running on Rails 2.0.x or Rails 1.x, you should use Footnotes v3.0:
+If you are running on Rails 2.0.x, you should use Footnotes v3.0:
 
     cd myapp
-    git clone git://github.com/drnic/rails-footnotes.git vendor/plugins/footnotes
+    git clone git://github.com/josevalim/rails-footnotes.git vendor/plugins/footnotes
     cd vendor/plugins/footnotes
     git checkout v3.0
     rm -rf ./.git
-
-Remember that in Rails 1.x, after filters appear first than before filters in the Filters tab.
 
 Usage
 =====
@@ -65,27 +61,27 @@ Usage
 
 * Finally, you can cherry pick which notes you want to use, simply doing:
 
-  Footnotes::Filter.notes = [:session, :cookies, :params, :filters, :routes, :queries, :log, :general]
+  Footnotes::Filter.notes = [:session, :cookies, :params, :filters, :routes, :env, :queries, :log, :general]
 
 Creating your own notes
 =======================
 
 Create your notes to integrate with Footnotes is easy.
 
-1. Create a Footnotes::Notes::YoursExampleNote class
+1. Create a Footnotes::Notes::YourExampleNote class
 
 2. Implement the necessary methods (check abstract_note.rb file in lib/notes)
 
-3. Append yours example note in Footnotes::Filter.notes (usually at the end of your environment file or an initializer):
+3. Append your example note in Footnotes::Filter.notes array (usually at the end of your environment file or in an initializer):
 
-  Footnotes::Filter.notes += [:yours_example]
+  Footnotes::Filter.notes += [:your_example]
 
-To create a note that shows info about the user logged in your application (@current_user) you just have to do:
+For example, to create a note that shows info about the user logged in your application you just have to do:
 
 <pre><code>module Footnotes
   module Notes
     class CurrentUserNote < AbstractNote
-      # Always receives a controller
+      # This method always receives a controller
       #
       def initialize(controller)
         @current_user = controller.instance_variable_get("@current_user")
