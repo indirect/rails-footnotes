@@ -2,6 +2,10 @@ module Footnotes
   class Filter
     @@no_style = false
     @@multiple_notes = false
+
+    # Default link prefix is textmate
+    @@prefix = 'txmt://open?url=file://'
+
     # Edit notes
     @@notes = [ :components, :controller, :view, :layout, :stylesheets, :javascripts ]
     # Show notes
