@@ -1,0 +1,145 @@
+Copyright (c) 2008 José Valim (jose.valim at gmail dot com)
+Site: http://www.pagestacker.com/
+Blog: http://josevalim.blogspot.com/
+License: MIT
+Version: 3.3
+
+You can also read this README in pretty html at the GitHub project Wiki page
+
+  http://github.com/josevalim/rails-footnotes/wikis/home
+
+
+Description
+-----------
+
+If you are developing in Rails you should know the plugin! It displays
+footnotes in your application for easy debugging, such as sessions,
+request parameters, cookies, filter chain, routes, queries, etc.
+
+Even more, it contains links to open files directly in your editor including
+your backtrace lines.
+
+
+Installation
+------------
+
+Install Rails Footnotes is very easy. It is stored in GitHub, so if you
+have never installed a gem via GitHub run the following:
+
+  gem sources -a http://gems.github.com
+
+Then install the gem:
+
+  sudo gem install josevalim-rails-footnotes
+
+In RAILS_ROOT/config/environments/development.rb (yes, you want it only in development):
+
+  config.gem "josevalim-rails-footnotes",  :lib => "rails-footnotes", :source => "http://gems.github.com"
+
+If you want it as plugin, just do:
+
+    cd myapp
+    git clone git://github.com/josevalim/rails-footnotes.git
+    rm -rf vendor/plugins/rails-footnotes/.git
+
+
+Configuration
+-------------
+
+If you are not using Textmate as text editor, in your environment.rb or
+in an initializer do:
+
+  if defined?(Footnotes)
+    Footnotes::Filter.prefix = 'textmate://open?url=file://'
+  end
+
+Where you are going to choose a prefix compatible with your text editor. You can see
+how enable this behaviour in other editors in the link below:
+
+  http://josevalim.blogspot.com/2008/06/textmate-protocol-behavior-on-any.html
+
+By default, footnotes are appended at the end of the page with default stylesheet. If you want
+to change their position, you can define a div with id "footnotes_holder" or define your own stylesheet
+by turning footnotes stylesheet off:
+
+  Footnotes::Filter.no_style = true
+
+Another option is to allow multiple notes to be opened at the same time:
+
+  Footnotes::Filter.multiple_notes = true
+
+Finally, you can control which notes you want to show. The default are:
+
+  Footnotes::Filter.notes = [:session, :cookies, :params, :filters, :routes, :env, :queries, :log, :general]
+
+
+Early versions
+--------------
+
+If you are running on Rails 2.1.x, you should use Footnotes v3.2.2:
+
+    cd myapp
+    git clone git://github.com/josevalim/rails-footnotes.git
+    cd vendor/plugins/rails-footnotes
+    git checkout v3.2.2
+    rm -rf ./.git
+
+If you are using earlier than 2.1, please upgrade your app. =)
+
+
+Creating your own notes
+-----------------------
+
+Create your notes to integrate with Footnotes is easy.
+
+1. Create a Footnotes::Notes::YourExampleNote class
+
+2. Implement the necessary methods (check abstract_note.rb file in lib/notes)
+
+3. Append your example note in Footnotes::Filter.notes array (usually at the end of your environment file or in an initializer):
+
+For example, to create a note that shows info about the user logged in your application you just have to do:
+
+  module Footnotes
+    module Notes
+      class CurrentUserNote < AbstractNote
+        # This method always receives a controller
+        #
+        def initialize(controller)
+          @current_user = controller.instance_variable_get("@current_user")
+        end
+
+        # The name that will appear as legend in fieldsets
+        #
+        def legend
+          "Current user: #{@current_user.name}"
+        end
+
+        # This Note is only valid if we actually found an user
+        # If it's not valid, it won't be displayed
+        #
+        def valid?
+          @current_user
+        end
+
+        # The fieldset content
+        #
+        def content
+          escape(@current_user.inspect)
+        end
+      end
+    end
+  end
+
+Then put in your environment:
+
+  Footnotes::Filter.notes += [:current_user]
+
+
+Who?
+----
+
+Until version 2.0, this plugin was created and maintained by:
+
+Duane Johnson (duane.johnson@gmail.com)
+http://blog.inquirylabs.com/
