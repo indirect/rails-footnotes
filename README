@@ -56,7 +56,7 @@ in an initializer do:
 Where you are going to choose a prefix compatible with your text editor. The %s is
 replaced by the name of the file, the first %d is replaced by the line number and
 the second %d is replaced by the column. You can also enable this behaviour in other
-following the steps in the link below:
+editors following the steps in the link below:
 
   http://josevalim.blogspot.com/2008/06/textmate-protocol-behavior-on-any.html
 
@@ -138,8 +138,8 @@ Then put in your environment:
   Footnotes::Filter.notes += [:current_user]
 
 
-Who?
-----
+Version 2.0
+-----------
 
 Until version 2.0, this plugin was created and maintained by:
 
