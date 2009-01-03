@@ -124,7 +124,7 @@ module Footnotes
         # Some notes only work with prefix set.
         #
         def prefix?
-          Footnotes::Filter.prefix
+          !Footnotes::Filter.prefix.blank?
         end
 
         # Escape HTML special characters.

@@ -61,19 +61,19 @@ class AbstractNoteTest < Test::Unit::TestCase
     assert_respond_to @note, :has_fieldset?
     assert !@note.has_fieldset?
   end
-  
+
   def test_footnotes_prefix
-    assert !@note.send(:prefix?)
-    Footnotes::Filter.prefix = 'texteditor://open?url=file://'
     assert @note.send(:prefix?)
+    Footnotes::Filter.prefix = ''
+    assert !@note.send(:prefix?)
   end
-  
+
   def test_footnotes_escape
     assert_equal '&lt;', @note.send(:escape,'<')
     assert_equal '&amp;', @note.send(:escape,'&')
     assert_equal '&gt;', @note.send(:escape,'>')
   end
-  
+
   def test_footnotes_mount_table
     assert_equal '', @note.send(:mount_table,[])
     assert_equal '', @note.send(:mount_table,[['h1','h2','h3']], :class => 'table')
