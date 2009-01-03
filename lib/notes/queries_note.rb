@@ -7,7 +7,7 @@ module Footnotes
       cattr_accessor :sql
 
       def self.start!(controller)
-        @@sql = [] unless controller.instance_variable_get('@parent_controller')
+        @@sql = []
       end
 
       def self.to_sym
@@ -68,7 +68,7 @@ HTML
         def parse_trace(trace)
           trace.map do |t|
             s = t.split(':')
-            %[<a href="#{escape(Footnotes::Filter.prefix("RAILS_ROOT/#{s[0]}", s[1].to_i, 1))}">#{escape(t)}</a><br />]
+            %[<a href="#{escape(Footnotes::Filter.prefix("#{RAILS_ROOT}/#{s[0]}", s[1].to_i, 1))}">#{escape(t)}</a><br />]
           end.join
         end
 
@@ -147,10 +147,10 @@ HTML
 end
 
 if Footnotes::Notes::QueriesNote.included?
-  ActiveRecord::ConnectionAdapters::AbstractAdapter.__send__ :include, Footnotes::Extensions::AbstractAdapter
+  ActiveRecord::ConnectionAdapters::AbstractAdapter.send :include, Footnotes::Extensions::AbstractAdapter
   ActiveRecord::ConnectionAdapters.local_constants.each do |adapter|
     next unless adapter =~ /.*[^Abstract]Adapter$/
     next if adapter =~ /SQLite.Adapter$/
-    eval("ActiveRecord::ConnectionAdapters::#{adapter}").__send__ :include, Footnotes::Extensions::QueryAnalyzer
+    eval("ActiveRecord::ConnectionAdapters::#{adapter}").send :include, Footnotes::Extensions::QueryAnalyzer
   end
 end

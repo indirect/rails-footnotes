@@ -1,9 +1,12 @@
 module Footnotes
   module Notes
-    # This is the abstrac class for notes.
+    # This is the abstract class for notes.
+    # You can overwrite all instance public methods to create your notes.
     #
     class AbstractNote
 
+      # Class methods. Do NOT overwrite them.
+      #
       class << self
         # Returns the symbol that represents this note.
         # It's the name of the class, underscored and without _note.
@@ -61,6 +64,13 @@ module Footnotes
         :show
       end
 
+      # Returns the title to be used as link.
+      # The default is the note title.
+      #
+      def title
+        self.class.title
+      end
+
       # If has_fieldset? is true, create a fieldset with the value returned as legend.
       # By default, returns the title of the class (defined above).
       #
@@ -109,12 +119,6 @@ module Footnotes
       #
       def has_fieldset?
         self.respond_to?(:content)
-      end
-
-      # Return if this note is incuded in Footnotes::Filter.notes.
-      #
-      def included?
-        self.class.included?
       end
 
       # Some helpers to generate notes.

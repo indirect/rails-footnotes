@@ -13,7 +13,7 @@ module Footnotes
           if match = expanded.match(/^(.+):(\d+):in/) || match = expanded.match(/^(.+):(\d+)\s*$/)
             file = File.expand_path(match[1])
             line_number = match[2]
-            html = %[<a href="#{Footnotes::Filter.prefix(file, line_number, 0)}">#{line}</a>]
+            html = %[<a href="#{Footnotes::Filter.prefix(file, line_number, 1)}">#{line}</a>]
           else
             line
           end

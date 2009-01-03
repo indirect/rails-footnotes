@@ -18,10 +18,8 @@ class AbstractNoteTest < Test::Unit::TestCase
 
   def test_respond_to_included?
     assert Footnotes::Notes::AbstractNote.included?
-    assert @note.included?
     Footnotes::Filter.notes = []
     assert !Footnotes::Notes::AbstractNote.included?
-    assert !@note.included?
   end
 
   def test_respond_to_row

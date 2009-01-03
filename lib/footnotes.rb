@@ -8,7 +8,7 @@ module Footnotes
     @@prefix = 'txmt://open?url=file://%s&line=%d&column=%d'
 
     # Edit notes
-    @@notes = [ :components, :controller, :view, :layout, :stylesheets, :javascripts ]
+    @@notes = [ :controller, :view, :layout, :stylesheets, :javascripts ]
     # Show notes
     @@notes += [ :session, :cookies, :params, :filters, :routes, :env, :queries, :log, :general ]
 
@@ -278,7 +278,7 @@ module Footnotes
           onclick ||= "footnotes_toogle('#{note.to_sym}_debug_info');return false;" if note.has_fieldset?
         end
 
-        "<a href=\"#{href}\" onclick=\"#{onclick}\">#{note.class.title}</a>"
+        "<a href=\"#{href}\" onclick=\"#{onclick}\">#{note.title}</a>"
       end
 
       # Inserts text in to the body of the document
