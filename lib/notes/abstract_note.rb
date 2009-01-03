@@ -61,22 +61,15 @@ module Footnotes
         :show
       end
 
-      # If valid?, create a tab on Footnotes Footer with the title returned.
-      # By default, returns the title of the class (defined above).
-      #
-      def title
-        self.class.title
-      end
-
-      # If fieldset?, create a fieldset with the value returned as legend.
+      # If has_fieldset? is true, create a fieldset with the value returned as legend.
       # By default, returns the title of the class (defined above).
       #
       def legend
         self.class.title
       end
 
-      # If content is defined, fieldset? returns true and the value of content
-      # is displayed when the Note is clicked. See fieldset? below for more info.
+      # If content is defined, has_fieldset? returns true and the value of content
+      # is displayed when the Note is clicked. See has_fieldset? below for more info.
       #
       # def content
       # end
@@ -114,7 +107,7 @@ module Footnotes
 
       # Specifies when should create a fieldset for it, considering it's valid.
       #
-      def fieldset?
+      def has_fieldset?
         self.respond_to?(:content)
       end
 

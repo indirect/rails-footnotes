@@ -85,14 +85,14 @@ class FootnotesTest < Test::Unit::TestCase
 
   def test_notes_fieldset
     footnotes_perform!
-    @footnotes.instance_variable_get('@notes').first.expects(:fieldset?).times(3)
+    @footnotes.instance_variable_get('@notes').first.expects(:has_fieldset?).times(3)
     footnotes_perform!
   end
 
   def test_multiple_notes
     Footnotes::Filter.multiple_notes = true
     footnotes_perform!
-    @footnotes.instance_variable_get('@notes').first.expects(:fieldset?).times(2)
+    @footnotes.instance_variable_get('@notes').first.expects(:has_fieldset?).times(2)
     footnotes_perform!
   end
 
@@ -111,10 +111,10 @@ class FootnotesTest < Test::Unit::TestCase
     assert_equal '<a href="link" onclick="">title</a>', @footnotes.send(:link_helper, note)
   end
 
-  def test_links_helper_fieldset?
+  def test_links_helper_has_fieldset?
     note = Footnotes::Notes::TestNote.new
-    note.expects(:title).times(1).returns(:title)
-    note.expects(:fieldset?).times(1).returns(true)
+    note.class.expects(:title).times(1).returns(:title)
+    note.expects(:has_fieldset?).times(1).returns(true)
     assert_equal '<a href="#" onclick="footnotes_toogle(\'test_debug_info\');return false;">title</a>', @footnotes.send(:link_helper, note)
   end
 
@@ -124,7 +124,7 @@ class FootnotesTest < Test::Unit::TestCase
     note.expects(:onclick).times(2).returns(:onclick)
     assert_equal '<a href="#" onclick="onclick">title</a>', @footnotes.send(:link_helper, note)
 
-    note.expects(:fieldset?).times(1).returns(true)
+    note.expects(:has_fieldset?).times(1).returns(true)
     assert_equal '<a href="#" onclick="onclick">title</a>', @footnotes.send(:link_helper, note)
   end
 

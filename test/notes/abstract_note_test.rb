@@ -29,7 +29,7 @@ class AbstractNoteTest < Test::Unit::TestCase
   end
   
   def test_respond_to_title
-    assert_respond_to @note, :title
+    assert_respond_to @note.class, :title
   end
   
   def test_respond_to_legend
@@ -57,9 +57,9 @@ class AbstractNoteTest < Test::Unit::TestCase
     assert @note.valid?
   end
 
-  def test_respond_to_fieldset?
-    assert_respond_to @note, :fieldset?
-    assert !@note.fieldset?
+  def test_respond_to_has_fieldset?
+    assert_respond_to @note, :has_fieldset?
+    assert !@note.has_fieldset?
   end
   
   def test_footnotes_prefix

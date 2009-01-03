@@ -2,6 +2,7 @@ module Footnotes
   class Filter
     @@no_style = false
     @@multiple_notes = false
+    @@klasses = []
 
     # Default link prefix is textmate
     @@prefix = 'txmt://open?url=file://'
@@ -38,9 +39,12 @@ module Footnotes
       # This method allows this kind of setup
       #
       def start!(controller)
+        @@klasses = []
+
         each_with_rescue(@@notes.flatten) do |note|
-          klass = eval("Footnotes::Notes::#{note.to_s.camelize}Note") if note.is_a?(Symbol) || note.is_a?(String)
+          klass = "Footnotes::Notes::#{note.to_s.camelize}Note".constantize
           klass.start!(controller) if klass.respond_to?(:start!)
+          @@klasses << klass
         end
       end
 
@@ -61,6 +65,7 @@ module Footnotes
         end
 
         delete_me.each{ |note| notes.delete(note) }
+        return notes
       end
 
       # Logs the error using specified title and format
@@ -90,8 +95,8 @@ module Footnotes
     # This method allows this kind of work
     #
     def close!(controller)
-      each_with_rescue(@notes) do |note|
-        note.class.close!(controller)
+      each_with_rescue(@@klasses) do |klass|
+        klass.close!(controller)
       end
     end
 
@@ -107,8 +112,8 @@ module Footnotes
       end
 
       def initialize_notes!
-        each_with_rescue(@@notes.flatten) do |note|
-          note = eval("Footnotes::Notes::#{note.to_s.camelize}Note").new(@controller) if note.is_a?(Symbol) || note.is_a?(String)
+        each_with_rescue(@@klasses) do |klass|
+          note = klass.new(@controller)
           @notes << note if note.respond_to?(:valid?) && note.valid?
         end
       end
@@ -187,6 +192,7 @@ module Footnotes
         </div>
         <!-- End Footnotes -->
         HTML
+
         if @body =~ %r{<div[^>]+id=['"]footnotes_holder['"][^>]*>}
           # Insert inside the "footnotes_holder" div if it exists
           insert_text :after, %r{<div[^>]+id=['"]footnotes_holder['"][^>]*>}, footnotes_html
@@ -196,7 +202,7 @@ module Footnotes
         end
       end
 
-      # Process notes to gets their links
+      # Process notes to gets their links in their equivalent row
       #
       def links
         links = Hash.new([])
@@ -219,7 +225,7 @@ module Footnotes
       def fieldsets
         content = ''
         each_with_rescue(@notes) do |note|
-          next unless note.fieldset?
+          next unless note.has_fieldset?
           content << <<-HTML
             <fieldset id="#{note.to_sym}_debug_info" style="display: none">
               <legend>#{note.legend}</legend>
@@ -231,12 +237,12 @@ module Footnotes
       end
 
       # Process notes to get javascript code to close them all
-      # This method is used with multiple_notes is false
+      # This method is used when multiple_notes is false
       #
       def close
         javascript = ''
         each_with_rescue(@notes) do |note|
-          next unless note.fieldset?
+          next unless note.has_fieldset?
           javascript << close_helper(note)
         end
         javascript
@@ -258,10 +264,10 @@ module Footnotes
         onclick = note.onclick
         unless href = note.link
           href = '#'
-          onclick ||= "footnotes_toogle('#{note.to_sym}_debug_info');return false;" if note.fieldset?
+          onclick ||= "footnotes_toogle('#{note.to_sym}_debug_info');return false;" if note.has_fieldset?
         end
 
-        "<a href=\"#{href}\" onclick=\"#{onclick}\">#{note.title}</a>"
+        "<a href=\"#{href}\" onclick=\"#{onclick}\">#{note.class.title}</a>"
       end
 
       # Inserts text in to the body of the document

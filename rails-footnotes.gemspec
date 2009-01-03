@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name     = "rails-footnoes"
-  s.version  = "3.3"
-  s.date     = "2009-01-02"
+  s.version  = "3.3.1"
+  s.date     = "2009-01-03"
   s.summary  = "Every Rails page has footnotes that gives information about your application and links back to your editor."
   s.email    = "jose.valim@gmail.com"
   s.homepage = "http://github.com/josevalim/rails-footnotes"
@@ -33,6 +33,7 @@ Gem::Specification.new do |s|
     "lib/notes/session_note.rb",
     "lib/notes/stylesheets_note.rb",
     "lib/notes/view_note.rb",
+    "templates/rescues/template_error.erb",
     "test/footnotes_test.rb",
     "test/test_helper.rb",
     "test/notes/abstract_note_test.rb"
