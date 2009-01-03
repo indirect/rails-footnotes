@@ -12,11 +12,7 @@ module Footnotes
       end
 
       def link
-        escape(
-          Footnotes::Filter.prefix +
-          controller_filename +
-          (index_of_method ? "&line=#{controller_line_number + 1}&column=3" : '')
-        )
+        escape(Footnotes::Filter.prefix(controller_filename, controller_line_number + 1, 3))
       end
 
       def valid?
@@ -34,15 +30,17 @@ module Footnotes
           @controller_text ||= IO.read(controller_filename)
         end
 
-        def index_of_method
+        def action_index
           (controller_text =~ /def\s+#{@controller.action_name}[\s\(]/)
         end
 
         def controller_line_number
-          lines_from_index(controller_text, index_of_method)
+          lines_from_index(controller_text, action_index) || 0
         end
 
         def lines_from_index(string, index)
+          return nil if string.blank? || index.blank?
+
           lines = string.to_a
           running_length = 0
           lines.each_with_index do |line, i|

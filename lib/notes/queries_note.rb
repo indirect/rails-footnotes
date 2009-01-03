@@ -68,7 +68,7 @@ HTML
         def parse_trace(trace)
           trace.map do |t|
             s = t.split(':')
-            "<a href=\"#{escape("#{Footnotes::Filter.prefix}#{RAILS_ROOT}/#{s[0]}&line=#{s[1].to_i}")}\">#{escape(t)}</a><br />"
+            %[<a href="#{escape(Footnotes::Filter.prefix("RAILS_ROOT/#{s[0]}", s[1].to_i, 1))}">#{escape(t)}</a><br />]
           end.join
         end
 

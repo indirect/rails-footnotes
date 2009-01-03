@@ -50,11 +50,13 @@ If you are not using Textmate as text editor, in your environment.rb or
 in an initializer do:
 
   if defined?(Footnotes)
-    Footnotes::Filter.prefix = 'textmate://open?url=file://'
+    Footnotes::Filter.prefix = 'txmt://open?url=file://%s&line=%d&column=%d'
   end
 
-Where you are going to choose a prefix compatible with your text editor. You can see
-how enable this behaviour in other editors in the link below:
+Where you are going to choose a prefix compatible with your text editor. The %s is
+replaced by the name of the file, the first %d is replaced by the line number and
+the second %d is replaced by the column. You can also enable this behaviour in other
+following the steps in the link below:
 
   http://josevalim.blogspot.com/2008/06/textmate-protocol-behavior-on-any.html
 

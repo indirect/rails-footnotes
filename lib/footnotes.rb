@@ -5,7 +5,7 @@ module Footnotes
     @@klasses = []
 
     # Default link prefix is textmate
-    @@prefix = 'txmt://open?url=file://'
+    @@prefix = 'txmt://open?url=file://%s&line=%d&column=%d'
 
     # Edit notes
     @@notes = [ :components, :controller, :view, :layout, :stylesheets, :javascripts ]
@@ -72,6 +72,17 @@ module Footnotes
       #
       def log_error(title, exception)
         RAILS_DEFAULT_LOGGER.error "#{title}: #{exception}\n#{exception.backtrace.join("\n")}"
+      end
+
+      # If none argument is sent, simply return the prefix.
+      # Otherwise, replace the args in the prefix.
+      #
+      def prefix(*args)
+        if args.empty?
+          @@prefix
+        else
+          format(@@prefix, *args)
+        end
       end
 
     end
@@ -236,8 +247,8 @@ module Footnotes
         content
       end
 
-      # Process notes to get javascript code to close them all
-      # This method is used when multiple_notes is false
+      # Process notes to get javascript code to close them.
+      # This method is only used when multiple_notes is false.
       #
       def close
         javascript = ''

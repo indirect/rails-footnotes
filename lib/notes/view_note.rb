@@ -13,7 +13,7 @@ module Footnotes
       end
 
       def link
-        escape(Footnotes::Filter.prefix + filename)
+        escape(Footnotes::Filter.prefix(filename, 1, 1))
       end
 
       def valid?

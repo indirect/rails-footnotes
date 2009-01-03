@@ -9,11 +9,11 @@ module Footnotes
 
       def add_links_to_backtrace(lines)
         lines.collect do |line|
-          expanded = line.gsub '#{RAILS_ROOT}', RAILS_ROOT
-          if match = expanded.match(/^(.+):(\d+):in/) or match = expanded.match(/^(.+):(\d+)\s*$/)
+          expanded = line.gsub('#{RAILS_ROOT}', RAILS_ROOT)
+          if match = expanded.match(/^(.+):(\d+):in/) || match = expanded.match(/^(.+):(\d+)\s*$/)
             file = File.expand_path(match[1])
             line_number = match[2]
-            html = "<a href='#{Footnotes::Filter.prefix}#{file}&line=#{line_number}'>#{line}</a>"
+            html = %[<a href="#{Footnotes::Filter.prefix(file, line_number, 0)}">#{line}</a>]
           else
             line
           end
@@ -21,35 +21,14 @@ module Footnotes
       end
 
       def clean_backtrace_with_links
-        ::Footnotes::Filter.prefix ? add_links_to_backtrace(clean_backtrace_without_links) : clean_backtrace_without_links
-      end
-    end
-
-    module ActionView
-      def line_number_link
-        file = File.expand_path(@file_name)
-        "<a href='#{Footnotes::Filter.prefix}#{file}&line=#{line_number}'>#{line_number}</a>"
-      end
-    end
-
-    module ActionController
-      def self.included(base)
-        base.class_eval do
-          alias_method_chain :template_path_for_local_rescue, :links
-        end
-      end
-
-      def template_path_for_local_rescue_with_links(exception)
-        if ::ActionView::TemplateError === exception && ::Footnotes::Filter.prefix
-          File.dirname(__FILE__) + '/../templates/rescues/template_error.erb'
+        unless ::Footnotes::Filter.prefix.blank?
+          add_links_to_backtrace(clean_backtrace_without_links)
         else
-          template_path_for_local_rescue_without_links(exception)
+          clean_backtrace_without_links
         end
       end
     end
   end
 end
 
-Exception.__send__ :include, Footnotes::Extensions::Exception
-ActionView::TemplateError.__send__ :include, Footnotes::Extensions::ActionView
-ActionController::Base.__send__ :include, Footnotes::Extensions::ActionController
+Exception.send :include, Footnotes::Extensions::Exception

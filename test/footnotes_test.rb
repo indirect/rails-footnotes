@@ -69,6 +69,14 @@ class FootnotesTest < Test::Unit::TestCase
     end
   end
 
+  def test_footnotes_prefix
+    assert_equal 'txmt://open?url=file://%s&line=%d&column=%d', Footnotes::Filter.prefix
+    assert_equal 'txmt://open?url=file://file&line=0&column=0', Footnotes::Filter.prefix('file', 0, 0)
+    assert_equal 'txmt://open?url=file://file&line=10&column=10', Footnotes::Filter.prefix('file', 10, 10)
+    assert_equal 'txmt://open?url=file://file&line=10&column=10', Footnotes::Filter.prefix('file', 10, 10, 10)
+    assert_equal 'txmt://open?url=file://file&line=10&column=10', Footnotes::Filter.prefix('file', '10', '10')
+  end
+
   def test_notes_are_initialized
     footnotes_perform!
     test_note = @footnotes.instance_variable_get('@notes').first

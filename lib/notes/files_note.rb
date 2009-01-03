@@ -13,7 +13,11 @@ module Footnotes
       end
 
       def content
-        @files.empty? ? "" : "<ul><li>#{@files.join("</li><li>")}</li></ul>"
+        if @files.empty?
+          ""
+        else
+          "<ul><li>#{@files.join("</li><li>")}</li></ul>"
+        end
       end
 
       def valid?
@@ -29,9 +33,9 @@ module Footnotes
           @files.collect! do |filename|
             if filename =~ %r{^/}
               full_filename = File.join(File.expand_path(RAILS_ROOT), 'public', filename)
-              %{<a href="#{Footnotes::Filter.prefix}#{full_filename}">#{filename}</a>}
+              %[<a href="#{Footnotes::Filter.prefix(full_filename, 1, 1)}">#{filename}</a>]
             else
-              %{<a href="#{filename}">#{filename}</a>}
+              %[<a href="#{filename}">#{filename}</a>]
             end
           end
         end

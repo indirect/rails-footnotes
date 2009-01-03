@@ -13,7 +13,7 @@ module Footnotes
       end
 
       def link
-        escape(Footnotes::Filter.prefix + layout_filename)
+        escape(Footnotes::Filter.prefix(layout_filename, 1, 1))
       end
 
       def valid?
@@ -22,7 +22,7 @@ module Footnotes
 
       protected
         def layout_template
-          @layout_template ||= @template.__send__(:_pick_template, @controller.active_layout)
+          @layout_template ||= @template.send(:_pick_template, @controller.active_layout)
         end
 
         def layout_filename
