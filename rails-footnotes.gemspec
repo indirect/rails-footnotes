@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name     = "rails-footnotes"
-  s.version  = "3.3.1"
-  s.date     = "2009-01-03"
+  s.version  = "3.3.2"
+  s.date     = "2009-01-04"
   s.summary  = "Every Rails page has footnotes that gives information about your application and links back to your editor."
   s.email    = "jose.valim@gmail.com"
   s.homepage = "http://github.com/josevalim/rails-footnotes"
@@ -10,12 +10,11 @@ Gem::Specification.new do |s|
   s.authors  = [ "José Valim" ]
   s.files    = [
     "MIT-LICENSE",
-		"README",
-		"Rakefile",
-		"init.rb",
-    "lib/backtracer.rb",
-		"lib/footnotes.rb",
-    "lib/loader.rb",
+    "README",
+    "Rakefile",
+    "lib/rails-footnotes.rb",
+    "lib/backtracer/backtracer.rb",
+    "lib/footnotes/footnotes.rb",
     "lib/notes/abstract_note.rb",
     "lib/notes/components_note.rb",
     "lib/notes/controller_note.rb",
