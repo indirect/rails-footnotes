@@ -1,11 +1,11 @@
 if RAILS_ENV == 'development'
   dir = File.dirname(__FILE__)
-  require File.join(dir, 'footnotes', 'footnotes')
-  require File.join(dir, 'backtracer', 'backtracer')
+  require File.join(dir, 'rails-footnotes', 'footnotes')
+  require File.join(dir, 'rails-footnotes', 'backtracer')
 
   # Load all notes
   #
-  Dir[File.join(dir, 'notes', '*.rb')].each do |note|
+  Dir[File.join(dir, 'rails-footnotes', 'notes', '*.rb')].each do |note|
     require note
   end
 
