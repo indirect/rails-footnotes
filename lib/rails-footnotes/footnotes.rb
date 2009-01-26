@@ -192,9 +192,13 @@ module Footnotes
               function hideAll(){
                 #{close unless @@multiple_notes}
               }
-                
-              function toggle(id){
+              
+              function hideAllAndToggle(id) {
                 hideAll();
+                toggle(id)
+              }  
+              
+              function toggle(id){
                 var el = document.getElementById(id);
                 if (el.style.display == 'none') {
                   Footnotes.show(el);
@@ -216,7 +220,8 @@ module Footnotes
               return {
                 show: show,
                 hide: hide,
-                toggle: toggle
+                toggle: toggle,
+                hideAllAndToggle: hideAllAndToggle
               }
             }();
             /* Additional Javascript */
@@ -297,7 +302,7 @@ module Footnotes
         onclick = note.onclick
         unless href = note.link
           href = '#'
-          onclick ||= "Footnotes.toggle('#{note.to_sym}_debug_info');return false;" if note.has_fieldset?
+          onclick ||= "Footnotes.hideAllAndToggle('#{note.to_sym}_debug_info');return false;" if note.has_fieldset?
         end
 
         "<a href=\"#{href}\" onclick=\"#{onclick}\">#{note.title}</a>"
