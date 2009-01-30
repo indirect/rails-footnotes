@@ -1,6 +1,4 @@
-Copyright (c) 2008 José Valim (jose.valim at gmail dot com)
-Site: http://www.pagestacker.com/
-Blog: http://josevalim.blogspot.com/
+Rails Footnotes
 License: MIT
 Version: 3.3.2
 
@@ -136,6 +134,17 @@ For example, to create a note that shows info about the user logged in your appl
 Then put in your environment:
 
   Footnotes::Filter.notes += [:current_user]
+
+
+Bugs and Feedback
+-----------------
+
+If you discover any bugs, please send an e-mail to jose.valim@gmail.com
+If you just want to give some positive feedback or drop a line, that's fine too! =)
+
+Copyright (c) 2009 José Valim
+http://www.pagestacker.com/
+http://josevalim.blogspot.com/
 
 
 Version 2.0
