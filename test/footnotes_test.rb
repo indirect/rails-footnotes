@@ -124,7 +124,7 @@ class FootnotesTest < Test::Unit::TestCase
   def test_links_helper_has_fieldset?
     note = Footnotes::Notes::TestNote.new
     note.expects(:has_fieldset?).times(1).returns(true)
-    assert_equal '<a href="#" onclick="footnotes_toogle(\'test_debug_info\');return false;">Test</a>', @footnotes.send(:link_helper, note)
+    assert_equal '<a href="#" onclick="Footnotes.hideAllAndToggle(\'test_debug_info\');return false;">Test</a>', @footnotes.send(:link_helper, note)
   end
 
   def test_links_helper_onclick

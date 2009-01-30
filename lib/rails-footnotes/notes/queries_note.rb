@@ -27,23 +27,13 @@ module Footnotes
 STYLESHEET
       end
 
-      def javascript
-<<-JAVASCRIPT
-  function queries_toogle(type, id){
-    s = document.getElementById('q'+type+'_'+id).style
-    s.display = (s.display != 'block') ? 'block' : 'none'
-    location.href = '#qtitle_'+id
-  }
-JAVASCRIPT
-      end
-
       def content
         html = ''
 
         @@sql.each_with_index do |item, i|
           sql_links = []
-          sql_links << "<a href=\"#\" style=\"color:#A00;\" onclick=\"queries_toogle('table',#{i});return false\">explain</a>" if item.explain
-          sql_links << "<a href=\"#\" style=\"color:#00A;\" onclick=\"queries_toogle('trace',#{i});return false\">trace</a>" if item.trace
+          sql_links << "<a href=\"#\" style=\"color:#A00;\" onclick=\"Footnates.toggle('qtable_#{i}');return false\">explain</a>" if item.explain
+          sql_links << "<a href=\"#\" style=\"color:#00A;\" onclick=\"Footnotes.toggle('qtrace_#{i}');return false\">trace</a>" if item.trace
 
 html << <<-HTML
   <b id="qtitle_#{i}">#{escape(item.type.to_s.upcase)}</b> (#{sql_links.join(' | ')})<br />
