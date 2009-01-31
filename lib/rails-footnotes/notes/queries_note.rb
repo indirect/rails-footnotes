@@ -32,7 +32,7 @@ STYLESHEET
 
         @@sql.each_with_index do |item, i|
           sql_links = []
-          sql_links << "<a href=\"#\" style=\"color:#A00;\" onclick=\"Footnates.toggle('qtable_#{i}');return false\">explain</a>" if item.explain
+          sql_links << "<a href=\"#\" style=\"color:#A00;\" onclick=\"Footnotes.toggle('qtable_#{i}');return false\">explain</a>" if item.explain
           sql_links << "<a href=\"#\" style=\"color:#00A;\" onclick=\"Footnotes.toggle('qtrace_#{i}');return false\">trace</a>" if item.trace
 
 html << <<-HTML
