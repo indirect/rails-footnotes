@@ -36,7 +36,7 @@ In RAILS_ROOT/config/environments/development.rb (yes, you want it only in devel
 
 If you want it as plugin, just do:
 
-    cd myapp
+    cd myapp/vendor/plugins
     git clone git://github.com/josevalim/rails-footnotes.git
     rm -rf vendor/plugins/rails-footnotes/.git
 
