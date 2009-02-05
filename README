@@ -1,6 +1,6 @@
 Rails Footnotes
 License: MIT
-Version: 3.3.2
+Version: 3.4
 
 You can also read this README in pretty html at the GitHub project Wiki page
 
@@ -21,14 +21,11 @@ your backtrace lines.
 Installation
 ------------
 
-Install Rails Footnotes is very easy. It is stored in GitHub, so if you
-have never installed a gem via GitHub run the following:
+Install Rails Footnotes is very easy. If you are running on Rails 2.3 just run
+the following:
 
-  gem sources -a http://gems.github.com
-
-Then install the gem:
-
-  sudo gem install josevalim-rails-footnotes
+   gem sources -a http://gems.github.com
+   sudo gem install josevalim-rails-footnotes
 
 In RAILS_ROOT/config/environments/development.rb (yes, you want it only in development):
 
@@ -36,10 +33,18 @@ In RAILS_ROOT/config/environments/development.rb (yes, you want it only in devel
 
 If you want it as plugin, just do:
 
-    cd myapp/vendor/plugins
-    git clone git://github.com/josevalim/rails-footnotes.git
-    rm -rf vendor/plugins/rails-footnotes/.git
+   script/plugin install git://github.com/josevalim/rails-footnotes.git
 
+If you are running on Rails 2.2 or Rails 2.1 you should do:
+
+    cd myapp
+    git clone git://github.com/josevalim/rails-footnotes.git
+    cd vendor/plugins/rails-footnotes
+    git checkout VERSION_NUMBER
+    rm -rf ./.git
+
+Where you should replace VERSION_NUMBER for "v3.3.2" for Rails 2.2 and "v3.2.2"
+for Rails 2.1 (without the quotes).
 
 Configuration
 -------------
@@ -71,20 +76,6 @@ Another option is to allow multiple notes to be opened at the same time:
 Finally, you can control which notes you want to show. The default are:
 
   Footnotes::Filter.notes = [:session, :cookies, :params, :filters, :routes, :env, :queries, :log, :general]
-
-
-Early versions
---------------
-
-If you are running on Rails 2.1.x, you should use Footnotes v3.2.2:
-
-    cd myapp
-    git clone git://github.com/josevalim/rails-footnotes.git
-    cd vendor/plugins/rails-footnotes
-    git checkout v3.2.2
-    rm -rf ./.git
-
-If you are using earlier than 2.1, please upgrade your app. =)
 
 
 Creating your own notes

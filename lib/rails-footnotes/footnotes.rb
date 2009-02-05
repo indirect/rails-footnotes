@@ -113,7 +113,7 @@ module Footnotes
 
     protected
       def valid?
-        performed_render? && first_render? && valid_format? && valid_content_type? && @body.is_a?(String) && !component_request? && !xhr?
+        performed_render? && valid_format? && valid_content_type? && @body.is_a?(String) && !component_request? && !xhr?
       end
 
       def add_footnotes_without_validation!
@@ -131,10 +131,6 @@ module Footnotes
 
       def performed_render?
         @controller.instance_variable_get(:@performed_render)
-      end
-
-      def first_render?
-        @template.instance_variable_get(:@_first_render)
       end
 
       def valid_format?

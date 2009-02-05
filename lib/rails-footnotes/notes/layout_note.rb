@@ -1,11 +1,10 @@
-require "#{File.dirname(__FILE__)}/view_note"
+require "#{File.dirname(__FILE__)}/abstract_note"
 
 module Footnotes
   module Notes
     class LayoutNote < AbstractNote
       def initialize(controller)
         @controller = controller
-        @template = controller.instance_variable_get('@template')
       end
 
       def row
@@ -13,20 +12,16 @@ module Footnotes
       end
 
       def link
-        escape(Footnotes::Filter.prefix(layout_filename, 1, 1))
+        escape(Footnotes::Filter.prefix(filename, 1, 1))
       end
 
       def valid?
-        prefix? && @controller.active_layout && layout_template
+        prefix? && @controller.active_layout
       end
 
       protected
-        def layout_template
-          @layout_template ||= @template.send(:_pick_template, @controller.active_layout)
-        end
-
-        def layout_filename
-          layout_template.filename
+        def filename
+          @controller.active_layout.filename
         end
     end
   end

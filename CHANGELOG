@@ -1,14 +1,16 @@
 TODO:
   * Create ProfilerNote
   * Javascript injection for partials
-  * Let it threadsafe? We are running it in development...
 
-== Footnotes v3.3.1
+== Footnotes v3.4
 Author: José Valim (jose.valim@gmail.com)
 Site: http://josevalim.blogspot.com/
-  * Changed prefix to support %s and %d
-  * Created gemspec
-  * Some code refactoring (called eval just once instead of three times)
+  * Rails 2.3 compatible.
+
+== Footnotes v3.3.1
+  * Changed prefix to support %s and %d;
+  * Created gemspec;
+  * Some code refactoring (called eval just once instead of three times).
 
 == Footnotes v3.3
   * Rails Edge (aka 2.2) compatibility;
