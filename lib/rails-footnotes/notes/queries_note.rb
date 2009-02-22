@@ -140,7 +140,7 @@ if Footnotes::Notes::QueriesNote.included?
   ActiveRecord::ConnectionAdapters::AbstractAdapter.send :include, Footnotes::Extensions::AbstractAdapter
   ActiveRecord::ConnectionAdapters.local_constants.each do |adapter|
     next unless adapter =~ /.*[^Abstract]Adapter$/
-    next if adapter =~ /SQLite.Adapter$/
+    next if adapter =~ /SQLiteAdapter$/
     eval("ActiveRecord::ConnectionAdapters::#{adapter}").send :include, Footnotes::Extensions::QueryAnalyzer
   end
 end
