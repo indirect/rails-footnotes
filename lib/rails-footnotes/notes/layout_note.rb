@@ -21,7 +21,7 @@ module Footnotes
 
       protected
         def filename
-          @controller.active_layout.filename
+          File.join(File.expand_path(RAILS_ROOT), 'app', 'layouts', "#{@controller.active_layout.to_s.underscore}.html.erb").sub('/layouts/layouts/', '/views/layouts/')
         end
     end
   end
