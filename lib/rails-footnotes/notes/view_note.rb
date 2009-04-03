@@ -17,13 +17,19 @@ module Footnotes
       end
 
       def valid?
-        prefix? && @template && @template.template
+        prefix? && first_render?
       end
 
       protected
-        def filename
-          @template.template.filename
+
+        def first_render?
+          @template.instance_variable_get(:@_first_render)
         end
+
+        def filename
+          @filename ||= @template.instance_variable_get(:@_first_render).filename
+        end
+
     end
   end
 end
