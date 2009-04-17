@@ -145,13 +145,16 @@ module Footnotes
           return '' if array.empty?
 
           header = header.collect{|i| escape(i.to_s.humanize) }
-          rows = array.collect{|i| "<tr><td>#{i.join('</td><td>')}</td></tr>" }
+          rows = array.collect{|i| "<tr><td bgcolor='white'>#{i.join('</td><td bgcolor=white>')}</td></tr>" }
 
           <<-TABLE
-          <table #{hash_to_xml_attributes(options)}>
-            <thead><tr><th>#{header.join('</th><th>')}</th></tr></thead>
+          <div style='background-color:black'>
+          <table #{hash_to_xml_attributes(options)} cell-padding='10px' cell-spacing='1px'">
+            <thead><tr><th bgcolor=#aaaaaa>#{header.join('</th><th bgcolor=#aaaaaa>')}</th></tr></thead>
             <tbody>#{rows.join}</tbody>
           </table>
+          </div>
+          
           TABLE
         end
 

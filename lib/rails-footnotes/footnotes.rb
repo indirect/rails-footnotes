@@ -10,7 +10,7 @@ module Footnotes
     # Edit notes
     @@notes = [ :controller, :view, :layout, :stylesheets, :javascripts ]
     # Show notes
-    @@notes += [ :session, :cookies, :params, :filters, :routes, :env, :queries, :log, :general ]
+    @@notes += [ :variables, :session, :cookies, :params, :filters, :routes, :env, :queries, :log, :general ]
 
     # :no_style       => If you don't want the style to be appended to your pages
     # :notes          => Class variable that holds the notes to be processed
@@ -329,5 +329,14 @@ module Footnotes
         self.class.each_with_rescue(*args, &block)
       end
 
+  end
+
+  class Utils
+      def self.generate_red_color(value, alert)
+          c = ((value.to_f/alert)*16).to_i
+          c = 15 if c > 15
+          c = (15-c).to_s(16)
+          "#ff#{c*4}"
+      end
   end
 end

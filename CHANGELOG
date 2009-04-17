@@ -2,6 +2,12 @@ TODO:
   * Create ProfilerNote
   * Javascript injection for partials
 
+== Footnotes v3.5
+Author: Leon Li (scorpio_leon@hotmail.com)
+  * add variable notes, default simple value, for display value detail, you need set params[:variable_detail]("ALL" or variable names such as @name@city)
+  * count total db time and display it
+  * improve query note, highlight by red color for alert query times, db time and explain, the color depth depends on worse degree with config(cattr_accessor :alert_db_time, :alert_sql_number, :alert_explain)  
+
 == Footnotes v3.4
 Author: José Valim (jose.valim@gmail.com)
 Site: http://josevalim.blogspot.com/
