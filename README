@@ -1,10 +1,10 @@
 Rails Footnotes
 License: MIT
-Version: 3.4.1
+Version: 3.5
 
 You can also read this README in pretty html at the GitHub project Wiki page
 
-  http://github.com/josevalim/rails-footnotes/wikis/home
+  http://wiki.github.com/josevalim/rails-footnotes
 
 
 Description
@@ -45,6 +45,7 @@ If you are running on Rails 2.2 or Rails 2.1 you should do:
 
 Where you should replace VERSION_NUMBER for "v3.3.2" for Rails 2.2 and "v3.2.2"
 for Rails 2.1 (without the quotes).
+
 
 Configuration
 -------------
@@ -127,21 +128,28 @@ Then put in your environment:
   Footnotes::Filter.notes += [:current_user]
 
 
+Colaborators
+------------
+
+* http://github.com/kbrock
+* http://github.com/ivanoats
+* http://github.com/kristopher
+
+
 Bugs and Feedback
 -----------------
 
 If you discover any bugs, please send an e-mail to jose.valim@gmail.com
-If you just want to give some positive feedback or drop a line, that's fine too! =)
+If you just want to give some positive feedback or drop a line, that's fine too!
 
-Copyright (c) 2009 José Valim
-http://www.pagestacker.com/
+Copyright (c) 2009 José Valim (jose.valim@gmail.com)
 http://josevalim.blogspot.com/
 
 
 Version 2.0
 -----------
 
-Until version 2.0, this plugin was created and maintained by:
+Until version 2.0, this plugin was created and maintained by Duane Johnson:
 
-Duane Johnson (duane.johnson@gmail.com)
+Copyright (c) 2006 InquiryLabs, Inc.
 http://blog.inquirylabs.com/

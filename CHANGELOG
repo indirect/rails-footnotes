@@ -1,10 +1,8 @@
-TODO:
-  * Create ProfilerNote
-  * Javascript injection for partials
+== Footnotes v3.5
+  * Added NewRelic RPM footnote (cortesy of kbrock)
+  * Several bug fixes (cortesy of kbrock, ivanoats and kristopher)
 
 == Footnotes v3.4
-Author: José Valim (jose.valim@gmail.com)
-Site: http://josevalim.blogspot.com/
   * Rails 2.3 compatible.
 
 == Footnotes v3.3.1
@@ -47,8 +45,8 @@ Site: http://josevalim.blogspot.com/
 
 == Textmate Footnotes v2.0
 Copyright (c) 2006 InquiryLabs, Inc.
-Author: Duane Johnson (duane.johnson@gmail.com)
-Site: http://inquirylabs.com/
+http://inquirylabs.com/
+
 Description:
   Creates clickable footnotes on each rendered page, as well as clickable
   links in the backtrace should an error occur in your Rails app. Links take
