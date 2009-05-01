@@ -63,7 +63,7 @@ class AbstractNoteTest < Test::Unit::TestCase
   def test_footnotes_prefix
     Footnotes::Filter.prefix = ''
     assert !@note.send(:prefix?)
-    Footnotes::Filter.prefix = 'txmt://open?url=file://%s&line=%d&column=%d'
+    Footnotes::Filter.prefix = 'txmt://open?url=file://%s&amp;line=%d&amp;column=%d'
     assert @note.send(:prefix?)
   end
 

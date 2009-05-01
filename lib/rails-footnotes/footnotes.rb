@@ -5,7 +5,7 @@ module Footnotes
     @@klasses = []
 
     # Default link prefix is textmate
-    @@prefix = 'txmt://open?url=file://%s&line=%d&column=%d'
+    @@prefix = 'txmt://open?url=file://%s&amp;line=%d&amp;column=%d'
 
     # Edit notes
     @@notes = [ :controller, :view, :layout, :stylesheets, :javascripts ]

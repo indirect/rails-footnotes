@@ -53,7 +53,7 @@ If you are not using Textmate as text editor, in your environment.rb or
 in an initializer do:
 
   if defined?(Footnotes)
-    Footnotes::Filter.prefix = 'txmt://open?url=file://%s&line=%d&column=%d'
+    Footnotes::Filter.prefix = 'txmt://open?url=file://%s&amp;line=%d&amp;column=%d'
   end
 
 Where you are going to choose a prefix compatible with your text editor. The %s is

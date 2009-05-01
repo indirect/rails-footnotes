@@ -70,11 +70,11 @@ class FootnotesTest < Test::Unit::TestCase
   end
 
   def test_footnotes_prefix
-    assert_equal 'txmt://open?url=file://%s&line=%d&column=%d', Footnotes::Filter.prefix
-    assert_equal 'txmt://open?url=file://file&line=0&column=0', Footnotes::Filter.prefix('file', 0, 0)
-    assert_equal 'txmt://open?url=file://file&line=10&column=10', Footnotes::Filter.prefix('file', 10, 10)
-    assert_equal 'txmt://open?url=file://file&line=10&column=10', Footnotes::Filter.prefix('file', 10, 10, 10)
-    assert_equal 'txmt://open?url=file://file&line=10&column=10', Footnotes::Filter.prefix('file', '10', '10')
+    assert_equal 'txmt://open?url=file://%s&amp;line=%d&amp;column=%d', Footnotes::Filter.prefix
+    assert_equal 'txmt://open?url=file://file&amp;line=0&amp;column=0', Footnotes::Filter.prefix('file', 0, 0)
+    assert_equal 'txmt://open?url=file://file&amp;line=10&amp;column=10', Footnotes::Filter.prefix('file', 10, 10)
+    assert_equal 'txmt://open?url=file://file&amp;line=10&amp;column=10', Footnotes::Filter.prefix('file', 10, 10, 10)
+    assert_equal 'txmt://open?url=file://file&amp;line=10&amp;column=10', Footnotes::Filter.prefix('file', '10', '10')
   end
 
   def test_notes_are_initialized
