@@ -23,7 +23,9 @@ module Footnotes
         # Some controller classes come with the Controller:: module and some don't
         # (anyone know why? -- Duane)
         def controller_filename
-          File.join(File.expand_path(RAILS_ROOT), 'app', 'controllers', "#{@controller.class.to_s.underscore}.rb").sub('/controllers/controllers/', '/controllers/')
+          controller_name=@controller.class.to_s.underscore
+          controller_name='application' if controller_name=='application_controller'
+          File.join(File.expand_path(RAILS_ROOT), 'app', 'controllers', "#{controller_name}.rb").sub('/controllers/controllers/', '/controllers/')
         end
 
         def controller_text
