@@ -19,7 +19,8 @@ module Footnotes
       protected
         def parse_routes
           routes_with_name = ActionController::Routing::Routes.named_routes.to_a.flatten
-          return ActionController::Routing::Routes.filtered_routes(:controller => @controller.controller_path, :action => @controller.action_name).collect do |route|
+
+          return ActionController::Routing::Routes.filtered_routes(:controller => @controller.controller_name).collect do |route|
             # Catch routes name if exists
             i = routes_with_name.index(route)
             name = i ? routes_with_name[i-1].to_s : ''
