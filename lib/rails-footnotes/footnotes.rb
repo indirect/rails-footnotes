@@ -10,7 +10,7 @@ module Footnotes
     # Edit notes
     @@notes = [ :controller, :view, :layout, :stylesheets, :javascripts ]
     # Show notes
-    @@notes += [ :variables, :session, :cookies, :params, :filters, :routes, :env, :queries, :log, :general ]
+    @@notes += [ :assigns, :session, :cookies, :params, :filters, :routes, :env, :queries, :log, :general ]
 
     # :no_style       => If you don't want the style to be appended to your pages
     # :notes          => Class variable that holds the notes to be processed
