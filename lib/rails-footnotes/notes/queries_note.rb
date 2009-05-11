@@ -21,11 +21,11 @@ module Footnotes
         db_time = @@sql.inject(0){|sum, item| sum += item.time }
         query_color = generate_red_color(@@sql.length, alert_sql_number)
         db_color = generate_red_color(db_time, alert_db_time)
-        "
-                <span style='background-color:#{query_color}'>Queries (#{@@sql.length}) </span> 
-                <span style='background-color:#{db_color}'>DB (#{"%.6f" % db_time}s) </span>
-                <span id='explain_alert' style='display:none;background-color:red'>Explain Alert</span>
-        "
+        <<-TITLE
+  <span style="background-color:#{query_color}">Queries (#{@@sql.length})</span> 
+  <span style="background-color:#{db_color}">DB (#{"%.6f" % db_time}s)</span>
+  <span id="explain_alert" style="display:none;background-color:red">Explain Alert</span>
+        TITLE
       end
 
       def stylesheet
@@ -58,38 +58,41 @@ module Footnotes
       end
 
       protected
-      def parse_explain(results, i)
-        table = []
-        table << results.fetch_fields.map(&:name)
-        results.each{|row| row[0] += "<script>document.getElementById('explain_alert').style.display = '';document.getElementById('explain_#{i}').style.background = '#FF0000';</script>" if row.join('|') =~ alert_explain ;table << row; }
-        table
-      end
+        def parse_explain(results, i)
+          table = []
+          table << results.fetch_fields.map(&:name)
+          results.each do |row|
+            row[0] += "<script type=\"text/javascript\">document.getElementById('explain_alert').style.display = '';document.getElementById('explain_#{i}').style.background = '#FF0000';</script>" if row.join('|') =~ alert_explain
+            table << row;
+          end
+          table
+        end
 
-      def parse_trace(trace)
-        trace.map do |t|
-          s = t.split(':')
-          %[<a href="#{escape(Footnotes::Filter.prefix("#{RAILS_ROOT}/#{s[0]}", s[1].to_i, 1))}">#{escape(t)}</a><br />]
-        end.join
-      end
+        def parse_trace(trace)
+          trace.map do |t|
+            s = t.split(':')
+            %[<a href="#{escape(Footnotes::Filter.prefix("#{RAILS_ROOT}/#{s[0]}", s[1].to_i, 1))}">#{escape(t)}</a><br />]
+          end.join
+        end
 
-      def print_name_and_time(name, time)
-        "<span style='background-color:#{generate_red_color(time, alert_db_time/5)}'>#{escape(name || 'SQL')} (#{sprintf('%f', time)}s)</span>"
-      end
+        def print_name_and_time(name, time)
+          "<span style='background-color:#{generate_red_color(time, alert_db_time/5)}'>#{escape(name || 'SQL')} (#{sprintf('%f', time)}s)</span>"
+        end
 
-      def print_query(query)
-        escape(query.to_s.gsub(/(\s)+/, ' ').gsub('`', ''))
-      end
+        def print_query(query)
+          escape(query.to_s.gsub(/(\s)+/, ' ').gsub('`', ''))
+        end
 
-      def print_explain(i, explain)
-        mount_table(parse_explain(explain, i), :id => "qtable_#{i}", :style => 'margin:10px;display:none;')
-      end
+        def print_explain(i, explain)
+          mount_table(parse_explain(explain, i), :id => "qtable_#{i}", :style => 'margin:10px;display:none;')
+        end
 
-      def generate_red_color(value, alert)
-        c = ((value.to_f/alert)*16).to_i
-        c = 15 if c > 15
-        c = (15-c).to_s(16)
-        "#ff#{c*4}"
-      end
+        def generate_red_color(value, alert)
+          c = ((value.to_f/alert)*16).to_i
+          c = 15 if c > 15
+          c = (15-c).to_s(16)
+          "#ff#{c*4}"
+        end
 
     end
   end
