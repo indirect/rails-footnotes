@@ -10,11 +10,12 @@ module Footnotes
     # Edit notes
     @@notes = [ :controller, :view, :layout, :stylesheets, :javascripts ]
     # Show notes
-    @@notes += [ :session, :cookies, :params, :filters, :routes, :env, :log, :general ]
+    @@notes += [ :assigns, :session, :cookies, :params, :filters, :routes, :env, :queries, :log, :general ]
+
+    # Change queries for rpm note when available
     if defined?(NewRelic)
+      @@notes.delete(:queries)
       @@notes << :rpm
-    else
-      @@notes << :queries
     end
 
     # :no_style       => If you don't want the style to be appended to your pages
@@ -232,11 +233,10 @@ module Footnotes
         <!-- End Footnotes -->
         HTML
 
-        if @body =~ %r{<div[^>]+id=['"]footnotes_holder['"][^>]*>}
-          # Insert inside the "footnotes_holder" div if it exists
-          insert_text :after, %r{<div[^>]+id=['"]footnotes_holder['"][^>]*>}, footnotes_html
+        placeholder = /<div[^>]+id=['"]footnotes_holder['"][^>]*>/i
+        if @body =~ placeholder
+          insert_text :after, placeholder, footnotes_html
         else
-          # Otherwise, try to insert as the last part of the html body
           insert_text :before, /<\/body>/i, footnotes_html
         end
       end

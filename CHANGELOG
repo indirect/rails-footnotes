@@ -1,6 +1,12 @@
+== Footnotes v3.6
+  * Added assigns notes (thanks to scorpio);
+  * Improve query note, count query time and display it with several configurable
+    options (:alert_db_time, :alert_sql_number, :alert_explain) (thanks to scorpio);
+  * Fixed bugs of layout link and route note related (thanks to scorpio).
+
 == Footnotes v3.5
-  * Added NewRelic RPM footnote (cortesy of kbrock)
-  * Several bug fixes (cortesy of kbrock, ivanoats and kristopher)
+  * Added NewRelic RPM footnote (thanks to kbrock);
+  * Several bug fixes (thanks to kbrock, ivanoats and kristopher).
 
 == Footnotes v3.4
   * Rails 2.3 compatible.

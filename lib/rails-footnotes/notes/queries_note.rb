@@ -3,8 +3,11 @@ require "#{File.dirname(__FILE__)}/abstract_note"
 module Footnotes
   module Notes
     class QueriesNote < AbstractNote
+      @@alert_explain = /ALL/
+      @@alert_db_time = 0.16
+      @@alert_sql_number = 16
       @@sql = []
-      cattr_accessor :sql
+      cattr_accessor :sql, :alert_db_time, :alert_sql_number, :alert_explain
 
       def self.start!(controller)
         @@sql = []
@@ -15,16 +18,23 @@ module Footnotes
       end
 
       def title
-        "Queries (#{@@sql.length})"
+        db_time = @@sql.inject(0){|sum, item| sum += item.time }
+        query_color = generate_red_color(@@sql.length, alert_sql_number)
+        db_color = generate_red_color(db_time, alert_db_time)
+        "
+                <span style='background-color:#{query_color}'>Queries (#{@@sql.length}) </span> 
+                <span style='background-color:#{db_color}'>DB (#{"%.6f" % db_time}s) </span>
+                <span id='explain_alert' style='display:none;background-color:red'>Explain Alert</span>
+        "
       end
 
       def stylesheet
-<<-STYLESHEET
+        <<-STYLESHEET
   #queries_debug_info table td, #queries_debug_info table th{border:1px solid #A00; padding:0 3px; text-align:center;}
   #queries_debug_info table thead, #queries_debug_info table tbody {color:#A00;}
   #queries_debug_info p {background-color:#F3F3FF; border:1px solid #CCC; margin:12px; padding:4px 6px;}
   #queries_debug_info a:hover {text-decoration:underline;}
-STYLESHEET
+        STYLESHEET
       end
 
       def content
@@ -32,47 +42,55 @@ STYLESHEET
 
         @@sql.each_with_index do |item, i|
           sql_links = []
-          sql_links << "<a href=\"#\" style=\"color:#A00;\" onclick=\"Footnotes.toggle('qtable_#{i}');return false\">explain</a>" if item.explain
-          sql_links << "<a href=\"#\" style=\"color:#00A;\" onclick=\"Footnotes.toggle('qtrace_#{i}');return false\">trace</a>" if item.trace
+          sql_links << "<a href=\"javascript:Footnotes.toggle('qtable_#{i}')\" style=\"color:#A00;\">explain</a>" if item.explain
+          sql_links << "<a href=\"javascript:Footnotes.toggle('qtrace_#{i}')\" style=\"color:#00A;\">trace</a>" if item.trace
 
-html << <<-HTML
+          html << <<-HTML
   <b id="qtitle_#{i}">#{escape(item.type.to_s.upcase)}</b> (#{sql_links.join(' | ')})<br />
   #{print_name_and_time(item.name, item.time)}<br />
-  #{print_query(item.query)}<br />
+  <span id="explain_#{i}">#{print_query(item.query)}</span><br />
   #{print_explain(i, item.explain) if item.explain}
   <p id="qtrace_#{i}" style="display:none;">#{parse_trace(item.trace) if item.trace}</p><br />
-HTML
+          HTML
         end
 
         return html
       end
 
       protected
-        def parse_explain(results)
-          table = []
-          table << results.fetch_fields.map(&:name)
-          results.each{|row| table << row}
-          table
-        end
+      def parse_explain(results, i)
+        table = []
+        table << results.fetch_fields.map(&:name)
+        results.each{|row| row[0] += "<script>document.getElementById('explain_alert').style.display = '';document.getElementById('explain_#{i}').style.background = '#FF0000';</script>" if row.join('|') =~ alert_explain ;table << row; }
+        table
+      end
 
-        def parse_trace(trace)
-          trace.map do |t|
-            s = t.split(':')
-            %[<a href="#{escape(Footnotes::Filter.prefix("#{RAILS_ROOT}/#{s[0]}", s[1].to_i, 1))}">#{escape(t)}</a><br />]
-          end.join
-        end
+      def parse_trace(trace)
+        trace.map do |t|
+          s = t.split(':')
+          %[<a href="#{escape(Footnotes::Filter.prefix("#{RAILS_ROOT}/#{s[0]}", s[1].to_i, 1))}">#{escape(t)}</a><br />]
+        end.join
+      end
 
-        def print_name_and_time(name, time)
-          "#{escape(name || 'SQL')} (#{sprintf('%f', time)}s)"
-        end
+      def print_name_and_time(name, time)
+        "<span style='background-color:#{generate_red_color(time, alert_db_time/5)}'>#{escape(name || 'SQL')} (#{sprintf('%f', time)}s)</span>"
+      end
 
-        def print_query(query)
-          escape(query.to_s.gsub(/(\s)+/, ' ').gsub('`', ''))
-        end
+      def print_query(query)
+        escape(query.to_s.gsub(/(\s)+/, ' ').gsub('`', ''))
+      end
 
-        def print_explain(i, explain)
-          mount_table(parse_explain(explain), :id => "qtable_#{i}", :style => 'margin:10px;display:none;')
-        end
+      def print_explain(i, explain)
+        mount_table(parse_explain(explain, i), :id => "qtable_#{i}", :style => 'margin:10px;display:none;')
+      end
+
+      def generate_red_color(value, alert)
+        c = ((value.to_f/alert)*16).to_i
+        c = 15 if c > 15
+        c = (15-c).to_s(16)
+        "#ff#{c*4}"
+      end
+
     end
   end
 
@@ -87,7 +105,8 @@ HTML
         @query = query
         @explain = explain
 
-        # Strip, select those ones from app and reject first two, because they are from the plugin
+        # Strip, select those ones from app and reject first two, because they
+        # are from the plugin
         @trace = Kernel.caller.collect(&:strip).select{|i| i.gsub!(/^#{RAILS_ROOT}\//im, '') }[2..-1]
       end
     end
@@ -125,7 +144,7 @@ HTML
         if @logger
           @logger.silence do
             result = yield
-          end        
+          end
         else
           result = yield
         end

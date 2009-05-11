@@ -1,6 +1,6 @@
 Rails Footnotes
 License: MIT
-Version: 3.5
+Version: 3.6
 
 You can also read this README in pretty html at the GitHub project Wiki page
 
@@ -131,9 +131,10 @@ Then put in your environment:
 Colaborators
 ------------
 
-* http://github.com/kbrock
-* http://github.com/ivanoats
-* http://github.com/kristopher
+* Leon Li       - http://github.com/scorpio
+* Keenan Brock  - http://github.com/kbrock
+* Ivan Storck   - http://github.com/ivanoats
+* Kris Chamber  - http://github.com/kristopher
 
 
 Bugs and Feedback
@@ -149,7 +150,7 @@ http://josevalim.blogspot.com/
 Version 2.0
 -----------
 
-Until version 2.0, this plugin was created and maintained by Duane Johnson:
+This plugin was created and maintained until version 2.0 by Duane Johnson:
 
 Copyright (c) 2006 InquiryLabs, Inc.
 http://blog.inquirylabs.com/
