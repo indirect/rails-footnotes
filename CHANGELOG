@@ -1,7 +1,9 @@
 == Footnotes v3.6
+  * Cookies, sessions and params notes now use table;
+  * Old components note removed;
   * Added assigns notes (thanks to scorpio);
   * Improve query note, count query time and display it with several configurable
-    options (:alert_db_time, :alert_sql_number, :alert_explain) (thanks to scorpio);
+    options (:alert_db_time and :alert_sql_number) (thanks to scorpio);
   * Fixed bugs of layout link and route note related (thanks to scorpio).
 
 == Footnotes v3.5
