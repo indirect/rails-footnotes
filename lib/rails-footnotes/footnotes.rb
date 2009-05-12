@@ -169,6 +169,7 @@ module Footnotes
           #footnotes_debug table {text-align: center;}
           #footnotes_debug table td {padding: 0 5px;}
           #footnotes_debug tbody {text-align: left;}
+          #footnotes_debug .name_values td {vertical-align: top;}
           #footnotes_debug legend {background-color: #FFF;}
           #footnotes_debug fieldset {text-align: left; border: 1px dashed #aaa; padding: 0.5em 1em 1em 1em; margin: 1em 2em; color: #444; background-color: #FFF;}
           /* Aditional Stylesheets */

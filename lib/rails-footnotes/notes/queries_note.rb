@@ -3,11 +3,10 @@ require "#{File.dirname(__FILE__)}/abstract_note"
 module Footnotes
   module Notes
     class QueriesNote < AbstractNote
-      @@alert_explain = /ALL/
       @@alert_db_time = 0.16
-      @@alert_sql_number = 16
+      @@alert_sql_number = 8
       @@sql = []
-      cattr_accessor :sql, :alert_db_time, :alert_sql_number, :alert_explain
+      cattr_accessor :sql, :alert_db_time, :alert_sql_number, :alert_explain, :instance_writter => false
 
       def self.start!(controller)
         @@sql = []
@@ -20,11 +19,11 @@ module Footnotes
       def title
         db_time = @@sql.inject(0){|sum, item| sum += item.time }
         query_color = generate_red_color(@@sql.length, alert_sql_number)
-        db_color = generate_red_color(db_time, alert_db_time)
+        db_color    = generate_red_color(db_time, alert_db_time)
+
         <<-TITLE
   <span style="background-color:#{query_color}">Queries (#{@@sql.length})</span> 
   <span style="background-color:#{db_color}">DB (#{"%.6f" % db_time}s)</span>
-  <span id="explain_alert" style="display:none;background-color:red">Explain Alert</span>
         TITLE
       end
 
@@ -58,12 +57,11 @@ module Footnotes
       end
 
       protected
-        def parse_explain(results, i)
+        def parse_explain(results)
           table = []
           table << results.fetch_fields.map(&:name)
           results.each do |row|
-            row[0] += "<script type=\"text/javascript\">document.getElementById('explain_alert').style.display = '';document.getElementById('explain_#{i}').style.background = '#FF0000';</script>" if row.join('|') =~ alert_explain
-            table << row;
+            table << row
           end
           table
         end
@@ -76,7 +74,7 @@ module Footnotes
         end
 
         def print_name_and_time(name, time)
-          "<span style='background-color:#{generate_red_color(time, alert_db_time/5)}'>#{escape(name || 'SQL')} (#{sprintf('%f', time)}s)</span>"
+          "<span style='background-color:#{generate_red_color(time, alert_ratio)}'>#{escape(name || 'SQL')} (#{sprintf('%f', time)}s)</span>"
         end
 
         def print_query(query)
@@ -84,14 +82,20 @@ module Footnotes
         end
 
         def print_explain(i, explain)
-          mount_table(parse_explain(explain, i), :id => "qtable_#{i}", :style => 'margin:10px;display:none;')
+          mount_table(parse_explain(explain), :id => "qtable_#{i}", :style => 'margin:10px;display:none;')
         end
 
         def generate_red_color(value, alert)
-          c = ((value.to_f/alert)*16).to_i
+          c = ((value.to_f/alert).to_i - 1) * 16
+          c = 0  if c < 0
           c = 15 if c > 15
+
           c = (15-c).to_s(16)
           "#ff#{c*4}"
+        end
+
+        def alert_ratio
+          alert_db_time / alert_sql_number
         end
 
     end
