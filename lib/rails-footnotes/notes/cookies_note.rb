@@ -12,7 +12,7 @@ module Footnotes
       end
 
       def content
-        escape(@cookies.inspect)
+        mount_table_for_hash(@cookies)
       end
     end
   end

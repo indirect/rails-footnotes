@@ -12,7 +12,7 @@ module Footnotes
       end
 
       def content
-        escape(@params.inspect)
+        mount_table_for_hash(@params)
       end
     end
   end
