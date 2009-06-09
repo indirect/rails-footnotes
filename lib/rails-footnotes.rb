@@ -6,7 +6,7 @@ if RAILS_ENV == 'development'
   # Load all notes
   #
   Dir[File.join(dir, 'rails-footnotes', 'notes', '*.rb')].each do |note|
-    require note
+    require note  unless note =~ /queries/ && !defined?(ActiveRecord)
   end
 
   # The footnotes are applied by default to all actions. You can change this
