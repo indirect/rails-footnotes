@@ -37,7 +37,7 @@ module Footnotes
         end
 
         def assigned_value(key)
-          escape(@controller.instance_variable_get(key).inspect)
+          @controller.instance_variable_get(key).inspect
         end
     end
   end
