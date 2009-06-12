@@ -13,10 +13,10 @@ module Footnotes
     @@notes += [ :assigns, :session, :cookies, :params, :filters, :routes, :env, :queries, :log, :general ]
 
     # Change queries for rpm note when available
-    if defined?(NewRelic)
-      @@notes.delete(:queries)
-      @@notes << :rpm
-    end
+    # if defined?(NewRelic)
+    #  @@notes.delete(:queries)
+    #  @@notes << :rpm
+    # end
 
     # :no_style       => If you don't want the style to be appended to your pages
     # :notes          => Class variable that holds the notes to be processed
