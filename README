@@ -38,7 +38,7 @@ If you want it as plugin, just do:
 If you are running on Rails 2.2 or Rails 2.1 you should do:
 
     cd myapp
-    git clone git://github.com/josevalim/rails-footnotes.git
+    git clone git://github.com/josevalim/rails-footnotes.git vendor/plugins/rails-footnotes
     cd vendor/plugins/rails-footnotes
     git checkout VERSION_NUMBER
     rm -rf ./.git
