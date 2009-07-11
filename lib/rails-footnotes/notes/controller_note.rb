@@ -25,7 +25,15 @@ module Footnotes
         def controller_filename
           controller_name=@controller.class.to_s.underscore
           controller_name='application' if controller_name=='application_controller'
-          File.join(File.expand_path(RAILS_ROOT), 'app', 'controllers', "#{controller_name}.rb").sub('/controllers/controllers/', '/controllers/')
+          if ActionController::Routing.respond_to? :controller_paths
+            ActionController::Routing.controller_paths.each do |controller_path|
+              full_controller_path = File.join(File.expand_path(controller_path), "#{controller_name}.rb")
+              return full_controller_path if File.exists?(full_controller_path)
+            end
+            raise "File not found"
+          else
+            File.join(File.expand_path(RAILS_ROOT), 'app', 'controllers', "#{controller_name}.rb").sub('/controllers/controllers/', '/controllers/')
+          end
         end
 
         def controller_text
