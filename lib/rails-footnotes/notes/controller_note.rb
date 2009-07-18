@@ -51,7 +51,7 @@ module Footnotes
         def lines_from_index(string, index)
           return nil if string.blank? || index.blank?
 
-          lines = [] #string.respond_to?(:to_a) ? string.to_a : string.lines.to_a
+          lines = string.respond_to?(:to_a) ? string.to_a : string.lines.to_a
           running_length = 0
           lines.each_with_index do |line, i|
             running_length += line.length
