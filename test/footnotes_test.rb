@@ -160,11 +160,13 @@ class FootnotesTest < Test::Unit::TestCase
   def test_insert_text
     @footnotes.send(:insert_text, :after, /<head>/, "Graffiti")
     after = "    <head>Graffiti\n"
-    assert_equal after, @controller.response.body.to_a[2]
+    response_lines = @controller.response.body.respond_to?(:to_a) ? @controller.response.body.to_a : @controller.response.body.lines.to_a
+    assert_equal after, response_lines[2]
 
     @footnotes.send(:insert_text, :before, /<\/body>/, "Notes")
     after = "    Notes</body>\n"
-    assert_equal after, @controller.response.body.to_a[12]
+    response_lines = @controller.response.body.respond_to?(:to_a) ? @controller.response.body.to_a : @controller.response.body.lines.to_a
+    assert_equal after, response_lines[12]
   end
   
   protected
