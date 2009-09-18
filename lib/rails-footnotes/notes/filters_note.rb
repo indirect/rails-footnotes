@@ -13,7 +13,7 @@ module Footnotes
       end
 
       def content
-        mount_table(@parsed_filters.unshift([:name, :type, :actions]))
+        mount_table(@parsed_filters.unshift([:name, :type, :actions]), :summary => "Debug information for #{title}")
       end
 
       protected

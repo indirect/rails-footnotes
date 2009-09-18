@@ -13,7 +13,7 @@ module Footnotes
       end
 
       def content
-        mount_table(@parsed_routes.unshift([:path, :name, :options, :requirements]))
+        mount_table(@parsed_routes.unshift([:path, :name, :options, :requirements]), :summary => "Debug information for #{title}")
       end
 
       protected

@@ -158,12 +158,12 @@ module Footnotes
         # Mount table for hash, using name and value and adding a name_value class
         # to the generated table.
         #
-        def mount_table_for_hash(hash)
+        def mount_table_for_hash(hash, options={})
           rows = []
           hash.each do |key, value|
             rows << [ key.to_sym.inspect, escape(value.inspect) ]
           end
-          mount_table(rows.unshift(['Name', 'Value']), :class => 'name_value')
+          mount_table(rows.unshift(['Name', 'Value']), {:class => 'name_value'}.merge(options))
         end
 
         def hash_to_xml_attributes(hash)

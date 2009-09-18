@@ -12,7 +12,7 @@ module Footnotes
       end
 
       def content
-        mount_table_for_hash(@params)
+        mount_table_for_hash(@params, :summary => "Debug information for #{title}")
       end
     end
   end

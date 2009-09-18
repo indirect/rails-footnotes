@@ -82,7 +82,7 @@ module Footnotes
         end
 
         def print_explain(i, explain)
-          mount_table(parse_explain(explain), :id => "qtable_#{i}", :style => 'margin:10px;display:none;')
+          mount_table(parse_explain(explain), :id => "qtable_#{i}", :style => 'margin:10px;display:none;', :summary => "Debug information for #{title}")
         end
 
         def generate_red_color(value, alert)

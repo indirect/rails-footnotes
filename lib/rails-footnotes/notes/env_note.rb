@@ -12,7 +12,7 @@ module Footnotes
         @env['HTTP_COOKIE'] = '<a href="#" style="color:#009" onclick="Footnotes.hideAllAndToggle(\'cookies_debug_info\');return false;">See cookies on its tab</a>'
 
         # Create the env table
-        mount_table(@env.to_a.sort.unshift([:key, :value]))
+        mount_table(@env.to_a.sort.unshift([:key, :value]), :summary => "Debug information for #{title}")
       end
     end
   end

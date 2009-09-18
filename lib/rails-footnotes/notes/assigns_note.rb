@@ -23,7 +23,7 @@ module Footnotes
         assigns.each do |key|
           rows << [ key, assigned_value(key) ]
         end
-        mount_table(rows.unshift(['Name', 'Value']), :class => 'name_values')
+        mount_table(rows.unshift(['Name', 'Value']), :class => 'name_values', :summary => "Debug information for #{title}")
       end
 
       protected
