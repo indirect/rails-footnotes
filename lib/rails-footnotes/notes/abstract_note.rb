@@ -167,7 +167,11 @@ module Footnotes
         end
 
         def hash_to_xml_attributes(hash)
-          return hash.collect{ |key, value| "#{key.to_s}=\"#{value.gsub('"','\"')}\"" }.join(' ')
+          newstring = ""
+          hash.each do |key, value|
+            newstring << "#{key.to_s}=\"#{value.gsub('"','\"')}\" "
+          end 
+          return newstring
         end
     end
   end
