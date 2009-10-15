@@ -2,6 +2,25 @@ require 'rake'
 require 'rake/testtask'
 require 'rake/rdoctask'
 
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |s|
+    s.name = "rails-footnotes"
+    s.version = "3.6.3"
+    s.rubyforge_project = "rails-footnotes"
+    s.summary = "Every Rails page has footnotes that gives information about your application and links back to your editor."
+    s.email = "jose@plataformatec.com.br"
+    s.homepage = "http://github.com/josevalim/rails-footnotes"
+    s.description = "Every Rails page has footnotes that gives information about your application and links back to your editor."
+    s.authors = ['José Valim']
+    s.files =  FileList["[A-Z]*", "{lib}/**/*"]
+  end
+
+  Jeweler::GemcutterTasks.new
+rescue LoadError
+  puts "Jeweler, or one of its dependencies, is not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
+end
+
 desc 'Run tests for Footnotes.'
 Rake::TestTask.new(:test) do |t|
   t.pattern = 'test/**/*_test.rb'

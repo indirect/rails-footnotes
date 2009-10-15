@@ -1,6 +1,6 @@
 Rails Footnotes
 License: MIT
-Version: 3.6.2
+Version: 3.6.3
 
 You can also read this README in pretty html at the GitHub project Wiki page
 
@@ -24,28 +24,16 @@ Installation
 Install Rails Footnotes is very easy. If you are running on Rails 2.3 just run
 the following:
 
-   gem sources -a http://gems.github.com
-   sudo gem install josevalim-rails-footnotes
+   gem sources -a http://gemcutter.org
+   sudo gem install rails-footnotes
 
 In RAILS_ROOT/config/environments/development.rb (yes, you want it only in development):
 
-  config.gem "josevalim-rails-footnotes",  :lib => "rails-footnotes", :source => "http://gems.github.com"
+  config.gem "rails-footnotes", :source => "http://gemcutter.org"
 
 If you want it as plugin, just do:
 
    script/plugin install git://github.com/josevalim/rails-footnotes.git
-
-If you are running on Rails 2.2 or Rails 2.1 you should do:
-
-    cd myapp
-    git clone git://github.com/josevalim/rails-footnotes.git vendor/plugins/rails-footnotes
-    cd vendor/plugins/rails-footnotes
-    git checkout VERSION_NUMBER
-    rm -rf ./.git
-
-Where you should replace VERSION_NUMBER for "v3.3.2" for Rails 2.2 and "v3.2.2"
-for Rails 2.1 (without the quotes).
-
 
 Configuration
 -------------
@@ -59,10 +47,7 @@ in an initializer do:
 
 Where you are going to choose a prefix compatible with your text editor. The %s is
 replaced by the name of the file, the first %d is replaced by the line number and
-the second %d is replaced by the column. You can also enable this behaviour in other
-editors following the steps in the link below:
-
-  http://josevalim.blogspot.com/2008/06/textmate-protocol-behavior-on-any.html
+the second %d is replaced by the column.
 
 By default, footnotes are appended at the end of the page with default stylesheet. If you want
 to change their position, you can define a div with id "footnotes_holder" or define your own stylesheet
@@ -140,11 +125,11 @@ Colaborators
 Bugs and Feedback
 -----------------
 
-If you discover any bugs, please send an e-mail to jose.valim@gmail.com
+If you discover any bugs, please send an e-mail to jose@plataformatec.com.br
 If you just want to give some positive feedback or drop a line, that's fine too!
 
-Copyright (c) 2009 José Valim (jose.valim@gmail.com)
-http://josevalim.blogspot.com/
+Copyright (c) 2009 José Valim (jose@plataformatec.com.br)
+http://blog.plataformatec.com.br/
 
 
 Version 2.0
