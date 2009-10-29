@@ -161,7 +161,8 @@ module Footnotes
 
   end
 end
-
+#no need to run queries note if New Relic is installed
+if defined?(ActiveRecord) && !defined?(NewRelic)
 if Footnotes::Notes::QueriesNote.included?
   ActiveRecord::ConnectionAdapters::AbstractAdapter.send :include, Footnotes::Extensions::AbstractAdapter
   ActiveRecord::ConnectionAdapters.local_constants.each do |adapter|
@@ -169,4 +170,5 @@ if Footnotes::Notes::QueriesNote.included?
     next if adapter =~ /SQLiteAdapter$/
     eval("ActiveRecord::ConnectionAdapters::#{adapter}").send :include, Footnotes::Extensions::QueryAnalyzer
   end
+end
 end

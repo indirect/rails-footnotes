@@ -1,12 +1,11 @@
 require "#{File.dirname(__FILE__)}/abstract_note"
 
+if defined?(NewRelic)
 module Footnotes
   module Notes
     class RpmNote < AbstractNote
       def initialize(controller)
-        if defined?(NewRelic)
-          @rpm_id=NewRelic::Agent.instance.transaction_sampler.current_sample_id
-        end
+        @rpm_id=NewRelic::Agent.instance.transaction_sampler.current_sample_id
       end
 
       def row
@@ -19,16 +18,13 @@ module Footnotes
       end
       
       def valid?
-        if defined?(NewRelic)
-          if defined?(NewRelic::Control)
-            !NewRelic::Control.instance['skip_developer_route']
-          else
-            !NewRelic::Config.instance['skip_developer_route']
-          end
+        if defined?(NewRelic::Control)
+          !NewRelic::Control.instance['skip_developer_route']
         else
-          false
+          !NewRelic::Config.instance['skip_developer_route']
         end
       end
     end
   end
+end
 end
