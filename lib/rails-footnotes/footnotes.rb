@@ -199,6 +199,8 @@ module Footnotes
               function hideAllAndToggle(id) {
                 hideAll();
                 toggle(id)
+
+                location.href = '#footnotes_debug';
               }  
               
               function toggle(id){
@@ -208,8 +210,6 @@ module Footnotes
                 } else {
                   Footnotes.hide(el);
                 }
-              
-                location.href = '#footnotes_debug';
               }
             
               function show(element) {
