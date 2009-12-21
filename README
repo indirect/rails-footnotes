@@ -1,6 +1,6 @@
 Rails Footnotes
 License: MIT
-Version: 3.6.3
+Version: 3.6.4
 
 You can also read this README in pretty html at the GitHub project Wiki page
 
@@ -24,12 +24,11 @@ Installation
 Install Rails Footnotes is very easy. If you are running on Rails 2.3 just run
 the following:
 
-   gem sources -a http://gemcutter.org
    sudo gem install rails-footnotes
 
 In RAILS_ROOT/config/environments/development.rb (yes, you want it only in development):
 
-  config.gem "rails-footnotes", :source => "http://gemcutter.org"
+  config.gem "rails-footnotes"
 
 If you want it as plugin, just do:
 
