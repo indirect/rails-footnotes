@@ -121,7 +121,7 @@ module Footnotes
     module QueryAnalyzer
       def self.included(base)
         base.class_eval do
-          alias_method_chain :execute, :analyzer if respond_to?(:execute)
+          alias_method_chain :execute, :analyzer
         end
       end
 
