@@ -6,7 +6,7 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |s|
     s.name = "rails-footnotes"
-    s.version = "3.6.4"
+    s.version = "3.6.5"
     s.rubyforge_project = "rails-footnotes"
     s.summary = "Every Rails page has footnotes that gives information about your application and links back to your editor."
     s.email = "jose@plataformatec.com.br"
