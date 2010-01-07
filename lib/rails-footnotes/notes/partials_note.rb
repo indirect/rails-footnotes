@@ -29,7 +29,7 @@ module Footnotes
             @partial_times = {}
             log_lines = log
             log_lines.split("\n").each do |line|
-              if line =~ /Rendered (\S*) \(([\d\.]+)ms\)/
+              if line =~ /Rendered (\S*) \(([\d\.]+)\S*?\)/
                 partial = $1
                 files = Dir.glob("#{Rails.root}/app/views/#{partial}*")
                 for file in files
