@@ -32,7 +32,7 @@ module Footnotes
           return @assigns if @assigns
 
           @assigns = @controller.instance_variables
-          @assigns -= @controller.protected_instance_variables
+          @assigns -= @controller.protected_instance_variables if @controller.respond_to? :protected_instance_variables
           @assigns -= ignored_assigns
         end
 
