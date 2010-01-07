@@ -27,7 +27,7 @@ module Footnotes
             partials = []
             @partial_counts = {}
             @partial_times = {}
-            log_lines = log_tail
+            log_lines = log
             log_lines.split("\n").each do |line|
               if line =~ /Rendered (\S*) \(([\d\.]+)ms\)/
                 partial = $1
