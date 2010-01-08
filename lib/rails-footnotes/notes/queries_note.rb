@@ -6,8 +6,17 @@ module Footnotes
       @@alert_db_time = 0.16
       @@alert_sql_number = 8
       @@sql = []
-      cattr_accessor :sql, :alert_db_time, :alert_sql_number, :alert_explain, :instance_writter => false
-
+      @@include_when_new_relic_installed = false
+      @@loaded = false
+      
+      cattr_accessor :sql, :alert_db_time, :alert_sql_number, :alert_explain, :loaded, :instance_writter => false
+      cattr_reader :include_when_new_relic_installed
+      
+      def self.include_when_new_relic_installed=(include_me)
+        @@include_when_new_relic_installed = include_me
+        load if include_me
+      end
+      
       def self.start!(controller)
         @@sql = []
       end
@@ -55,7 +64,26 @@ module Footnotes
 
         return html
       end
+      
+      def self.load
+        #only include when NewRelic is installed if configured to do so
+        if !loaded and
+            defined?(ActiveRecord) and
+            (!defined?(NewRelic) or
+             include_when_new_relic_installed)
+          if included?
+            ActiveRecord::ConnectionAdapters::AbstractAdapter.send :include, Footnotes::Extensions::AbstractAdapter
+            ActiveRecord::ConnectionAdapters.local_constants.each do |adapter|
+              next unless adapter =~ /.*[^Abstract]Adapter$/
+              next if adapter =~ /SQLiteAdapter$/
+              eval("ActiveRecord::ConnectionAdapters::#{adapter}").send :include, Footnotes::Extensions::QueryAnalyzer
+            end
+            loaded = true
+          end
+        end
 
+      end
+      
       protected
         def parse_explain(results)
           table = []
@@ -161,14 +189,5 @@ module Footnotes
 
   end
 end
-#no need to run queries note if New Relic is installed
-if defined?(ActiveRecord) && !defined?(NewRelic)
-if Footnotes::Notes::QueriesNote.included?
-  ActiveRecord::ConnectionAdapters::AbstractAdapter.send :include, Footnotes::Extensions::AbstractAdapter
-  ActiveRecord::ConnectionAdapters.local_constants.each do |adapter|
-    next unless adapter =~ /.*[^Abstract]Adapter$/
-    next if adapter =~ /SQLiteAdapter$/
-    eval("ActiveRecord::ConnectionAdapters::#{adapter}").send :include, Footnotes::Extensions::QueryAnalyzer
-  end
-end
-end
+
+Footnotes::Notes::QueriesNote.load

@@ -62,6 +62,10 @@ Finally, you can control which notes you want to show. The default are:
 
   Footnotes::Filter.notes = [:session, :cookies, :params, :filters, :routes, :env, :queries, :log, :general]
 
+The queries note by default will not load if it detects New Relic loaded in the app. If you want to load it
+in this case, add the following to an initializer:
+
+Footnotes::Notes::QueriesNote.include_when_new_relic_installed = true if defined?(Footnotes)
 
 Creating your own notes
 -----------------------
