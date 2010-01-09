@@ -68,20 +68,18 @@ module Footnotes
       def self.load
         #only include when NewRelic is installed if configured to do so
         if !loaded and
+            included? and
             defined?(ActiveRecord) and
             (!defined?(NewRelic) or
              include_when_new_relic_installed)
-          if included?
-            ActiveRecord::ConnectionAdapters::AbstractAdapter.send :include, Footnotes::Extensions::AbstractAdapter
-            ActiveRecord::ConnectionAdapters.local_constants.each do |adapter|
-              next unless adapter =~ /.*[^Abstract]Adapter$/
-              next if adapter =~ /SQLiteAdapter$/
-              eval("ActiveRecord::ConnectionAdapters::#{adapter}").send :include, Footnotes::Extensions::QueryAnalyzer
-            end
-            loaded = true
+          ActiveRecord::ConnectionAdapters::AbstractAdapter.send :include, Footnotes::Extensions::AbstractAdapter
+          ActiveRecord::ConnectionAdapters.local_constants.each do |adapter|
+            next unless adapter =~ /.*[^Abstract]Adapter$/
+            next if adapter =~ /SQLiteAdapter$/
+            eval("ActiveRecord::ConnectionAdapters::#{adapter}").send :include, Footnotes::Extensions::QueryAnalyzer
+            self.loaded = true
           end
         end
-
       end
       
       protected
