@@ -8,11 +8,18 @@ module Footnotes
       end
 
       def content
-        # Replace HTTP_COOKIE for a link
-        @env['HTTP_COOKIE'] = '<a href="#" style="color:#009" onclick="Footnotes.hideAllAndToggle(\'cookies_debug_info\');return false;">See cookies on its tab</a>'
+        env_data = @env.to_a.sort.unshift([:key, :value]).map do |k,v|
+          case k
+          when 'HTTP_COOKIE'
+            # Replace HTTP_COOKIE for a link
+            [k, '<a href="#" style="color:#009" onclick="Footnotes.hideAllAndToggle(\'cookies_debug_info\');return false;">See cookies on its tab</a>']
+          else
+            [k, escape(v.to_s)]
+          end
+        end
 
         # Create the env table
-        mount_table(@env.to_a.sort.unshift([:key, :value]), :summary => "Debug information for #{title}")
+        mount_table(env_data)
       end
     end
   end
