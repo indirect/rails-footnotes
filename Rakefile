@@ -6,7 +6,7 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |s|
     s.name = "rails-footnotes"
-    s.version = "3.6.5"
+    s.version = "3.6.6"
     s.rubyforge_project = "rails-footnotes"
     s.summary = "Every Rails page has footnotes that gives information about your application and links back to your editor."
     s.email = "jose@plataformatec.com.br"
@@ -35,4 +35,15 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include('README')
   rdoc.rdoc_files.include('MIT-LICENSE')
   rdoc.rdoc_files.include('lib/**/*.rb')
+end
+
+begin
+  require 'metric_fu'
+  MetricFu::Configuration.run do |config|
+      #skipping: churn, :stats
+      config.metrics  = [:saikuro, :flog, :flay, :reek, :roodi, :rcov]
+      # config.graphs   = [:flog, :flay, :reek, :roodi, :rcov]
+      config.rcov[:rcov_opts] << "-Itest"
+  end
+rescue LoadError
 end
