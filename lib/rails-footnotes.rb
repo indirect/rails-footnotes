@@ -1,4 +1,7 @@
-if RAILS_ENV == 'development'
+unless defined?(ENABLE_RAILS_FOOTNOTES)
+  ENABLE_RAILS_FOOTNOTES=(RAILS_ENV == 'development')
+end
+if ENABLE_RAILS_FOOTNOTES
   dir = File.dirname(__FILE__)
   require File.join(dir, 'rails-footnotes', 'footnotes')
   require File.join(dir, 'rails-footnotes', 'backtracer')
