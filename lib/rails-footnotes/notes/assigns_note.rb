@@ -21,7 +21,7 @@ module Footnotes
       def content
         rows = []
         assigns.each do |key|
-          rows << [ key, assigned_value(key) ]
+          rows << [ key, escape(assigned_value(key)) ]
         end
         mount_table(rows.unshift(['Name', 'Value']), :class => 'name_values', :summary => "Debug information for #{title}")
       end

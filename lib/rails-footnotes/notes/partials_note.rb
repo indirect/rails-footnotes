@@ -14,11 +14,12 @@ module Footnotes
         "Partials (#{partials.size})"
       end
       def content
-        links = partials.map do |file|
-          href = Footnotes::Filter.prefix(file,1,1)
-          "<tr><td><a href=\"#{href}\">#{file.gsub(File.join(Rails.root,"app/views/"),"")}</td><td>#{@partial_times[file].sum}ms</a></td><td>#{@partial_counts[file]}</td></tr>"
+        rows = partials.map do |filename|
+          href = Footnotes::Filter.prefix(filename,1,1)
+          shortened_name=filename.gsub(File.join(RAILS_ROOT,"app/views/"),"")
+          [%{<a href="#{href}">#{shortened_name}</a>},"#{@partial_times[filename].sum}ms",@partial_counts[filename]]
         end
-        "<table><thead><tr><th>Partial</th><th>Time</th><th>Count</th></tr></thead><tbody>#{links.join}</tbody></table>"
+        mount_table(rows.unshift(%w(Partial Time Count)), :summary => "Partials for #{title}")
       end
 
       protected
@@ -33,7 +34,7 @@ module Footnotes
             log_lines.split("\n").each do |line|
               if line =~ /Rendered (\S*) \(([\d\.]+)\S*?\)/
                 partial = $1
-                files = Dir.glob("#{Rails.root}/app/views/#{partial}*")
+                files = Dir.glob("#{RAILS_ROOT}/app/views/#{partial}*")
                 for file in files
                   #TODO figure out what format got rendered if theres multiple
                   @partial_times[file] ||= []
