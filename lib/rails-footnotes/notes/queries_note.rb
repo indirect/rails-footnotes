@@ -9,7 +9,7 @@ module Footnotes
       @@include_when_new_relic_installed = false
       @@loaded = false
       
-      cattr_accessor :sql, :alert_db_time, :alert_sql_number, :alert_explain, :loaded, :instance_writter => false
+      cattr_accessor :sql, :alert_db_time, :alert_sql_number, :alert_explain, :loaded, :sql_explain, :instance_writter => false
       cattr_reader :include_when_new_relic_installed
       
       def self.include_when_new_relic_installed=(include_me)
@@ -67,11 +67,7 @@ module Footnotes
       
       def self.load
         #only include when NewRelic is installed if configured to do so
-        if !loaded and
-            included? and
-            defined?(ActiveRecord) and
-            (!defined?(NewRelic) or
-             include_when_new_relic_installed)
+        if !loaded and included? and defined?(ActiveRecord)
           ActiveRecord::ConnectionAdapters::AbstractAdapter.send :include, Footnotes::Extensions::AbstractAdapter
           ActiveRecord::ConnectionAdapters.local_constants.each do |adapter|
             next unless adapter =~ /.*[^Abstract]Adapter$/
@@ -159,7 +155,7 @@ module Footnotes
           type = $&.downcase.to_sym
           explain = nil
 
-          if adapter_name == 'MySQL' && type == :select
+          if adapter_name == 'MySQL' && type == :select && Footnotes::Notes::QueriesNote.sql_explain
             log_silence do
               explain = execute_without_analyzer("EXPLAIN #{query}", name)
             end
