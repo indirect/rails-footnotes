@@ -16,6 +16,7 @@ end
 class FootnotesTest < Test::Unit::TestCase
   def setup
     @controller = FootnotesController.new
+    @controller.template = Object.new
     @controller.request = ActionController::TestRequest.new
     @controller.response = ActionController::TestResponse.new
     @controller.response.body = $html.dup
