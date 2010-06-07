@@ -34,14 +34,17 @@ module Footnotes
             log_lines.split("\n").each do |line|
               if line =~ /Rendered (\S*) \(([\d\.]+)\S*?\)/
                 partial = $1
-                files = Dir.glob("#{RAILS_ROOT}/app/views/#{partial}*")
-                for file in files
-                  #TODO figure out what format got rendered if theres multiple
-                  @partial_times[file] ||= []
-                  @partial_times[file] << $2.to_f
-                  @partial_counts[file] ||= 0
-                  @partial_counts[file] += 1
-                  partials << file unless partials.include?(file)
+                @controller.view_paths.each do |view_path|
+                  path = File.join(view_path, "#{partial}*")
+                  files = Dir.glob(path)
+                  for file in files
+                    #TODO figure out what format got rendered if theres multiple
+                    @partial_times[file] ||= []
+                    @partial_times[file] << $2.to_f
+                    @partial_counts[file] ||= 0
+                    @partial_counts[file] += 1
+                    partials << file unless partials.include?(file)
+                  end
                 end
               end
             end
