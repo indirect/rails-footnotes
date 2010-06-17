@@ -8,7 +8,7 @@ if ENABLE_RAILS_FOOTNOTES
 
   # Load all notes
   #
-  Dir[File.join(dir, 'rails-footnotes', 'notes', '*.rb')].each do |note|
+  Dir[File.join(dir, 'rails-footnotes', 'notes', '*.rb')].sort.each do |note|
     require note
   end
 
