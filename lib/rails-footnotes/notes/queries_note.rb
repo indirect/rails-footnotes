@@ -71,7 +71,7 @@ module Footnotes
           ActiveRecord::ConnectionAdapters::AbstractAdapter.send :include, Footnotes::Extensions::AbstractAdapter
           ActiveRecord::ConnectionAdapters.local_constants.each do |adapter|
             next unless adapter =~ /.*[^Abstract]Adapter$/
-            next if adapter =~ /SQLiteAdapter$/
+            next if adapter =~ /(SQLite|Salesforce)Adapter$/
             eval("ActiveRecord::ConnectionAdapters::#{adapter}").send :include, Footnotes::Extensions::QueryAnalyzer
             self.loaded = true
           end
