@@ -20,6 +20,7 @@ class FootnotesTest < Test::Unit::TestCase
     @controller.request = ActionController::TestRequest.new
     @controller.response = ActionController::TestResponse.new
     @controller.response.body = $html.dup
+    @controller.params = {}
 
     Footnotes::Filter.notes = [ :test ]
     Footnotes::Filter.multiple_notes = false
@@ -173,11 +174,19 @@ class FootnotesTest < Test::Unit::TestCase
     # Then we call add_footnotes!
     #
     def footnotes_perform!
-      @controller.template.expects(:template_format).returns('html')
+      template_expects('html')
       @controller.performed_render = true
 
       Footnotes::Filter.start!(@controller)
       @footnotes.add_footnotes!
+    end
+
+    def template_expects(format)
+      if @controller.template.respond_to?(:template_format)
+        @controller.template.expects(:template_format).returns(format)
+      else
+        @controller.template.expects(:format).returns(format)
+      end
     end
 end
 

@@ -142,7 +142,15 @@ module Footnotes
       end
 
       def valid_format?
-        [:html,:rhtml,:xhtml,:rxhtml].include?(@template.template_format.to_sym)
+        [:html,:rhtml,:xhtml,:rxhtml].include?(@template.send(template_format_method).to_sym)
+      end
+
+      def template_format_method
+        if @template.respond_to?(:template_format)
+          return 'template_format'
+        else
+          return 'format'
+        end
       end
 
       def valid_content_type?
