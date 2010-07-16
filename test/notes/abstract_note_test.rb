@@ -78,7 +78,7 @@ class AbstractNoteTest < Test::Unit::TestCase
     assert_equal '', @note.send(:mount_table,[['h1','h2','h3']], :class => 'table')
 
     tab = <<-TABLE
-          <table class="table">
+          <table class="table" >
             <thead><tr><th>H1</th></tr></thead>
             <tbody><tr><td>r1c1</td></tr></tbody>
           </table>
