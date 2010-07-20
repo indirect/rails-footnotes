@@ -1,6 +1,6 @@
 Rails Footnotes
 License: MIT
-Version: 3.6.4
+Version: 3.6.7
 
 You can also read this README in pretty html at the GitHub project Wiki page
 
@@ -58,14 +58,20 @@ Another option is to allow multiple notes to be opened at the same time:
 
   Footnotes::Filter.multiple_notes = true
 
+If you have New Relic RPM installed, you may want to turn off query explains
+(explains can slows things down)
+
+  Footnotes::Notes::QueriesNote.sql_explain = false
+
+If you want to add alternate logic to enable or disable footnotes,
+add something like this to environment.rb:
+
+  ENABLE_RAILS_FOOTNOTES=(Rails.env.production? == false)
+
 Finally, you can control which notes you want to show. The default are:
 
   Footnotes::Filter.notes = [:session, :cookies, :params, :filters, :routes, :env, :queries, :log, :general]
 
-The queries note by default will not load if it detects New Relic loaded in the app. If you want to load it
-in this case, add the following to an initializer:
-
-Footnotes::Notes::QueriesNote.include_when_new_relic_installed = true if defined?(Footnotes)
 
 Creating your own notes
 -----------------------
@@ -128,12 +134,17 @@ Colaborators
 Bugs and Feedback
 -----------------
 
-If you discover any bugs, please send an e-mail to jose@plataformatec.com.br
+If you discover any bugs, please send an e-mail to keenan@thebrocks.net
 If you just want to give some positive feedback or drop a line, that's fine too!
+
+
+Version 3.x
+-----------
+
+This plugin was maintained until version 3.6 by José Valim
 
 Copyright (c) 2009 José Valim (jose@plataformatec.com.br)
 http://blog.plataformatec.com.br/
-
 
 Version 2.0
 -----------

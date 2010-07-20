@@ -1,3 +1,13 @@
+== Footnotes v3.6.7
+  * fixed log_note error - long overdue (thanks to many including Moritz Heidkamp)
+  * 1.9: ignore more assigns (thanks to justin case)
+  * 1.9 fixed test mocking (thanks to lsylvester)
+  * sort notes includes (thanks Alexey Smolianiov)
+  * handle controller paths in gems / others (thanks ubilabs)
+  * more graceful fallback when controller not found
+  * fixes for table entries being double encoded
+  * moved rpm exclude sql explain logic to config option
+
 == Footnotes v3.6.6
   * fix for ruby 1.9 compat (thanks to ivanoats)
   * fix for log note (thanks to tobias)
