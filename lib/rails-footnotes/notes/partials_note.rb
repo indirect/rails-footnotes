@@ -16,7 +16,7 @@ module Footnotes
       def content
         rows = partials.map do |filename|
           href = Footnotes::Filter.prefix(filename,1,1)
-          shortened_name=filename.gsub(File.join(RAILS_ROOT,"app/views/"),"")
+          shortened_name=filename.gsub(File.join(Rails.root,"app/views/"),"")
           [%{<a href="#{href}">#{shortened_name}</a>},"#{@partial_times[filename].sum}ms",@partial_counts[filename]]
         end
         mount_table(rows.unshift(%w(Partial Time Count)), :summary => "Partials for #{title}")

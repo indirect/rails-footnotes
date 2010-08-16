@@ -32,7 +32,7 @@ module Footnotes
         def parse_files!
           @files.collect! do |filename|
             if filename =~ %r{^/}
-              full_filename = File.join(File.expand_path(RAILS_ROOT), 'public', filename)
+              full_filename = File.join(File.expand_path(Rails.root), 'public', filename)
               %[<a href="#{Footnotes::Filter.prefix(full_filename, 1, 1)}">#{filename}</a>]
             else
               %[<a href="#{filename}">#{filename}</a>]

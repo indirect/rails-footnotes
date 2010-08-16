@@ -20,9 +20,9 @@ module Footnotes
         # Get controller filter chain
         #
         def parse_filters
-          return @controller.class.filter_chain.collect do |filter|
-            [parse_method(filter.method), filter.type.inspect, controller_filtered_actions(filter).inspect]
-          end
+          return [] # TODO @controller.class.filter_chain.collect do |filter|
+#            [parse_method(filter.method), filter.type.inspect, controller_filtered_actions(filter).inspect]
+#          end
         end
 
         # This receives a filter, creates a mock controller and check in which

@@ -31,4 +31,6 @@ module Footnotes
   end
 end
 
-Exception.send :include, Footnotes::Extensions::Exception
+if Rails.version < '3.0'
+  Exception.send :include, Footnotes::Extensions::Exception
+end

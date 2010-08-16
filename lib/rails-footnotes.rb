@@ -15,8 +15,12 @@ if ENABLE_RAILS_FOOTNOTES
   # behavior commenting the after_filter line below and putting it in Your
   # application. Then you can cherrypick in which actions it will appear.
   #
-  class ActionController::Base
-    prepend_before_filter Footnotes::Filter
-    after_filter Footnotes::Filter
+  module RailsFootnotesExtension
+    def self.included(base)
+      base.prepend_before_filter Footnotes::BeforeFilter
+      base.after_filter Footnotes::AfterFilter
+    end
   end
+
+  ActionController::Base.send(:include, RailsFootnotesExtension)
 end

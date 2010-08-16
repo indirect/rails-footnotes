@@ -28,6 +28,8 @@ Rake::TestTask.new(:test) do |t|
   t.verbose = true
 end
 
+task :default => :test
+
 desc 'Generate documentation for Footnotes.'
 Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'rdoc'

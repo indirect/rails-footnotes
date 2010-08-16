@@ -27,12 +27,16 @@ module Footnotes
 
             # Catch segments requirements
             req = {}
-            route.segments.each do |segment|
-              next unless segment.is_a?(ActionController::Routing::DynamicSegment) && segment.regexp
-              req[segment.key.to_sym] = segment.regexp
+            if Rails.version < '3.0'
+              route.segments.each do |segment|
+                next unless segment.is_a?(ActionController::Routing::DynamicSegment) && segment.regexp
+                req[segment.key.to_sym] = segment.regexp
+              end
+              [escape(name), route.segments.join, route.requirements.reject{|key,value| key == :controller}.inspect, req.inspect]
+            else
+              req = route.conditions
+              [escape(name), route.conditions.keys.join, route.requirements.reject{|key,value| key == :controller}.inspect, req.inspect]
             end
-
-            [escape(name), route.segments.join, route.requirements.reject{|key,value| key == :controller}.inspect, req.inspect]
           end
         end
     end

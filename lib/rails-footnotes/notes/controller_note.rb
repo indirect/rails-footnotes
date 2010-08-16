@@ -36,7 +36,7 @@ module Footnotes
             end
             #raise "File not found"
           else
-            @controller_filename=File.join(File.expand_path(RAILS_ROOT), 'app', 'controllers', "#{controller_name}.rb").sub('/controllers/controllers/', '/controllers/')
+            @controller_filename=File.join(File.expand_path(Rails.root), 'app', 'controllers', "#{controller_name}.rb").sub('/controllers/controllers/', '/controllers/')
           end
           @controller_filename
         end

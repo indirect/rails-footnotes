@@ -1,4 +1,21 @@
 module Footnotes
+  class BeforeFilter
+    # Method called to start the notes
+    # It's a before filter prepend in the controller
+    def self.filter(controller)
+      Footnotes::Filter.start!(controller)
+    end
+  end
+
+  class AfterFilter
+    # Method that calls Footnotes to attach its contents
+    def self.filter(controller)
+      filter = Footnotes::Filter.new(controller)
+      filter.add_footnotes!
+      filter.close!(controller)
+    end
+  end
+
   class Filter
     @@no_style = false
     @@multiple_notes = false
@@ -25,20 +42,6 @@ module Footnotes
     cattr_accessor :no_style, :notes, :prefix, :multiple_notes
 
     class << self
-      # Method called to start the notes
-      # It's a before filter prepend in the controller
-      #
-      def before(controller)
-        Footnotes::Filter.start!(controller)
-      end
-
-      # Method that calls Footnotes to attach its contents
-      #
-      def after(controller)
-        filter = Footnotes::Filter.new(controller)
-        filter.add_footnotes!
-        filter.close!(controller)
-      end
 
       # Calls the class method start! in each note
       # Sometimes notes need to set variables or clean the environment to work properly
@@ -96,7 +99,7 @@ module Footnotes
     def initialize(controller)
       @controller = controller
       @template = controller.instance_variable_get(:@template)
-      @body = controller.response.body
+      @body = controller.response_body
       @notes = []
     end
 
@@ -138,11 +141,16 @@ module Footnotes
       end
 
       def performed_render?
-        @controller.instance_variable_get(:@performed_render)
+        @controller.instance_variable_get(:@performed_render) || # rails 2.x
+          (@controller.respond_to?(:performed?) && @controller.performed?) # rails3, will break on redirect??
       end
 
       def valid_format?
-        [:html,:rhtml,:xhtml,:rxhtml].include?(@template.send(template_format_method).to_sym)
+        if @template # Rails 2.x
+          [:html,:rhtml,:xhtml,:rxhtml].include?(@template.send(template_format_method.to_sym).to_sym)
+        else # Rails 3
+          @controller.response.content_type == 'text/html'
+        end
       end
 
       def template_format_method

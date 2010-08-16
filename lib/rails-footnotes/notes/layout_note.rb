@@ -16,12 +16,12 @@ module Footnotes
       end
 
       def valid?
-        prefix? && @controller.active_layout
+        prefix? && nil#@controller.active_layout TODO doesn't work with Rails 3
       end
 
       protected
         def filename
-          File.join(File.expand_path(RAILS_ROOT), 'app', 'layouts', "#{@controller.active_layout.to_s.underscore}").sub('/layouts/layouts/', '/views/layouts/')
+          File.join(File.expand_path(Rails.root), 'app', 'layouts', "#{@controller.active_layout.to_s.underscore}").sub('/layouts/layouts/', '/views/layouts/')
         end
     end
   end
