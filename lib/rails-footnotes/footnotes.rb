@@ -99,7 +99,7 @@ module Footnotes
     def initialize(controller)
       @controller = controller
       @template = controller.instance_variable_get(:@template)
-      @body = controller.response_body
+      @body = controller.response.body
       @notes = []
     end
 
@@ -258,7 +258,7 @@ module Footnotes
         HTML
 
         placeholder = /<div[^>]+id=['"]footnotes_holder['"][^>]*>/i
-        if @body =~ placeholder
+        if @controller.response.body =~ placeholder
           insert_text :after, placeholder, footnotes_html
         else
           insert_text :before, /<\/body>/i, footnotes_html
@@ -341,15 +341,17 @@ module Footnotes
       def insert_text(position, pattern, new_text)
         index = case pattern
           when Regexp
-            if match = @body.match(pattern)
+            if match = @controller.response.body.match(pattern)
               match.offset(0)[position == :before ? 0 : 1]
             else
-              @body.size
+              @controller.response.body.size
             end
           else
             pattern
           end
-        @body.insert index, new_text
+        newbody = @controller.response.body
+        newbody.insert index, new_text
+        @controller.response.body = newbody
       end
 
       # Instance each_with_rescue method
