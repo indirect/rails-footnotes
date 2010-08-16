@@ -23,6 +23,7 @@ end
 
 desc 'Run tests for Footnotes.'
 Rake::TestTask.new(:test) do |t|
+  t.libs << 'test'
   t.pattern = 'test/**/*_test.rb'
   t.verbose = true
 end

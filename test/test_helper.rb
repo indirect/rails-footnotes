@@ -5,5 +5,6 @@ require 'mocha'
 ENV['RAILS_ENV'] = 'test'
 
 require 'active_support'
-require File.dirname(__FILE__) + '/../lib/rails-footnotes/footnotes'
-require File.dirname(__FILE__) + '/../lib/rails-footnotes/notes/abstract_note'
+require 'active_support/all' unless Class.respond_to?(:cattr_accessor)
+require 'rails-footnotes/footnotes'
+require 'rails-footnotes/notes/abstract_note'

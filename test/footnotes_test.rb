@@ -1,8 +1,7 @@
-require File.dirname(__FILE__) + '/test_helper'
+require 'test_helper'
 
 require 'action_controller'
 require 'action_controller/test_case'
-require 'action_controller/test_process'
 
 class FootnotesController < ActionController::Base; attr_accessor :template, :performed_render; end
 
@@ -82,8 +81,8 @@ class FootnotesTest < Test::Unit::TestCase
   def test_notes_are_initialized
     footnotes_perform!
     test_note = @footnotes.instance_variable_get('@notes').first
-    assert 'Footnotes::Notes::TestNote', test_note.class
-    assert :test, test_note.to_sym
+    assert_equal 'Footnotes::Notes::TestNote', test_note.class.name
+    assert_equal :test, test_note.to_sym
   end
 
   def test_notes_links
