@@ -77,7 +77,7 @@ module Footnotes
       # Logs the error using specified title and format
       #
       def log_error(title, exception)
-        RAILS_DEFAULT_LOGGER.error "#{title}: #{exception}\n#{exception.backtrace.join("\n")}"
+        Rails.logger.error "#{title}: #{exception}\n#{exception.backtrace.join("\n")}"
       end
 
       # If none argument is sent, simply return the prefix.

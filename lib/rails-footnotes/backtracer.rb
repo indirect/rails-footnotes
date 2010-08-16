@@ -9,7 +9,7 @@ module Footnotes
 
       def add_links_to_backtrace(lines)
         lines.collect do |line|
-          expanded = line.gsub('#{RAILS_ROOT}', RAILS_ROOT)
+          expanded = line.gsub('#{RAILS_ROOT}', Rails.root)
           if match = expanded.match(/^(.+):(\d+):in/) || match = expanded.match(/^(.+):(\d+)\s*$/)
             file = File.expand_path(match[1])
             line_number = match[2]

@@ -1,13 +1,12 @@
 unless defined?(ENABLE_RAILS_FOOTNOTES)
-  ENABLE_RAILS_FOOTNOTES=(RAILS_ENV == 'development')
+  ENABLE_RAILS_FOOTNOTES=Rails.env.development?
 end
 if ENABLE_RAILS_FOOTNOTES
-  dir = File.dirname(__FILE__)
-  require File.join(dir, 'rails-footnotes', 'footnotes')
-  require File.join(dir, 'rails-footnotes', 'backtracer')
+  require 'rails-footnotes/footnotes'
+  require 'rails-footnotes/backtracer'
 
   # Load all notes
-  #
+  dir = File.dirname(__FILE__)
   Dir[File.join(dir, 'rails-footnotes', 'notes', '*.rb')].sort.each do |note|
     require note
   end
