@@ -24,7 +24,10 @@ Installation
 Install Rails Footnotes is very easy. If you are running on Rails 2.3 just run
 the following:
 
+
    sudo gem install rails-footnotes
+
+Rails 2.x
 
 In RAILS_ROOT/config/environments/development.rb (yes, you want it only in development):
 
@@ -34,14 +37,20 @@ If you want it as plugin, just do:
 
    script/plugin install git://github.com/josevalim/rails-footnotes.git
 
+Rails 3.x
+   
+   gem 'rails-footnotes', :git => 'git://github.com/romanvbabenko/rails-footnotes.git', :branch => 'rails3',
+      :group => :development  
+
 Configuration
 -------------
 
 If you are not using Textmate as text editor, in your environment.rb or
 in an initializer do:
 
-  if defined?(Footnotes)
+  if defined?(Footnotes) & Rails.env.development?
     Footnotes::Filter.prefix = 'txmt://open?url=file://%s&amp;line=%d&amp;column=%d'
+    Footnotes.run!
   end
 
 Where you are going to choose a prefix compatible with your text editor. The %s is
