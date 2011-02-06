@@ -91,7 +91,7 @@ module Footnotes
         def parse_trace(trace)
           trace.map do |t|
             s = t.split(':')
-            %[<a href="#{escape(Footnotes::Filter.prefix("#{Rails.root}/#{s[0]}", s[1].to_i, 1))}">#{escape(t)}</a><br />]
+            %[<a href="#{escape(Footnotes::Filter.prefix("#{Rails.root.to_s}/#{s[0]}", s[1].to_i, 1))}">#{escape(t)}</a><br />]
           end.join
         end
 
@@ -136,7 +136,7 @@ module Footnotes
 
         # Strip, select those ones from app and reject first two, because they
         # are from the plugin
-        @trace = Kernel.caller.collect(&:strip).select{|i| i.gsub!(/^#{RAILS_ROOT}\//im, '') }[2..-1]
+        @trace = Kernel.caller.collect(&:strip).select{|i| i.gsub!(/^#{Rails.root}\//im, '') }[2..-1]
       end
     end
 
