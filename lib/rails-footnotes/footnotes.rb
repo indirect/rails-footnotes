@@ -22,7 +22,7 @@ module Footnotes
     @@klasses = []
 
     # Default link prefix is textmate
-    @@prefix = 'txmt://open?url=file://%s&amp;line=%d&amp;column=%d'
+    @@prefix = 'txmt://open?url=file://%s&amp;line=%d&amp;column=%d'.html_safe
 
     # Edit notes
     @@notes = [ :controller, :view, :layout, :partials, :stylesheets, :javascripts ]
