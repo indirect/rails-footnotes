@@ -183,17 +183,18 @@ module Footnotes
       #
 
       def insert_styles
+        #TODO More customizable(reset.css, from file etc.)
         insert_text :before, /<\/head>/i, <<-HTML
         <!-- Footnotes Style -->
         <style type="text/css">
-          #footnotes_debug {margin: 2em 0 1em 0; text-align: center; color: #444; line-height: 16px;}
+          #footnotes_debug {font-size: 11px; font-weight: normal; margin: 2em 0 1em 0; text-align: center; color: #444; line-height: 16px;}
           #footnotes_debug th, #footnotes_debug td {color: #444; line-height: 18px;}
-          #footnotes_debug a {text-decoration: none; color: #444; line-height: 18px;}
+          #footnotes_debug a {color: #9b1b1b; font-weight: inherit; text-decoration: none; line-height: 18px;}
           #footnotes_debug table {text-align: center;}
           #footnotes_debug table td {padding: 0 5px;}
           #footnotes_debug tbody {text-align: left;}
           #footnotes_debug .name_values td {vertical-align: top;}
-          #footnotes_debug legend {background-color: #FFF;}
+          #footnotes_debug legend {background-color: #fff;}
           #footnotes_debug fieldset {text-align: left; border: 1px dashed #aaa; padding: 0.5em 1em 1em 1em; margin: 1em 2em; color: #444; background-color: #FFF;}
           /* Aditional Stylesheets */
           #{@notes.map(&:stylesheet).compact.join("\n")}
