@@ -45,13 +45,21 @@ Rails 3.x
 Configuration
 -------------
 
+If you want to add alternate logic to enable or disable footnotes,
+add something like this to config/initializers/footnotes.rb:
+
+  if defined?(Footnotes) & Rails.env.development?
+    Footnotes.run! # first of all 
+
+    # ... other init code
+  end
+
 If you are not using Textmate as text editor, in your environment.rb or
 in an initializer do:
 
-  if defined?(Footnotes) & Rails.env.development?
-    Footnotes::Filter.prefix = 'txmt://open?url=file://%s&amp;line=%d&amp;column=%d'
-    Footnotes.run!
-  end
+  Footnotes::Filter.prefix = 'mvim://open?url=file://%s&amp;line=%d&amp;column=%d'
+
+for MacVim
 
 Where you are going to choose a prefix compatible with your text editor. The %s is
 replaced by the name of the file, the first %d is replaced by the line number and
@@ -71,11 +79,6 @@ If you have New Relic RPM installed, you may want to turn off query explains
 (explains can slows things down)
 
   Footnotes::Notes::QueriesNote.sql_explain = false
-
-If you want to add alternate logic to enable or disable footnotes,
-add something like this to environment.rb:
-
-  ENABLE_RAILS_FOOTNOTES=(Rails.env.production? == false)
 
 Finally, you can control which notes you want to show. The default are:
 
@@ -104,9 +107,9 @@ For example, to create a note that shows info about the user logged in your appl
           @current_user = controller.instance_variable_get("@current_user")
         end
 
-        # The name that will appear as legend in fieldsets
+        # Returns the title that represents this note.
         #
-        def legend
+        def title 
           "Current user: #{@current_user.name}"
         end
 
