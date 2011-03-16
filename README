@@ -1,6 +1,6 @@
 Rails Footnotes
 License: MIT
-Version: 3.6.7
+Version: 3.7.0
 
 You can also read this README in pretty html at the GitHub project Wiki page
 
@@ -38,9 +38,9 @@ If you want it as plugin, just do:
    script/plugin install git://github.com/josevalim/rails-footnotes.git
 
 Rails 3.x
-   
+
    gem 'rails-footnotes', :git => 'git://github.com/romanvbabenko/rails-footnotes.git', :branch => 'rails3',
-      :group => :development  
+      :group => :development
 
 Configuration
 -------------
@@ -49,7 +49,7 @@ If you want to add alternate logic to enable or disable footnotes,
 add something like this to config/initializers/footnotes.rb:
 
   if defined?(Footnotes) & Rails.env.development?
-    Footnotes.run! # first of all 
+    Footnotes.run! # first of all
 
     # ... other init code
   end
@@ -109,7 +109,7 @@ For example, to create a note that shows info about the user logged in your appl
 
         # Returns the title that represents this note.
         #
-        def title 
+        def title
           "Current user: #{@current_user.name}"
         end
 
