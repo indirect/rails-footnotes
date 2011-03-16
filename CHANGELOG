@@ -1,3 +1,7 @@
+== Footnotes v3.7.0
+  * Migrate to Bundler
+  * Support only Rails3
+
 == Footnotes v3.6.7
   * fixed log_note error - long overdue (thanks to many including Moritz Heidkamp)
   * 1.9: ignore more assigns (thanks to justin case)
@@ -14,7 +18,7 @@
   * pre rails 2.3 support fixes (thanks to tobias)
   * better disabling of query notes (thanks to tobias)
   * fixed variable assignment escaping (thanks to gdelvino)
-  * fixed cookie value escaping (thanks to indirect) 
+  * fixed cookie value escaping (thanks to indirect)
   * Turn off footnotes with a parameter footnotes=false (thanks to indirect)
 
 == Footnotes v3.6
@@ -50,7 +54,7 @@
 == Footnotes v3.2.1
   * Added some tests;
   * Redefined Footnotes CSS and Javascripts to use concise names.
-  
+
 == Footnotes v3.2
   * Now you can easily add your own notes;
   * Added numbers to tabs;
