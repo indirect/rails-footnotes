@@ -6,7 +6,6 @@ You can also read this README in pretty html at the GitHub project Wiki page
 
   http://wiki.github.com/josevalim/rails-footnotes
 
-
 Description
 -----------
 
@@ -21,29 +20,26 @@ your backtrace lines.
 Installation
 ------------
 
-Install Rails Footnotes is very easy. If you are running on Rails 2.3 just run
-the following:
+Since this branch aims Rails 3 support, if you want to use it with Rails 2.3 you should check this branch:
 
+  https://github.com/josevalim/rails-footnotes/tree/rails2
 
-   sudo gem install rails-footnotes
+Install Rails Footnotes is very easy.
 
 Rails 2.x
 
 In RAILS_ROOT/config/environments/development.rb (yes, you want it only in development):
 
-  config.gem "rails-footnotes"
-
-If you want it as plugin, just do:
-
-   script/plugin install git://github.com/josevalim/rails-footnotes.git
+  gem "rails-footnotes", '< 3.7.0', :group => :development
 
 Rails 3.x
 
-   gem 'rails-footnotes', :git => 'git://github.com/romanvbabenko/rails-footnotes.git', :branch => 'rails3',
-      :group => :development
+   gem 'rails-footnotes', '>= 3.7', :group => :development
 
 Configuration
 -------------
+
+For version greater then 3.7.0
 
 If you want to add alternate logic to enable or disable footnotes,
 add something like this to config/initializers/footnotes.rb:
