@@ -35,7 +35,7 @@ module Footnotes
               if line =~ /Rendered (\S*) \(([\d\.]+)\S*?\)/
                 partial = $1
                 @controller.view_paths.each do |view_path|
-                  path = File.join(view_path, "#{partial}*")
+                  path = File.join(view_path.to_s, "#{partial}*")
                   files = Dir.glob(path)
                   for file in files
                     #TODO figure out what format got rendered if theres multiple
