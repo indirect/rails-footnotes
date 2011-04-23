@@ -48,9 +48,10 @@ module Footnotes
       # This method allows this kind of setup
       #
       def start!(controller)
-        @@klasses = []
+        self.each_with_rescue(Footnotes.before_hooks) {|hook| hook.call(controller, self)}
 
-        each_with_rescue(@@notes.flatten) do |note|
+        @@klasses = []
+        self.each_with_rescue(@@notes.flatten) do |note|
           klass = "Footnotes::Notes::#{note.to_s.camelize}Note".constantize
           klass.start!(controller) if klass.respond_to?(:start!)
           @@klasses << klass
@@ -59,22 +60,22 @@ module Footnotes
 
       # Process notes, discarding only the note if any problem occurs
       #
-      def each_with_rescue(notes)
+      def each_with_rescue(collection)
         delete_me = []
 
-        notes.each do |note|
+        collection.each do |item|
           begin
-            yield note
+            yield item
           rescue Exception => e
-            # Discard note if it has a problem
-            log_error("Footnotes #{note.to_s.camelize}Note Exception", e)
-            delete_me << note
+            # Discard item if it has a problem
+            log_error("Footnotes #{item.to_s.camelize} Exception", e)
+            delete_me << item
             next
           end
         end
 
-        delete_me.each{ |note| notes.delete(note) }
-        return notes
+        delete_me.each { |item| collection.delete(item) }
+        return collection
       end
 
       # Logs the error using specified title and format
@@ -115,9 +116,8 @@ module Footnotes
     # This method allows this kind of work
     #
     def close!(controller)
-      each_with_rescue(@@klasses) do |klass|
-        klass.close!(controller)
-      end
+      self.each_with_rescue(@@klasses) {|klass| klass.close!(controller)}
+      self.each_with_rescue(Footnotes.after_hooks) {|hook| hook.call(controller, self)}
     end
 
     protected
@@ -219,14 +219,14 @@ module Footnotes
               function hideAll(){
                 #{close unless @@multiple_notes}
               }
-              
+
               function hideAllAndToggle(id) {
                 hideAll();
                 toggle(id)
 
                 location.href = '#footnotes_debug';
-              }  
-              
+              }
+
               function toggle(id){
                 var el = document.getElementById(id);
                 if (el.style.display == 'none') {
@@ -235,11 +235,11 @@ module Footnotes
                   Footnotes.hide(el);
                 }
               }
-            
+
               function show(element) {
                 element.style.display = 'block'
               }
-            
+
               function hide(element) {
                 element.style.display = 'none'
               }
@@ -356,7 +356,7 @@ module Footnotes
       end
 
       # Instance each_with_rescue method
-      # 
+      #
       def each_with_rescue(*args, &block)
         self.class.each_with_rescue(*args, &block)
       end
