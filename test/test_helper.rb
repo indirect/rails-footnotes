@@ -1,5 +1,5 @@
-require 'test/unit'
 require 'rubygems'
+require 'test/unit'
 require 'mocha'
 
 ENV['RAILS_ENV'] = 'test'

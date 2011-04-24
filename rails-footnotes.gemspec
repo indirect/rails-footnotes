@@ -17,7 +17,6 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", ">= 3.0.0"
 
   s.add_development_dependency "autotest"
-  s.add_development_dependency "redgreen"
   s.add_development_dependency "mocha"
   s.add_development_dependency "rails", ">= 3.0.0"
 

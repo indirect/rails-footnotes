@@ -10,6 +10,10 @@ module Footnotes::Notes
     def self.to_sym; :test; end
     def valid?; true; end
   end
+
+  class NoteXNote < TestNote; end
+  class NoteYNote < TestNote; end
+  class NoteZNote < TestNote; end
 end
 
 class FootnotesTest < Test::Unit::TestCase
@@ -30,7 +34,7 @@ class FootnotesTest < Test::Unit::TestCase
     index = @controller.response.body.index(/This is the HTML page/)
     assert_equal 334, index
   end
-  
+
   def test_foonotes_included
     footnotes_perform!
     assert_not_equal $html, @controller.response.body
@@ -167,7 +171,18 @@ class FootnotesTest < Test::Unit::TestCase
     after = "    Notes</body>"
     assert_equal after, @controller.response.body.split("\n")[12]
   end
-  
+
+  def test_hooks
+    Footnotes::Filter.notes = [:note_x, :note_y, :note_z]
+    Footnotes.setup {|config| config.before {|controller, filter| filter.notes -= [:note_y] }}
+    Footnotes::Filter.start!(@controller)
+    assert_equal [:note_x, :note_z], Footnotes::Filter.notes
+
+    Footnotes.setup {|config| config.after {|controller, filter| filter.notes -= [:note_y] }}
+    @footnotes.close!(@controller)
+    assert_equal [:note_x, :note_z], Footnotes::Filter.notes
+  end
+
   protected
     # First we make sure that footnotes will perform (long life to mocha!)
     # Then we call add_footnotes!
