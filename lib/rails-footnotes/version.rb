@@ -1,3 +1,3 @@
 module Footnotes
-  VERSION = "3.7.1.pre"
+  VERSION = "3.7.1"
 end
