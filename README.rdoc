@@ -32,7 +32,7 @@ For version greater then 3.7.0
 If you want to add alternate logic to enable or disable footnotes,
 add something like this to config/initializers/footnotes.rb:
 
-  if defined?(Footnotes) & Rails.env.development?
+  if defined?(Footnotes) && Rails.env.development?
     Footnotes.run! # first of all
 
     # ... other init code
