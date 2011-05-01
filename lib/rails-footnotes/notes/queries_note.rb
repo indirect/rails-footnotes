@@ -3,185 +3,113 @@ require "#{File.dirname(__FILE__)}/abstract_note"
 module Footnotes
   module Notes
     class QueriesNote < AbstractNote
-      @@alert_db_time = 0.16
+      cattr_accessor :alert_db_time, :alert_sql_number, :orm, :instance_writter => false
+
+      @@alert_db_time    = 16.0
       @@alert_sql_number = 8
-      @@sql = []
-      @@include_when_new_relic_installed = false
-      @@loaded = false
-      
-      cattr_accessor :sql, :alert_db_time, :alert_sql_number, :alert_explain, :loaded, :sql_explain, :instance_writter => false
-      cattr_reader :include_when_new_relic_installed
-      
-      def self.include_when_new_relic_installed=(include_me)
-        @@include_when_new_relic_installed = include_me
-        load if include_me
-      end
-      
+      @@query_subscriber = nil
+      @@orm              = [:active_record, :data_mapper]
+
       def self.start!(controller)
-        @@sql = []
+        self.query_subscriber.reset!
       end
 
-      def self.to_sym
-        :queries
+      def self.query_subscriber
+        @@query_subscriber ||= Footnotes::Notes::QuerySubscriber.new(self.orm)
+      end
+
+      def events
+        self.class.query_subscriber.events
       end
 
       def title
-        db_time = @@sql.inject(0){|sum, item| sum += item.time }
-        query_color = generate_red_color(@@sql.length, alert_sql_number)
-        db_color    = generate_red_color(db_time, alert_db_time)
+        queries = self.events.count
+        total_time = self.events.map(&:duration).sum / 1000.0
+        query_color = generate_red_color(self.events.count, alert_sql_number)
+        db_color    = generate_red_color(total_time, alert_db_time)
 
         <<-TITLE
-  <span style="background-color:#{query_color}">Queries (#{@@sql.length})</span> 
-  <span style="background-color:#{db_color}">DB (#{"%.6f" % db_time}s)</span>
+        <span style="background-color:#{query_color}">Queries (#{queries})</span>
+        <span style="background-color:#{db_color}">DB (#{"%.3f" % total_time}ms)</span>
         TITLE
-      end
-
-      def stylesheet
-        <<-STYLESHEET
-  #queries_debug_info table td, #queries_debug_info table th{border:1px solid #A00; padding:0 3px; text-align:center;}
-  #queries_debug_info table thead, #queries_debug_info table tbody {color:#A00;}
-  #queries_debug_info p {background-color:#F3F3FF; border:1px solid #CCC; margin:12px; padding:4px 6px;}
-  #queries_debug_info a:hover {text-decoration:underline;}
-        STYLESHEET
       end
 
       def content
         html = ''
-
-        @@sql.each_with_index do |item, i|
+        self.events.each_with_index do |event, index|
           sql_links = []
-          sql_links << "<a href=\"javascript:Footnotes.toggle('qtable_#{i}')\" style=\"color:#A00;\">explain</a>" if item.explain
-          sql_links << "<a href=\"javascript:Footnotes.toggle('qtrace_#{i}')\" style=\"color:#00A;\">trace</a>" if item.trace
+          sql_links << "<a href=\"javascript:Footnotes.toggle('qtrace_#{index}')\" style=\"color:#00A;\">trace</a>"
 
           html << <<-HTML
-  <b id="qtitle_#{i}">#{escape(item.type.to_s.upcase)}</b> (#{sql_links.join(' | ')})<br />
-  #{print_name_and_time(item.name, item.time)}<br />
-  <span id="explain_#{i}">#{print_query(item.query)}</span><br />
-  #{print_explain(i, item.explain) if item.explain}
-  <p id="qtrace_#{i}" style="display:none;">#{parse_trace(item.trace) if item.trace}</p><br />
+            <b id="qtitle_#{index}">#{escape(event.type.to_s.upcase)}</b> (#{sql_links.join(' | ')})<br />
+            <span id="sql_#{index}">#{print_query(event.payload[:sql])}</span><br />
+            #{print_name_and_time(event.payload[:name], event.duration / 1000.0)}&nbsp;
+            <p id="qtrace_#{index}" style="display:none;">#{parse_trace(event.trace)}</p><br />
           HTML
         end
-
         return html
       end
-      
-      def self.load
-        #only include when NewRelic is installed if configured to do so
-        if !loaded and included? and defined?(ActiveRecord)
-          ActiveRecord::ConnectionAdapters::AbstractAdapter.send :include, Footnotes::Extensions::AbstractAdapter
-          ActiveRecord::ConnectionAdapters.local_constants.each do |adapter|
-            next unless adapter =~ /.*[^Abstract]Adapter$/
-            next if adapter =~ /(SQLite|Salesforce)Adapter$/
-            eval("ActiveRecord::ConnectionAdapters::#{adapter}").send :include, Footnotes::Extensions::QueryAnalyzer
-            self.loaded = true
-          end
-        end
-      end
-      
+
       protected
-        def parse_explain(results)
-          table = []
-          table << results.fetch_fields.map(&:name)
-          results.each do |row|
-            table << row
-          end
-          table
-        end
+      def print_name_and_time(name, time)
+        "<span style='background-color:#{generate_red_color(time, alert_ratio)}'>#{escape(name || 'SQL')} (#{'%.3fms' % time})</span>"
+      end
 
-        def parse_trace(trace)
-          trace.map do |t|
-            s = t.split(':')
-            %[<a href="#{escape(Footnotes::Filter.prefix("#{Rails.root.to_s}/#{s[0]}", s[1].to_i, 1))}">#{escape(t)}</a><br />]
-          end.join
-        end
+      def print_query(query)
+        escape(query.to_s.gsub(/(\s)+/, ' ').gsub('`', ''))
+      end
 
-        def print_name_and_time(name, time)
-          "<span style='background-color:#{generate_red_color(time, alert_ratio)}'>#{escape(name || 'SQL')} (#{sprintf('%f', time)}s)</span>"
-        end
+      def generate_red_color(value, alert)
+        c = ((value.to_f/alert).to_i - 1) * 16
+        c = 0  if c < 0; c = 15 if c > 15; c = (15-c).to_s(16)
+        "#ff#{c*4}"
+      end
 
-        def print_query(query)
-          escape(query.to_s.gsub(/(\s)+/, ' ').gsub('`', ''))
-        end
+      def alert_ratio
+        alert_db_time / alert_sql_number
+      end
 
-        def print_explain(i, explain)
-          mount_table(parse_explain(explain), :id => "qtable_#{i}", :style => 'margin:10px;display:none;', :summary => "Debug information for #{title}")
-        end
-
-        def generate_red_color(value, alert)
-          c = ((value.to_f/alert).to_i - 1) * 16
-          c = 0  if c < 0
-          c = 15 if c > 15
-
-          c = (15-c).to_s(16)
-          "#ff#{c*4}"
-        end
-
-        def alert_ratio
-          alert_db_time / alert_sql_number
-        end
-
-    end
-  end
-
-  module Extensions
-    class Sql
-      attr_accessor :type, :name, :time, :query, :explain, :trace
-
-      def initialize(type, name, time, query, explain)
-        @type = type
-        @name = name
-        @time = time
-        @query = query
-        @explain = explain
-
-        # Strip, select those ones from app and reject first two, because they
-        # are from the plugin
-        @trace = Kernel.caller.collect(&:strip).select{|i| i.gsub!(/^#{Rails.root}\//im, '') }[2..-1]
+      def parse_trace(trace)
+        trace.map do |t|
+          s = t.split(':')
+          %[<a href="#{escape(Footnotes::Filter.prefix("#{Rails.root.to_s}/#{s[0]}", s[1].to_i, 1))}">#{escape(t)}</a><br />]
+        end.join
       end
     end
 
-    module QueryAnalyzer
-      def self.included(base)
-        base.class_eval do
-          alias_method_chain :execute, :analyzer
-        end
+    class QuerySubscriberNotifactionEvent
+      attr_reader :event, :trace, :query
+      delegate :name, :payload, :duration, :time, :type, :to => :event
+
+      def initialize(event, ctrace)
+        @event, @ctrace, @query = event, ctrace, event.payload[:sql]
       end
 
-      def execute_with_analyzer(query, name = nil)
-        query_results = nil
-        time = Benchmark.realtime { query_results = execute_without_analyzer(query, name) }
+      def trace
+        @trace ||= @ctrace.collect(&:strip).select{|i| i.gsub!(/^#{Rails.root.to_s}\//, '') } || []
+      end
 
-        if query =~ /^(select|create|update|delete)\b/i
-          type = $&.downcase.to_sym
-          explain = nil
-
-          if adapter_name == 'MySQL' && type == :select && Footnotes::Notes::QueriesNote.sql_explain
-            log_silence do
-              explain = execute_without_analyzer("EXPLAIN #{query}", name)
-            end
-          end
-          Footnotes::Notes::QueriesNote.sql << Footnotes::Extensions::Sql.new(type, name, time, query, explain)
-        end
-
-        query_results
+      def type
+        return @type if @type
+        @type = self.query.match(/^(select|insert|update|delete|alter)\b/i) || 'Unknown'
       end
     end
 
-    module AbstractAdapter
-      def log_silence
-        result = nil
-        if @logger
-          @logger.silence do
-            result = yield
-          end
-        else
-          result = yield
-        end
-        result
+    class QuerySubscriber < ActiveSupport::LogSubscriber
+      attr_accessor :events
+
+      def initialize(orm)
+        @events = []
+        orm.each {|adapter| ActiveSupport::LogSubscriber.attach_to adapter, self}
+      end
+
+      def reset!
+        self.events.clear
+      end
+
+      def sql(event)
+        @events << QuerySubscriberNotifactionEvent.new(event.dup, caller)
       end
     end
-
   end
 end
-
-Footnotes::Notes::QueriesNote.load
