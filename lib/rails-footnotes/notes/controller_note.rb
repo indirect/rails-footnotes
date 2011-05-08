@@ -12,47 +12,32 @@ module Footnotes
       end
 
       def link
-        if controller_filename && controller_line_number
-          escape(Footnotes::Filter.prefix(controller_filename, controller_line_number + 1, 3))
-        end
+        Footnotes::Filter.prefix(controller_filename, controller_line_number + 1, 3)
       end
 
       def valid?
-        prefix?
+        prefix? && File.exists?(self.controller_filename)
       end
 
       protected
-        # Some controller classes come with the Controller:: module and some don't
-        # (anyone know why? -- Duane)
+        def controller_path
+          @controller_path = @controller.class.name.underscore
+        end
+
         def controller_filename
-          return @controller_filename if defined?(@controller_filename)
-          controller_name=@controller.class.to_s.underscore
-          controller_name='application' if controller_name=='application_controller'
-          if ActionController::Routing.respond_to? :controller_paths
-            @controller_filename=nil
-            ActionController::Routing.controller_paths.each do |controller_path|
-              full_controller_path = File.join(File.expand_path(controller_path), "#{controller_name}.rb")
-              @controller_filename=full_controller_path if File.exists?(full_controller_path)
-            end
-            #raise "File not found"
-          else
-            @controller_filename=File.join(File.expand_path(Rails.root), 'app', 'controllers', "#{controller_name}.rb").sub('/controllers/controllers/', '/controllers/')
-          end
-          @controller_filename
+          @controller_filename ||= Rails.root.join('app', 'controllers', "#{controller_path}.rb")
         end
 
         def controller_text
-          if controller_filename
-            @controller_text ||= IO.read(controller_filename)
-          end
+          @controller_text ||= IO.read(controller_filename)
         end
 
         def action_index
-          (controller_text =~ /def\s+#{@controller.action_name}[\s\(]/) if controller_text
+          (controller_text =~ /def\s+#{@controller.action_name}[\s\(]/)
         end
 
         def controller_line_number
-          lines_from_index(controller_text, action_index) || 0 if controller_text
+          lines_from_index(controller_text, action_index) || 0
         end
 
         def lines_from_index(string, index)
