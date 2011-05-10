@@ -25,7 +25,14 @@ module Footnotes
         end
 
         def controller_filename
-          @controller_filename ||= Rails.root.join('app', 'controllers', "#{controller_path}.rb")
+          @controller_filename ||= begin
+            path = Rails.root.join('app', 'controllers', "#{controller_path}.rb")
+            if path.exist?
+              path
+            else
+              Gem.find_files(controller_path).first || path
+            end
+          end
         end
 
         def controller_text
