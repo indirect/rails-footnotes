@@ -50,7 +50,7 @@ add something like this to config/initializers/footnotes.rb:
 If you are not using Textmate as text editor, in your environment.rb or
 in an initializer do:
 
-    Footnotes::Filter.prefix = 'mvim://open?url=file://%s&amp;line=%d&amp;column=%d'
+    Footnotes::Filter.prefix = 'mvim://open?url=file://%s&line=%d&column=%d'
 
 for MacVim
 
@@ -67,11 +67,6 @@ by turning footnotes stylesheet off:
 Another option is to allow multiple notes to be opened at the same time:
 
     Footnotes::Filter.multiple_notes = true
-
-If you have New Relic RPM installed, you may want to turn off query explains
-(explains can slows things down)
-
-    Footnotes::Notes::QueriesNote.sql_explain = false
 
 Finally, you can control which notes you want to show. The default are:
 
