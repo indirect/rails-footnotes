@@ -1,6 +1,7 @@
 .*
 !.gitignore
 !.gitmodules
+!*.example
 *.gem
 .bundle
 Gemfile.lock
