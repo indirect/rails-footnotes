@@ -24,7 +24,7 @@ Installation
 Install Rails Footnotes is very easy. If you are running on Rails 2.3 just run
 the following:
 
-   sudo gem install rails-footnotes
+  gem install rails-footnotes -v 3.6.7
 
 In RAILS_ROOT/config/environments/development.rb (yes, you want it only in development):
 
@@ -32,7 +32,7 @@ In RAILS_ROOT/config/environments/development.rb (yes, you want it only in devel
 
 If you want it as plugin, just do:
 
-   script/plugin install git://github.com/josevalim/rails-footnotes.git
+  script/plugin install git://github.com/josevalim/rails-footnotes.git -r rails2
 
 Configuration
 -------------
