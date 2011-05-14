@@ -1,5 +1,3 @@
-require "#{File.dirname(__FILE__)}/abstract_note"
-
 module Footnotes
   module Notes
     class ControllerNote < AbstractNote

@@ -1,5 +1,3 @@
-require "#{File.dirname(__FILE__)}/abstract_note"
-
 if defined?(NewRelic)
 module Footnotes
   module Notes
@@ -16,7 +14,7 @@ module Footnotes
          #{:controller => 'newrelic', :action => 'show_sample_detail', :id => @rpm_id}
          "/newrelic/show_sample_detail/#{@rpm_id}" if @rpm_id
       end
-      
+
       def valid?
         if defined?(NewRelic::Control)
           !NewRelic::Control.instance['skip_developer_route']

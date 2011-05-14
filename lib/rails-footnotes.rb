@@ -26,6 +26,7 @@ module Footnotes
 
   def self.run!
     require 'rails-footnotes/footnotes'
+    require 'rails-footnotes/abstract_note'
 
     Dir[File.join(File.dirname(__FILE__), 'rails-footnotes', 'notes', '*.rb')].each { |note| require note }
 

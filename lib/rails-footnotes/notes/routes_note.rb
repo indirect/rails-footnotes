@@ -1,5 +1,3 @@
-require "#{File.dirname(__FILE__)}/abstract_note"
-
 module Footnotes
   module Notes
     class RoutesNote < AbstractNote
@@ -48,7 +46,7 @@ module Footnotes
       #
       def filtered_routes(filter = {})
         return [] unless filter.is_a?(Hash)
-        return routes.reject do |r| 
+        return routes.reject do |r|
           filter_diff = filter.diff(r.requirements)
           route_diff  = r.requirements.diff(filter)
           (filter_diff == filter) || (filter_diff != route_diff)

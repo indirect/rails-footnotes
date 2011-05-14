@@ -1,5 +1,3 @@
-require "#{File.dirname(__FILE__)}/abstract_note"
-
 module Footnotes
   module Notes
     class AssignsNote < AbstractNote
@@ -44,11 +42,11 @@ module Footnotes
         def assigns
           assign = []
           ignored = @@ignored_assigns
-          
+
           @controller.instance_variables.each {|x| assign << x.intern }
           @controller.protected_instance_variables.each {|x| ignored << x.intern } if @controller.respond_to? :protected_instance_variables
-           
-          assign -= ignored            
+
+          assign -= ignored
           return assign
         end
 

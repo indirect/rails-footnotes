@@ -1,5 +1,3 @@
-require "#{File.dirname(__FILE__)}/abstract_note"
-
 module Footnotes
   module Notes
     class FiltersNote < AbstractNote
@@ -35,12 +33,12 @@ module Footnotes
             mock_controller.action_name = action
 
             #remove conditions (this would call a Proc on the mock_controller)
-            filter.options.merge!(:if => nil, :unless => nil) 
+            filter.options.merge!(:if => nil, :unless => nil)
 
-            filter.__send__(:should_run_callback?, mock_controller)   
+            filter.__send__(:should_run_callback?, mock_controller)
           }.map(&:to_sym)
         end
-        
+
         def parse_method(method = '')
           escape(method.inspect.gsub(RAILS_ROOT, ''))
         end
