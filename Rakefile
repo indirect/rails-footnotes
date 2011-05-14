@@ -1,16 +1,15 @@
 require 'bundler'
 Bundler::GemHelper.install_tasks
-require 'rake/testtask'
+require "rspec/core/rake_task"
 require 'rake/rdoctask'
 
 desc 'Default: run tests'
-task :default => :test
+task :default => :spec
 
 desc 'Run tests for Footnotes.'
-Rake::TestTask.new(:test) do |t|
-  t.libs << 'test'
-  t.pattern = 'test/**/*_test.rb'
-  t.verbose = true
+RSpec::Core::RakeTask.new(:spec) do |t|
+  t.pattern = 'spec/**/*_spec.rb'
+  t.rcov = false
 end
 
 desc 'Generate documentation for Footnotes.'
