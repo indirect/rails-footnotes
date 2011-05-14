@@ -6,5 +6,6 @@
 .bundle
 Gemfile.lock
 pkg/*
+coverage
 tags
 doc

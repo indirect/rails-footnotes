@@ -1,3 +1,6 @@
+require 'simplecov'
+SimpleCov.start
+
 require 'rubygems'
 
 ENV['RAILS_ENV'] = 'test'

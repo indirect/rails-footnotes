@@ -7,6 +7,6 @@ gemspec
 #
 if RUBY_PLATFORM =~ /darwin/
   group :test do
-    gem "autotest-growl"
+    gem 'simplecov', '>= 0.4.0', :require => false
   end
 end
