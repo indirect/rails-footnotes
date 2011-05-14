@@ -38,6 +38,14 @@ add something like this to config/initializers/footnotes.rb:
     # ... other init code
   end
 
+=== Post initialization
+
+If you want to add alternate logic to config footnotes without commit it to SCM, add your code to .footnotes:
+
+    Footnotes::Filter.notes = []
+
+this code temporarily disables notes for all controllers
+
 === Hooks
 
     Footnotes.setup do |config|

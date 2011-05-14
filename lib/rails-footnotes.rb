@@ -31,6 +31,8 @@ module Footnotes
     Dir[File.join(File.dirname(__FILE__), 'rails-footnotes', 'notes', '*.rb')].each { |note| require note }
 
     ActionController::Base.send(:include, RailsFootnotesExtension)
+
+    load Rails.root.join('.footnotes') if Rails.root.join('.footnotes').exist?
   end
 
   def self.setup
