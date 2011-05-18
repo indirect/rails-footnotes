@@ -26,6 +26,7 @@ module Footnotes
 
   def self.run!
     require 'rails-footnotes/footnotes'
+    require 'rails-footnotes/backtracer'
     require 'rails-footnotes/abstract_note'
     require 'rails-footnotes/notes/all'
 
