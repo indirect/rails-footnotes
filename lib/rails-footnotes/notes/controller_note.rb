@@ -1,5 +1,3 @@
-require "#{File.dirname(__FILE__)}/abstract_note"
-
 module Footnotes
   module Notes
     class ControllerNote < AbstractNote
@@ -25,7 +23,7 @@ module Footnotes
         end
 
         def controller_filename
-          @controller_filename ||= Rails.root.join('app', 'controllers', "#{controller_path}.rb")
+          @controller_filename ||= Gem.find_files(self.controller_path).first # tnx https://github.com/MasterLambaster
         end
 
         def controller_text

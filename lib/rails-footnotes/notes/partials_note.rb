@@ -1,5 +1,3 @@
-require "#{File.dirname(__FILE__)}/log_note"
-
 module Footnotes
   module Notes
     class PartialsNote < LogNote

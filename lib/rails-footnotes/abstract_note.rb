@@ -86,13 +86,13 @@ module Footnotes
 
       # Set href field for Footnotes links.
       # If it's nil, Footnotes will use '#'.
-      # 
+      #
       def link
       end
 
       # Set onclick field for Footnotes links.
       # If it's nil, Footnotes will make it open the fieldset.
-      # 
+      #
       def onclick
       end
 
@@ -123,7 +123,7 @@ module Footnotes
 
       # Some helpers to generate notes.
       #
-      protected
+      public
         # Return if Footnotes::Filter.prefix exists or not.
         # Some notes only work with prefix set.
         #
@@ -171,7 +171,7 @@ module Footnotes
           newstring = ""
           hash.each do |key, value|
             newstring << "#{key.to_s}=\"#{value.gsub('"','\"')}\" "
-          end 
+          end
           return newstring
         end
     end

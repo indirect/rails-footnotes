@@ -1,0 +1,13 @@
+ROOT_PATH = File.dirname(__FILE__)
+
+def run_spec(file)
+  system "rspec #{file}" if File.exist?(File.join(ROOT_PATH, file))
+end
+
+watch('spec/.*_spec\.rb') {|m| run_spec m[0] }
+watch('spec/notes/.*_spec\.rb') {|m| run_spec m[0] }
+
+watch('lib/rails-footnotes/(.*)\.rb') {|m| run_spec("spec/#{m[1]}_spec.rb") }
+watch('lib/rails-footnotes/notes/.*_note\.rb') {|m| run_spec("spec/notes/#{m[1]}") }
+
+watch('Gemfile') {|m| run_spec("spec") }

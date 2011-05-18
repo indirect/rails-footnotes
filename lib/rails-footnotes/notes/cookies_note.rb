@@ -1,10 +1,8 @@
-require "#{File.dirname(__FILE__)}/abstract_note"
-
 module Footnotes
   module Notes
     class CookiesNote < AbstractNote
       def initialize(controller)
-        @cookies = (controller.__send__(:cookies) || {}).symbolize_keys
+        @cookies = (controller.__send__(:cookies) || {}).dup.symbolize_keys
       end
 
       def title
