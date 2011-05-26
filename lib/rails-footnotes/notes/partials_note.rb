@@ -1,3 +1,5 @@
+require 'rails-footnotes/notes/log_note'
+
 module Footnotes
   module Notes
     class PartialsNote < LogNote

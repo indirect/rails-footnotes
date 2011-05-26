@@ -1,3 +1,5 @@
+require "rails-footnotes/notes/files_note"
+
 module Footnotes
   module Notes
     class StylesheetsNote < FilesNote

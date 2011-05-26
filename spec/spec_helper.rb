@@ -11,5 +11,9 @@ require 'rails-footnotes/footnotes'
 require 'rails-footnotes/abstract_note'
 require "rails-footnotes"
 
+class Rails
+  def self.logger; end
+end
+
 RSpec.configure do |config|
 end
