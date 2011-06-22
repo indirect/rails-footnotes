@@ -1,9 +1,9 @@
 module Footnotes
   module Notes
-    class ViewNote < AbstractNote
+    class ViewNote < LogNote
       def initialize(controller)
+        super
         @controller = controller
-        @template = controller.instance_variable_get(:@template)
       end
 
       def row
@@ -15,17 +15,24 @@ module Footnotes
       end
 
       def valid?
-        prefix? && first_render?
+        prefix?
       end
 
       protected
-
-        def first_render?
-          @template.instance_variable_get(:@_first_render)
-        end
-
         def filename
-          @filename ||= @template.instance_variable_get(:@_first_render).filename
+          @filename ||= begin
+            log_lines = log
+            log_lines.split("\n").map do |line|
+              if line =~ /Rendered (\S*) \(([\d\.]+)\S*?\)/ && $1.split("/").last !~ /\A_/
+                file = $1
+                @controller.view_paths.each do |view_path|
+                  path = File.join(view_path.to_s, "#{file}*")
+                  files = Dir.glob(path)
+                  files.first
+                end
+              end
+            end.first
+          end
         end
 
     end
