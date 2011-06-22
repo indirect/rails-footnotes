@@ -19,7 +19,6 @@ module Footnotes
       end
 
       def valid?
-        Rails.logger.fatal("checking valid filename: #{filename}")
         prefix? && filename.present?
       end
 
