@@ -6,7 +6,9 @@ module Footnotes
       def self.log(message)
         @@log << message
       end
-
+      def self.clear_log
+        @@log = []
+      end
       def initialize(controller)
         @controller = controller
       end
@@ -21,7 +23,7 @@ module Footnotes
 
       def log
         unless @log
-          @log = @@log.join('')
+          @log = @@log.join("")
           if rindex = @log.rindex('Processing '+@controller.class.name+'#'+@controller.action_name)
             @log = @log[rindex..-1]
           end

@@ -13,6 +13,12 @@ module Footnotes
       def title
         "Partials (#{partials.size})"
       end
+      def link
+        if partials.size == 1
+          partial = partials.first
+          escape(Footnotes::Filter.prefix(partial, 1, 1))    
+        end
+      end
       def content
         rows = partials.map do |filename|
           href = Footnotes::Filter.prefix(filename,1,1)
