@@ -9,29 +9,34 @@ module Footnotes
       def row
         :edit
       end
-
+      
+      def title
+        "View"
+      end
+      
       def link
         escape(Footnotes::Filter.prefix(filename, 1, 1))
       end
 
       def valid?
-        prefix?
+        Rails.logger.fatal("checking valid filename: #{filename}")
+        prefix? && filename.present?
       end
 
       protected
         def filename
           @filename ||= begin
-            log_lines = log
-            log_lines.split("\n").map do |line|
-              if line =~ /Rendered (\S*) \(([\d\.]+)\S*?\)/ && $1.split("/").last !~ /\A_/
-                file = $1
-                @controller.view_paths.each do |view_path|
-                  path = File.join(view_path.to_s, "#{file}*")
-                  files = Dir.glob(path)
-                  files.first
-                end
+            full_filename = nil
+            log.split("\n").each do |line|
+              next if line !~ /Rendered (\S*) within/
+              
+              file = line[/Rendered (\S*) within/, 1]
+              @controller.view_paths.each do |view_path|
+                path = File.join(view_path.to_s, "#{file}*")
+                full_filename ||= Dir.glob(path).first
               end
-            end.first
+            end
+            full_filename
           end
         end
 
