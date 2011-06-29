@@ -3,6 +3,10 @@ module Footnotes
     class LogNote < AbstractNote
       @@log = []
 
+      def self.close!(controller)
+        @@log = []
+      end
+
       def self.log(message)
         @@log << message
       end
@@ -22,7 +26,6 @@ module Footnotes
       def log
         unless @log
           @log = @@log.join('')
-          @@log = []
           if rindex = @log.rindex('Processing '+@controller.class.name+'#'+@controller.action_name)
             @log = @log[rindex..-1]
           end
