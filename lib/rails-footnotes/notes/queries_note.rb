@@ -88,8 +88,7 @@ module Footnotes
       end
 
       def type
-        return @type if @type
-        @type = self.query.match(/^(select|insert|update|delete|alter)\b/i) || 'Unknown'
+        @type ||= self.query.match(/^(\s*)(select|insert|update|delete|alter)\b/im) || 'Unknown'
       end
     end
 
@@ -106,7 +105,9 @@ module Footnotes
       end
 
       def sql(event)
-        @events << QuerySubscriberNotifactionEvent.new(event.dup, caller)
+        unless event.payload[:sql].match(/(pg_table|pg_attribute)/im)
+          @events << QuerySubscriberNotifactionEvent.new(event.dup, caller)
+        end
       end
     end
   end
