@@ -1,12 +1,12 @@
 module Footnotes
   module Notes
     class QueriesNote < AbstractNote
-      cattr_accessor :alert_db_time, :alert_sql_number, :orm, :instance_writter => false
-
+      cattr_accessor :alert_db_time, :alert_sql_number, :orm, :ignored_regexps, :instance_writter => false
       @@alert_db_time    = 16.0
       @@alert_sql_number = 8
       @@query_subscriber = nil
       @@orm              = [:active_record, :data_mapper]
+      @@ignored_regexps  = [%r{(pg_table|pg_attribute|show\stables)}i]
 
       def self.start!(controller)
         self.query_subscriber.reset!
@@ -93,7 +93,7 @@ module Footnotes
     end
 
     class QuerySubscriber < ActiveSupport::LogSubscriber
-      attr_accessor :events
+      attr_accessor :events, :ignore_regexps
 
       def initialize(orm)
         @events = []
@@ -105,7 +105,7 @@ module Footnotes
       end
 
       def sql(event)
-        unless event.payload[:sql].match(/(pg_table|pg_attribute)/im)
+        unless QueriesNote.ignored_regexps.any? {|rex| event.payload[:sql] =~ rex }
           @events << QuerySubscriberNotifactionEvent.new(event.dup, caller)
         end
       end
