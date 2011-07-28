@@ -2,7 +2,7 @@ module Footnotes
   module Notes
     class CookiesNote < AbstractNote
       def initialize(controller)
-        @cookies = controller.__send__(:cookies)
+        @cookies = controller.request.env["rack.request.cookie_hash"].nil? ? {} : controller.request.env["rack.request.cookie_hash"].dup
       end
 
       def title
