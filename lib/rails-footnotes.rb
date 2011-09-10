@@ -32,6 +32,8 @@ module Footnotes
 
     ActionController::Base.send(:include, RailsFootnotesExtension)
 
+    load Rails.root.join('.rails_footnotes') if Rails.root.join('.rails_footnotes').exist?
+    #TODO DEPRECATED
     load Rails.root.join('.footnotes') if Rails.root.join('.footnotes').exist?
   end
 
