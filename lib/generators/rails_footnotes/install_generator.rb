@@ -10,7 +10,7 @@ module RailsFootnotes
       end
 
       def copy_dotfile
-        template ".rails_footnotes", ".rails_footnotes"
+        template "rails_footnotes", ".rails_footnotes"
       end
     end
   end
