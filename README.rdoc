@@ -21,7 +21,7 @@ Install Rails Footnotes is very easy.
 
 After you install RailsFootnotes and add it to your Gemfile, you need to run the generator:
 
-  rails generate rails_footnotese:install
+  rails generate rails_footnotes:install
 
 === Rails 2.x
 
