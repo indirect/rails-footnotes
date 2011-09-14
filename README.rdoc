@@ -17,7 +17,7 @@ Install Rails Footnotes is very easy.
 
 === Rails 3.x
 
-   gem 'rails-footnotes', '>= 3.7', :group => :development
+   gem 'rails-footnotes', '>= 3.7.5.rc4', :group => :development
 
 After you install RailsFootnotes and add it to your Gemfile, you need to run the generator:
 
