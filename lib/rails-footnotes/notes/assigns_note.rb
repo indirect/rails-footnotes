@@ -44,7 +44,6 @@ module Footnotes
           ignored = @@ignored_assigns
 
           @controller.instance_variables.each {|x| assign << x.intern }
-          @controller.protected_instance_variables.each {|x| ignored << x.intern } if @controller.respond_to? :protected_instance_variables
 
           assign -= ignored
           return assign
