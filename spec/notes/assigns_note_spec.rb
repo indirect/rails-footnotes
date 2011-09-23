@@ -8,6 +8,7 @@ end
 describe Footnotes::Notes::AssignsNote do
   let(:note) do
     @controller = FootnotesController.new
+    @controller.stub(:instance_variables).and_return([:@action_has_layout, :@view_context_class, :@_status])
     Footnotes::Notes::AssignsNote.new(@controller)
   end
   subject {note}
@@ -15,7 +16,7 @@ describe Footnotes::Notes::AssignsNote do
   before(:each) {Footnotes::Notes::AssignsNote.ignored_assigns = []}
   it {should be_valid}
   its(:title) {should eql 'Assigns (3)'}
-  specify {note.send(:assigns).should eql [:@action_has_layout, :@view_context_class, :@_status] }
+  specify {note.send(:assigns).should eql [:@action_has_layout, :@view_context_class, :@_status]}
 
   describe "Ignored Assigns" do
     before(:each) {Footnotes::Notes::AssignsNote.ignored_assigns = [:@_status]}
