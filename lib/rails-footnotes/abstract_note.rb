@@ -145,7 +145,6 @@ module Footnotes
           return '' if array.empty?
 
           header = header.collect{|i| escape(i.to_s.humanize) }
-#          array = array.collect { |a| a.collect { |b| c = b.to_s; escape(c) unless c == ""}}
           rows = array.collect{|i| "<tr><td>#{i.join('</td><td>')}</td></tr>" }
 
           <<-TABLE
