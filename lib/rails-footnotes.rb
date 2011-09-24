@@ -24,14 +24,32 @@ module Footnotes
     end
   end
 
-  def self.run!
+  def self.require_dependencies
     require 'rails-footnotes/footnotes'
     require 'rails-footnotes/backtracer'
     require 'rails-footnotes/abstract_note'
+  end
+
+  def self.require_notes
     require 'rails-footnotes/notes/all'
+  end
 
+  def self.require_note(note_name)
+    require "rails-footnotes/notes/#{note_name.to_s.underscore}_note"
+  end
+
+  def self.run!
+    require_dependencies
+    require_notes
+    load_extension
+    load_config
+  end
+
+  def self.load_extension
     ActionController::Base.send(:include, RailsFootnotesExtension)
+  end
 
+  def self.load_config
     load Rails.root.join('.rails_footnotes') if Rails.root.join('.rails_footnotes').exist?
     #TODO DEPRECATED
     load Rails.root.join('.footnotes') if Rails.root.join('.footnotes').exist?
