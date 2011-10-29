@@ -14,7 +14,7 @@ module Footnotes
       end
 
       def valid?
-        prefix? && File.exists?(self.controller_filename)
+        prefix? && self.controller_filename && File.exists?(self.controller_filename)
       end
 
       protected
