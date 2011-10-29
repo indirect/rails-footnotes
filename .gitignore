@@ -1,6 +1,7 @@
 .*
 !.gitignore
 !.gitmodules
+!.travis.yml
 !*.example
 *.gem
 .bundle
