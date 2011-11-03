@@ -14,7 +14,7 @@ module Footnotes
       end
 
       def valid?
-        prefix? && File.exists?(self.controller_filename)
+        prefix? && controller_filename && File.exists?(controller_filename)
       end
 
       protected
@@ -23,7 +23,7 @@ module Footnotes
         end
 
         def controller_filename
-          @controller_filename ||= Gem.find_files(self.controller_path).first # tnx https://github.com/MasterLambaster
+          @controller_filename ||= Gem.find_files(controller_path).first # tnx https://github.com/MasterLambaster
         end
 
         def controller_text
