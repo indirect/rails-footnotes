@@ -31,7 +31,7 @@ In RAILS_ROOT/config/environments/development.rb (yes, you want it only in devel
 
 == Configuration
 
-For version greater then 3.7.0
+For version greater than 3.7.0
 
 If you want to add alternate logic to enable or disable footnotes,
 add something like this to config/initializers/footnotes.rb:
