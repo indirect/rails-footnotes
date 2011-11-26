@@ -128,6 +128,13 @@ For example, to create a note that shows info about the user logged in your appl
 Then put in your environment:
 
   Footnotes::Filter.notes += [:current_user]
+  
+== Display of the notes
+
+By default the notes will be showed at the bottom of your page (appended just before </body>).
+If you'd like these notes on a different place (perhaps for aesthetical reasons) you can edit one of your views and add:
+  <div id="footnotes_holder"></div>
+at an appropriate place, your notes will now appear inside div#footnotes_holder
 
 == Colaborators
 
