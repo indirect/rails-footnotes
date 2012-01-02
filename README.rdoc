@@ -136,7 +136,7 @@ If you'd like these notes on a different place (perhaps for aesthetical reasons)
   <div id="footnotes_holder"></div>
 at an appropriate place, your notes will now appear inside div#footnotes_holder
 
-== Colaborators
+== Collaborators
 
 * Leon Li       - http://github.com/scorpio
 * Keenan Brock  - http://github.com/kbrock
