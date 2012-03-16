@@ -10,3 +10,4 @@ pkg/*
 coverage
 tags
 doc
+bin
