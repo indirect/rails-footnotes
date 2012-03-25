@@ -16,6 +16,8 @@ require "rails-footnotes"
 
 class Rails
   def self.logger; end
+
+  def self.version; '3.0.12'; end
 end
 
 RSpec.configure do |config|

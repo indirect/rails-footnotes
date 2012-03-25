@@ -3,9 +3,15 @@ require 'action_controller'
 require "rails-footnotes/notes/files_note"
 
 describe Footnotes::Notes::FilesNote do
-  let(:note) {Footnotes::Notes::FilesNote.new(mock('controller', :response => mock('', :body => '')))}
-  subject {note}
 
-  it {should be_valid}
-  its(:row) {should eql :edit}
+  let(:note) do
+    Rails.stub(:version).and_return('3.0.12');
+    Footnotes::Notes::FilesNote.new(mock('controller', :response => mock('', :body => '')))
+  end
+
+  subject { note }
+
+  it { should be_valid }
+  its(:row) { should eql :edit }
+
 end
