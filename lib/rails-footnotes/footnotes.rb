@@ -13,6 +13,7 @@ module Footnotes
       filter = Footnotes::Filter.new(controller)
       filter.add_footnotes!
       filter.close!(controller)
+      Footnotes::Notes::LogNote.clear_log
     end
   end
 
