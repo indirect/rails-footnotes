@@ -1,6 +1,7 @@
 require "spec_helper"
 require 'action_controller'
 require 'action_controller/test_case'
+require "tempfile"
 
 class FootnotesController < ActionController::Base
   attr_accessor :template, :performed_render
@@ -34,6 +35,25 @@ describe "Footnotes" do
   it "footnotes_controller" do
     index = @controller.response.body.index(/This is the HTML page/)
     index.should eql 334
+  end
+
+  context "response_body is file" do
+    before do
+      @file = Tempfile.new("test")
+      @file.write "foobarbaz"
+      @file.rewind
+    end
+
+    after do
+      @file.close!
+    end
+
+    it "should not change file position" do
+      @controller.response_body = @file
+      expect {
+        @footnotes = Footnotes::Filter.new(@controller)
+      }.not_to change{ @controller.response_body.pos }
+    end
   end
 
   #TODO doe's not pased with 1.8.7

@@ -94,8 +94,11 @@ module Footnotes
     def initialize(controller)
       @controller = controller
       @template = controller.instance_variable_get(:@template)
-      @body = controller.response.body
       @notes = []
+
+      revert_pos(controller.response_body) do
+        @body = controller.response.body
+      end
     end
 
     def add_footnotes!
@@ -132,6 +135,13 @@ module Footnotes
           note = klass.new(@controller)
           @notes << note if note.respond_to?(:valid?) && note.valid?
         end
+      end
+
+      def revert_pos(file)
+        return yield unless file.respond_to?(:pos) && file.respond_to?(:pos=)
+        original = file.pos
+        yield
+        file.pos = original
       end
 
       def performed_render?
