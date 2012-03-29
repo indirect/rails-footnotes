@@ -19,6 +19,7 @@ module Footnotes
     cattr_accessor :no_style, :notes, :prefix, :multiple_notes
 
     class << self
+      include Footnotes::EachWithRescue
 
       # Calls the class method start! in each note
       # Sometimes notes need to set variables or clean the environment to work properly
@@ -33,32 +34,6 @@ module Footnotes
           klass.start!(controller) if klass.respond_to?(:start!)
           @@klasses << klass
         end
-      end
-
-      # Process notes, discarding only the note if any problem occurs
-      #
-      def each_with_rescue(collection)
-        delete_me = []
-
-        collection.each do |item|
-          begin
-            yield item
-          rescue Exception => e
-            # Discard item if it has a problem
-            log_error("Footnotes #{item.to_s.camelize} Exception", e)
-            delete_me << item
-            next
-          end
-        end
-
-        delete_me.each { |item| collection.delete(item) }
-        return collection
-      end
-
-      # Logs the error using specified title and format
-      #
-      def log_error(title, exception)
-        Rails.logger.error "#{title}: #{exception}\n#{exception.backtrace.join("\n")}"
       end
 
       # If none argument is sent, simply return the prefix.
