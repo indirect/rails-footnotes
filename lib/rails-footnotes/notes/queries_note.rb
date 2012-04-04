@@ -22,7 +22,7 @@ module Footnotes
 
       def title
         queries = self.events.count
-        total_time = self.events.map(&:duration).sum / 1000.0
+        total_time = self.events.map(&:duration).sum
         query_color = generate_red_color(self.events.count, alert_sql_number)
         db_color    = generate_red_color(total_time, alert_db_time)
 
