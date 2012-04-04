@@ -41,7 +41,7 @@ module Footnotes
           html << <<-HTML
             <b id="qtitle_#{index}">#{escape(event.type.to_s.upcase)}</b> (#{sql_links.join(' | ')})<br />
             <span id="sql_#{index}">#{print_query(event.payload[:sql])}</span><br />
-            #{print_name_and_time(event.payload[:name], event.duration / 1000.0)}&nbsp;
+            #{print_name_and_time(event.payload[:name], event.duration)}&nbsp;
             <p id="qtrace_#{index}" style="display:none;">#{parse_trace(event.trace)}</p><br />
           HTML
         end
