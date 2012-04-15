@@ -94,7 +94,6 @@ GEM
       polyglot
       polyglot (>= 0.3.1)
     tzinfo (0.3.30)
-    watchr (0.7)
 
 PLATFORMS
   ruby
@@ -103,4 +102,3 @@ DEPENDENCIES
   rails (>= 3.0.0)
   rails-footnotes!
   rspec (~> 2.9.0)
-  watchr

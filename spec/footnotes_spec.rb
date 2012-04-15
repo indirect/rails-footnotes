@@ -23,7 +23,7 @@ describe "Footnotes" do
     @controller.template = Object.new
     @controller.request = ActionController::TestRequest.new
     @controller.response = ActionController::TestResponse.new
-    @controller.response_body = HTML.dup
+    @controller.response_body = HTML_DOCUMENT.dup
     @controller.params = {}
 
     Footnotes::Filter.notes = [ :test ]
@@ -40,7 +40,7 @@ describe "Footnotes" do
   if RUBY_VERSION >= '1.9.0'
     it "foonotes_included" do
       footnotes_perform!
-      @controller.response_body.should_not == HTML
+      @controller.response_body.should_not == HTML_DOCUMENT
     end
   end
 
@@ -48,24 +48,24 @@ describe "Footnotes" do
     @controller.request.env['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest'
     @controller.request.env['HTTP_ACCEPT'] = 'text/javascript, text/html, application/xml, text/xml, */*'
     footnotes_perform!
-    @controller.response.body.should eql HTML
+    @controller.response.body.should eql HTML_DOCUMENT
   end
 
   specify "footnotes_not_included_when_content_type_is_javascript" do
     @controller.response.headers['Content-Type'] = 'text/javascript'
     footnotes_perform!
-    @controller.response.body.should eql HTML
+    @controller.response.body.should eql HTML_DOCUMENT
   end
 
   specify "footnotes_included_when_content_type_is_html" do
     @controller.response.headers['Content-Type'] = 'text/html'
     footnotes_perform!
-    @controller.response.body.should_not eql HTML
+    @controller.response.body.should_not eql HTML_DOCUMENT
   end
 
   specify "footnotes_included_when_content_type_is_nil" do
     footnotes_perform!
-    @controller.response.body.should_not eql HTML
+    @controller.response.body.should_not eql HTML_DOCUMENT
   end
 
   specify "not_included_when_body_is_not_a_string" do
@@ -198,7 +198,7 @@ describe "Footnotes" do
     end
   end
 
-HTML = <<EOF
+HTML_DOCUMENT = <<EOF
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
     <head>
