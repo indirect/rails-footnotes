@@ -69,8 +69,9 @@ describe "Footnotes" do
   end
 
   specify "not_included_when_body_is_not_a_string" do
-    @controller.response.body = Proc.new { Time.now }
-    expect { footnotes_perform! }.should_not raise_exception
+    @controller.response.stub(:body).and_return(Time.now)# = Proc.new { Time.now }
+    Footnotes::Filter.new(@controller).send(:valid?).should_not be
+    @controller.response.body.should_not =~ /<!-- Footnotes/
   end
 
   specify "notes_are_initialized" do
