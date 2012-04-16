@@ -16,6 +16,8 @@ module Footnotes
                             :@view_runtime
                           ]
       cattr_accessor :ignored_assigns, :instance_writter => false
+      @@ignored_assigns_pattern = /^@_/
+      cattr_accessor :ignored_assigns_pattern, :instance_writter => false
 
       def initialize(controller)
         @controller = controller
@@ -39,7 +41,7 @@ module Footnotes
         end
 
         def assigns
-          @assigns ||= @controller.instance_variables.map {|v| v.to_sym} - ignored_assigns
+          @assigns ||= @controller.instance_variables.map {|v| v.to_sym}.select {|v| v !~ ignored_assigns_pattern } - ignored_assigns
         end
 
         def assigned_value(key)
