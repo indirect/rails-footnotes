@@ -41,7 +41,7 @@ module Footnotes
         end
 
         def assigns
-          @assigns ||= @controller.instance_variables.map {|v| v.to_sym}.select {|v| v !~ ignored_assigns_pattern } - ignored_assigns
+          @assigns ||= @controller.instance_variables.map {|v| v.to_sym}.select {|v| v.to_s !~ ignored_assigns_pattern } - ignored_assigns
         end
 
         def assigned_value(key)
