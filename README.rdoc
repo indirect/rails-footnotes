@@ -70,6 +70,9 @@ Where you are going to choose a prefix compatible with your text editor. The %s 
 replaced by the name of the file, the first %d is replaced by the line number and
 the second %d is replaced by the column.
 
+Take note that the order in which the file name (%s), line number (%d) and column number (%d) appears is important. 
+We assume that they appear in that order. "foo://line=%d&file=%s" (%d precedes %s) would throw out an error.
+
 By default, footnotes are appended at the end of the page with default stylesheet. If you want
 to change their position, you can define a div with id "footnotes_holder" or define your own stylesheet
 by turning footnotes stylesheet off:
