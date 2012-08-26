@@ -59,12 +59,13 @@ this code temporarily disables notes for all controllers
         controller.action_name == 'edit' }
     end
 
-If you are not using Textmate as text editor, in your environment.rb or
-in an initializer do:
+If you are not using Textmate as text editor, MacVim and Sublime Text 2 are also compatible.
+
+==== MacVim
+
+In your environment.rb or in an initializer do:
 
     Footnotes::Filter.prefix = 'mvim://open?url=file://%s&line=%d&column=%d'
-
-for MacVim
 
 Where you are going to choose a prefix compatible with your text editor. The %s is
 replaced by the name of the file, the first %d is replaced by the line number and
@@ -72,6 +73,21 @@ the second %d is replaced by the column.
 
 Take note that the order in which the file name (%s), line number (%d) and column number (%d) appears is important. 
 We assume that they appear in that order. "foo://line=%d&file=%s" (%d precedes %s) would throw out an error.
+
+==== Sublime Text 2
+
+1. Keep the original initializer, ````Footnotes::Filter.prefix = 'txmt://open?url=file://%s&line=%d&column=%d'````
+
+2. Install {subl-hanlder}[https://github.com/asuth/subl-handler]
+
+3. Open subl-handler. Go to preferences (SublHandler > Preferences), and point "Path to subl" to your installed instance. (EG, /Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl). Note: do not escape the whitespaces, subl-handler accounts for those.
+
+4. Install {RCDefault}[http://www.rubicode.com/Software/RCDefaultApp]. It's OSX 10.2, but it works.
+
+5. Go to RCDefaultApp (OS System Preferences > DefaultApps). Go to URL section, select "tmxt" extension, and set default applicaiton to "SublHandler".
+
+
+==== Footnotes Display Options 
 
 By default, footnotes are appended at the end of the page with default stylesheet. If you want
 to change their position, you can define a div with id "footnotes_holder" or define your own stylesheet
