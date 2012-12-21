@@ -17,7 +17,7 @@ Install Rails Footnotes is very easy.
 
 === Rails 3.x
 
-   gem 'rails-footnotes', '>= 3.7.5.rc4', :group => :development
+   gem 'rails-footnotes', '>= 3.7.9', :group => :development
 
 After you install RailsFootnotes and add it to your Gemfile, you need to run the generator:
 
@@ -71,7 +71,7 @@ Where you are going to choose a prefix compatible with your text editor. The %s 
 replaced by the name of the file, the first %d is replaced by the line number and
 the second %d is replaced by the column.
 
-Take note that the order in which the file name (%s), line number (%d) and column number (%d) appears is important. 
+Take note that the order in which the file name (%s), line number (%d) and column number (%d) appears is important.
 We assume that they appear in that order. "foo://line=%d&file=%s" (%d precedes %s) would throw out an error.
 
 *Sublime* *Text* *2*
