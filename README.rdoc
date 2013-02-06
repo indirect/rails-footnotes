@@ -76,7 +76,7 @@ We assume that they appear in that order. "foo://line=%d&file=%s" (%d precedes %
 
 *Sublime* *Text* *2*
 
-1. Keep the Textmate prefix, Footnotes::Filter.prefix = 'txmt://open?url=file://%s&line=%d&column=%d'
+1. Keep the Textmate prefix, <tt>Footnotes::Filter.prefix = 'txmt://open?url=file://%s&line=%d&column=%d'</tt>
 
 2. Install {subl-hanlder}[https://github.com/asuth/subl-handler]
 
