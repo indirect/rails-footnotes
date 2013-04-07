@@ -46,9 +46,15 @@ module Footnotes
       #
       def filtered_routes(filter = {})
         return [] unless filter.is_a?(Hash)
+        diff = ->(left, right){ 
+          left.dup.
+            delete_if { |k, v| right[k] == v }.
+            merge!(right.dup.delete_if { |k, v| left.has_key?(k) })
+        }
+        
         return routes.reject do |r|
-          filter_diff = filter.diff(r.requirements)
-          route_diff  = r.requirements.diff(filter)
+          filter_diff = diff.call(filter, r.requirements)
+          route_diff  = diff.call(r.requirements, filter)
           (filter_diff == filter) || (filter_diff != route_diff)
         end
       end
@@ -57,5 +63,5 @@ module Footnotes
 end
 
 if Footnotes::Notes::RoutesNote.included?
-  ActionController::Routing::RouteSet.send :include, Footnotes::Extensions::Routes
+  ActionDispatch::Routing::RouteSet.send :include, Footnotes::Extensions::Routes
 end
