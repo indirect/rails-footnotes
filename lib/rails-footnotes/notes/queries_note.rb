@@ -6,7 +6,7 @@ module Footnotes
       @@alert_sql_number = 8
       @@query_subscriber = nil
       @@orm              = [:active_record, :data_mapper]
-      @@ignored_regexps  = [%r{(pg_table|pg_attribute|show\stables|pragma|sqlite_master)}i]
+      @@ignored_regexps  = [%r{(pg_table|pg_attribute|pg_namespace|show\stables|pragma|sqlite_master)}i]
 
       def self.start!(controller)
         self.query_subscriber.reset!
