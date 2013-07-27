@@ -1,5 +1,7 @@
 = Rails Footnotes
 
+{<img src="https://travis-ci.org/josevalim/rails-footnotes.png" />}[https://travis-ci.org/josevalim/rails-footnotes]
+
 If you are developing in Rails you should know the plugin! It displays
 footnotes in your application for easy debugging, such as sessions,
 request parameters, cookies, filter chain, routes, queries, etc.
