@@ -10,6 +10,7 @@ ENV['RAILS_ENV'] = 'test'
 
 require 'active_support'
 require 'active_support/all' unless Class.respond_to?(:cattr_accessor)
+require 'active_support/core_ext' unless Module.respond_to?(:mattr_accessor)
 require 'rails-footnotes/footnotes'
 require 'rails-footnotes/abstract_note'
 require "rails-footnotes"
