@@ -33,13 +33,21 @@ module Footnotes
 
   module Extensions
     module Routes
+
+      def __hash_diff(hash_self, other)
+        # ActiveSupport::Deprecation.warn "Hash#diff is no longer used inside of Rails,
+        # and is being deprecated with no replacement. If you're using it to compare hashes for the purpose of testing, please use MiniTest's diff instead."
+        hash_self.dup.delete_if { |k, v| other[k] == v }.merge!(other.dup.delete_if { |k, v| hash_self.has_key?(k) })
+      end
+
       # Filter routes according to the filter sent
       #
       def filtered_routes(filter = {})
         return [] unless filter.is_a?(Hash)
         return routes.reject do |r|
-          filter_diff = filter.diff(r.requirements)
-          route_diff  = r.requirements.diff(filter)
+          filter_diff = __hash_diff(filter, r.requirements)
+          route_diff  = __hash_diff(r.requirements, filter)
+
           (filter_diff == filter) || (filter_diff != route_diff)
         end
       end
