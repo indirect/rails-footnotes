@@ -24,17 +24,8 @@ module Footnotes
             name = i ? routes_with_name[i-1].to_s : ''
 
             # Catch segments requirements
-            req = {}
-            if Rails.version < '3.0'
-              route.segments.each do |segment|
-                next unless segment.is_a?(ActionController::Routing::DynamicSegment) && segment.regexp
-                req[segment.key.to_sym] = segment.regexp
-              end
-              [escape(name), route.segments.join, route.requirements.reject{|key,value| key == :controller}.inspect, req.inspect]
-            else
-              req = route.conditions
-              [escape(name), route.conditions.keys.join, route.requirements.reject{|key,value| key == :controller}.inspect, req.inspect]
-            end
+            req = route.conditions
+            [escape(name), route.conditions.keys.join, route.requirements.reject{|key,value| key == :controller}.inspect, req.inspect]
           end
         end
     end
