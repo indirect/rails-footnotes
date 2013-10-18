@@ -36,10 +36,16 @@ module Footnotes
       # Filter routes according to the filter sent
       #
       def filtered_routes(filter = {})
+        def diff(h1,h2)
+          h1.dup.delete_if { |k, v|
+            h2[k] == v
+          }.merge!(h2.dup.delete_if { |k, v| h1.has_key?(k) })
+        end
+
         return [] unless filter.is_a?(Hash)
         return routes.reject do |r|
-          filter_diff = filter.diff(r.requirements)
-          route_diff  = r.requirements.diff(filter)
+          filter_diff = diff(filter, r.requirements)
+          route_diff  = diff(r.requirements, filter)
           (filter_diff == filter) || (filter_diff != route_diff)
         end
       end
