@@ -80,7 +80,7 @@ We assume that they appear in that order. "foo://line=%d&file=%s" (%d precedes %
 
 1. Keep the Textmate prefix, <tt>Footnotes::Filter.prefix = 'txmt://open?url=file://%s&line=%d&column=%d'</tt>
 
-2. Install {subl-hanlder}[https://github.com/asuth/subl-handler]
+2. Install {subl-handler}[https://github.com/asuth/subl-handler]
 
 3. Open subl-handler. Go to preferences (SublHandler > Preferences), and point "Path to subl" to your installed instance. (EG, /Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl). Note: do not escape the whitespaces, subl-handler accounts for those.
 
