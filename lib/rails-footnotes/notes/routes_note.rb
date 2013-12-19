@@ -15,19 +15,19 @@ module Footnotes
       end
 
       protected
-        def parse_routes
-          routes_with_name = Rails.application.routes.named_routes.to_a.flatten
+      def parse_routes
+        routes_with_name = Rails.application.routes.named_routes.to_a.flatten
 
-          return Rails.application.routes.filtered_routes(:controller => @controller.controller_path).collect do |route|
-            # Catch routes name if exists
-            i = routes_with_name.index(route)
-            name = i ? routes_with_name[i-1].to_s : ''
+        return Rails.application.routes.filtered_routes(:controller => @controller.controller_path).collect do |route|
+          # Catch routes name if exists
+          i = routes_with_name.index(route)
+          name = i ? routes_with_name[i-1].to_s : ''
 
-            # Catch segments requirements
-            req = route.conditions
-            [escape(name), route.conditions.keys.join, route.requirements.reject{|key,value| key == :controller}.inspect, req.inspect]
-          end
+          # Catch segments requirements
+          req = route.conditions
+          [escape(name), route.conditions.keys.join, route.requirements.reject { |key, value| key == :controller }.inspect, req.inspect]
         end
+      end
     end
   end
 
@@ -46,7 +46,7 @@ module Footnotes
         return [] unless filter.is_a?(Hash)
         return routes.reject do |r|
           filter_diff = __hash_diff(filter, r.requirements)
-          route_diff  = __hash_diff(r.requirements, filter)
+          route_diff = __hash_diff(r.requirements, filter)
 
           (filter_diff == filter) || (filter_diff != route_diff)
         end
@@ -56,5 +56,9 @@ module Footnotes
 end
 
 if Footnotes::Notes::RoutesNote.included?
-  ActionController::Routing::RouteSet.send :include, Footnotes::Extensions::Routes
+  if Rails::VERSION::MAJOR >= 4
+    ActionDispatch::Routing::RouteSet.send :include, Footnotes::Extensions::Routes
+  else
+    ActionController::Routing::RouteSet.send :include, Footnotes::Extensions::Routes
+  end
 end
