@@ -99,6 +99,5 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  rails (>= 3.0.0)
   rails-footnotes!
   rspec (~> 2.9.0)
