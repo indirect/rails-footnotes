@@ -1,3 +1,5 @@
+require 'active_support/core_ext/module/attribute_accessors'
+
 module Footnotes
   mattr_accessor :before_hooks
   @@before_hooks = []
