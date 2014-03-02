@@ -106,15 +106,7 @@ module Footnotes
       end
 
       def valid_format?
-        @controller.response.content_type == 'text/html'
-      end
-
-      def template_format_method
-        if @template.respond_to?(:template_format)
-          return 'template_format'
-        else
-          return 'format'
-        end
+        [:html,:rhtml,:xhtml,:rxhtml].include?(@template.send(:format).to_sym)
       end
 
       def valid_content_type?
