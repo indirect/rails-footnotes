@@ -17,7 +17,7 @@ NOTE: Since this branch aims Rails 3 support, if you want to use it with Rails 2
 
 Install Rails Footnotes is very easy.
 
-=== Rails 3.x
+=== Rails 3.x / 4.x
 
    gem 'rails-footnotes', '>= 3.7.9', :group => :development
 
@@ -25,7 +25,9 @@ After you install RailsFootnotes and add it to your Gemfile, you need to run the
 
   rails generate rails_footnotes:install
 
-=== Rails 2.x
+=== Rails 2.x (Not maintained, please update to Rails 4)
+
+You can still use an older version of the gem :
 
 In RAILS_ROOT/config/environments/development.rb (yes, you want it only in development):
 
