@@ -1,7 +1,7 @@
 require 'bundler'
 Bundler::GemHelper.install_tasks
 require "rspec/core/rake_task"
-require 'rake/rdoctask'
+require 'rdoc/task'
 
 desc 'Default: run tests'
 task :default => :spec
@@ -13,7 +13,7 @@ RSpec::Core::RakeTask.new(:spec) do |t|
 end
 
 desc 'Generate documentation for Footnotes.'
-Rake::RDocTask.new(:rdoc) do |rdoc|
+RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_dir = 'rdoc'
   rdoc.title    = 'Footnotes'
   rdoc.options << '--line-numbers' << '--inline-source'
