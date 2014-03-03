@@ -56,12 +56,9 @@ describe "Footnotes" do
     end
   end
 
-  #TODO doe's not pased with 1.8.7
-  if RUBY_VERSION >= '1.9.0'
-    it "foonotes_included" do
-      footnotes_perform!
-      @controller.response_body.should_not == HTML_DOCUMENT
-    end
+  it "foonotes_included" do
+    footnotes_perform!
+    @controller.response_body.should_not == HTML_DOCUMENT
   end
 
   specify "footnotes_not_included_when_request_is_xhr" do
