@@ -72,13 +72,13 @@ describe "Footnotes" do
   end
 
   specify "footnotes_not_included_when_content_type_is_javascript" do
-    @controller.response.headers['Content-Type'] = 'text/javascript'
+    @controller.response.content_type = 'text/javascript'
     footnotes_perform!
     @controller.response.body.should eql HTML_DOCUMENT
   end
 
   specify "footnotes_included_when_content_type_is_html" do
-    @controller.response.headers['Content-Type'] = 'text/html'
+    @controller.response.content_type = 'text/html'
     footnotes_perform!
     @controller.response.body.should_not eql HTML_DOCUMENT
   end

@@ -106,7 +106,7 @@ module Footnotes
       end
 
       def valid_format?
-        [:html,:rhtml,:xhtml,:rxhtml].include?(@template.send(:format).to_sym)
+        ['text/html', nil].include? @controller.response.content_type
       end
 
       def valid_content_type?
