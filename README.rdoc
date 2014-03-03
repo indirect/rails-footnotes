@@ -36,7 +36,7 @@ In RAILS_ROOT/config/environments/development.rb (yes, you want it only in devel
 For version greater than 3.7.0
 
 If you want to add alternate logic to enable or disable footnotes,
-add something like this to config/initializers/footnotes.rb:
+add something like this to config/initializers/rails_footnotes.rb:
 
   if defined?(Footnotes) && Rails.env.development?
     Footnotes.run! # first of all
@@ -46,7 +46,7 @@ add something like this to config/initializers/footnotes.rb:
 
 === Post initialization
 
-If you want to add alternate logic to config footnotes without commit it to SCM, add your code to .footnotes:
+If you want to add alternate logic to config footnotes without commit it to SCM, add your code to .rails_footnotes:
 
     Footnotes::Filter.notes = []
 
