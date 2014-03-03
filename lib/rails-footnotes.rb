@@ -1,4 +1,5 @@
-require 'active_support/core_ext/module/attribute_accessors'
+require 'rails'
+require 'action_controller'
 
 module Footnotes
   mattr_accessor :before_hooks
@@ -25,9 +26,9 @@ module Footnotes
 
     ActionController::Base.send(:include, RailsFootnotesExtension)
 
-    load Rails.root.join('.rails_footnotes') if Rails.root.join('.rails_footnotes').exist?
+    load Rails.root.join('.rails_footnotes') if Rails.root && Rails.root.join('.rails_footnotes').exist?
     #TODO DEPRECATED
-    load Rails.root.join('.footnotes') if Rails.root.join('.footnotes').exist?
+    load Rails.root.join('.footnotes') if Rails.root && Rails.root.join('.footnotes').exist?
   end
 
   def self.setup
