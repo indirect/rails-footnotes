@@ -102,24 +102,11 @@ module Footnotes
       end
 
       def performed_render?
-        @controller.instance_variable_get(:@performed_render) || # rails 2.x
-          (@controller.respond_to?(:performed?) && @controller.performed?) # rails3, will break on redirect??
+        @controller.respond_to?(:performed?) && @controller.performed?
       end
 
       def valid_format?
-        if @template # Rails 2.x
-          [:html,:rhtml,:xhtml,:rxhtml].include?(@template.send(template_format_method.to_sym).to_sym)
-        else # Rails 3
-          @controller.response.content_type == 'text/html'
-        end
-      end
-
-      def template_format_method
-        if @template.respond_to?(:template_format)
-          return 'template_format'
-        else
-          return 'format'
-        end
+        [:html,:rhtml,:xhtml,:rxhtml].include?(@template.send(:format).to_sym)
       end
 
       def valid_content_type?

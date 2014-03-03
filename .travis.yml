@@ -1,9 +1,12 @@
 script: "bundle exec rake spec"
 rvm:
-  - 1.8.7
-  - 1.9.2
   - 1.9.3
-  - ree
-notifications:
-  recipients:
-    - romanvbabenko@gmail.com
+  - 2.0.0
+  - 2.1.1
+gemfile:
+  - gemfiles/Gemfile.rails-3.2.x
+  - gemfiles/Gemfile.rails-4.0.x
+  - gemfiles/Gemfile.rails-edge
+matrix:
+  allow_failures:
+    - gemfile: gemfiles/Gemfile.rails-edge
