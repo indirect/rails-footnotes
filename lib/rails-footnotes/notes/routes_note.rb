@@ -56,5 +56,5 @@ module Footnotes
 end
 
 if Footnotes::Notes::RoutesNote.included?
-  ActionController::Routing::RouteSet.send :include, Footnotes::Extensions::Routes
+  ActionDispatch::Routing::RouteSet.send :include, Footnotes::Extensions::Routes
 end
