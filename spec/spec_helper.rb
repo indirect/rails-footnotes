@@ -5,7 +5,6 @@ rescue LoadError
 end
 ENV["RAILS_ENV"] ||= 'test'
 require "rails-footnotes"
-require 'pry-byebug'
 Rails.logger = Logger.new(STDOUT)
 
 module FooBar
