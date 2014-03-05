@@ -4,7 +4,7 @@ require "rails-footnotes/notes/assigns_note"
 
 describe Footnotes::Notes::AssignsNote do
   let(:note) do
-    @controller = mock
+    @controller = double
     @controller.stub(:instance_variables).and_return([:@action_has_layout, :@status])
     @controller.instance_variable_set(:@action_has_layout, true)
     @controller.instance_variable_set(:@status, 200)

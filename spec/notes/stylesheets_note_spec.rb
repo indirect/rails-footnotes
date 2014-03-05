@@ -3,7 +3,7 @@ require "rails-footnotes/notes/stylesheets_note"
 
 describe Footnotes::Notes::StylesheetsNote do
 
-  let(:note) {described_class.new(mock('controller', :response => mock('body', :body => '')))}
+  let(:note) {described_class.new(double('controller', :response => double('body', :body => '')))}
   subject {note}
 
   it {should be_valid}

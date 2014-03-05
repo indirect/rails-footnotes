@@ -2,7 +2,7 @@ require 'spec_helper'
 require "rails-footnotes/notes/javascripts_note"
 
 describe Footnotes::Notes::JavascriptsNote do
-  let(:note) {described_class.new(mock('controller', :response => mock('body', :body => '')))}
+  let(:note) {described_class.new(double('controller', :response => double('body', :body => '')))}
   subject {note}
 
   it {should be_valid}
