@@ -17,6 +17,8 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", ">= 3.0.0"
 
   s.add_development_dependency "rspec-rails"
+  s.add_development_dependency "capybara"
+  s.add_development_dependency "pry-byebug"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")

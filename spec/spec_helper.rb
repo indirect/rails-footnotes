@@ -3,23 +3,31 @@ begin
   SimpleCov.start
 rescue LoadError
 end
-
-require 'rubygems'
-require 'rails/all'
-ENV['RAILS_ENV'] = 'test'
-Rails.logger = Logger.new(STDOUT)
-
-require 'active_support'
-require 'active_support/all' unless Class.respond_to?(:cattr_accessor)
-require 'rails-footnotes/footnotes'
-require 'rails-footnotes/abstract_note'
+ENV["RAILS_ENV"] ||= 'test'
 require "rails-footnotes"
-
-RSpec.configure do |config|
-end
+require 'pry-byebug'
+Rails.logger = Logger.new(STDOUT)
 
 module FooBar
   class Application < Rails::Application
     config.secret_key_base = 'foobar'
+    config.root = Dir.new('.')
   end
 end
+
+ActionController::Base.class_eval do
+  include Rails.application.routes.url_helpers
+end
+
+RSpec.configure do |config|
+
+  Rails.application.routes.draw do
+    get 'footnotes/foo'
+    get 'footnotes/foo_js'
+  end
+
+end
+
+require 'rspec/rails'
+require 'capybara/rspec'
+require 'capybara/rails'
