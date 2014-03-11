@@ -17,6 +17,16 @@ NOTE: Since this branch aims Rails 3 support, if you want to use it with Rails 2
 
 Install Rails Footnotes is very easy.
 
+=== Rails 4.x
+
+For now, linking to the git repository should work with some deprecation messages :
+    
+    gem 'rails-footnotes', :github => 'josevalim/rails-footnotes', :group => :development
+    
+Then follow the steps for rails 3.
+
+A new version is under active development, it will fully support Rails 4.x and retire Rails 2 / Ruby 1.8
+
 === Rails 3.x
 
    gem 'rails-footnotes', '>= 3.7.9', :group => :development
