@@ -14,6 +14,10 @@ end
 
 describe FootnotesController do
 
+  def page
+    Capybara::Node::Simple.new(response.body)
+  end
+
   shared_examples 'has_footnotes' do
     it 'includes footnotes' do
       response.body.should have_selector('#footnotes_debug')
@@ -46,6 +50,10 @@ describe FootnotesController do
 
       before do
         get :foo
+      end
+
+      it 'includes footnotes in the last div in body' do
+        all('body > :last-child')[0][:id].should == 'footnotes_debug'
       end
     end
 
