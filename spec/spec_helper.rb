@@ -22,6 +22,7 @@ RSpec.configure do |config|
 
   Rails.application.routes.draw do
     get 'footnotes/foo'
+    get 'footnotes/foo_holder'
     get 'footnotes/foo_js'
   end
 

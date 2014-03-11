@@ -6,6 +6,10 @@ class FootnotesController < ActionController::Base
     render :text => HTML_DOCUMENT, :content_type => 'text/html'
   end
 
+  def foo_holder
+    render :text => '<html><body><div id="footnotes_holder"></div></body></html>'
+  end
+
   def foo_js
     render :text => '<script></script>', :content_type => 'text/javascript'
   end
@@ -54,6 +58,11 @@ describe FootnotesController do
 
       it 'includes footnotes in the last div in body' do
         all('body > :last-child')[0][:id].should == 'footnotes_debug'
+      end
+
+      it 'includes footnotes in the footnoted_holder div if present' do
+        get :foo_holder
+        response.body.should have_selector('#footnotes_holder > #footnotes_debug')
       end
     end
 
