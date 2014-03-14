@@ -14,6 +14,10 @@ class FootnotesController < ActionController::Base
     render :text => '<script></script>', :content_type => 'text/javascript'
   end
 
+  def foo_download
+    send_file Rails.root.join('spec', 'fixtures', 'html_download.html'), :disposition => 'attachment'
+  end
+
 end
 
 describe FootnotesController do
@@ -24,6 +28,7 @@ describe FootnotesController do
 
   shared_examples 'has_footnotes' do
     it 'includes footnotes' do
+      get :foo
       response.body.should have_selector('#footnotes_debug')
     end
   end
@@ -63,6 +68,11 @@ describe FootnotesController do
       it 'includes footnotes in the footnoted_holder div if present' do
         get :foo_holder
         response.body.should have_selector('#footnotes_holder > #footnotes_debug')
+      end
+
+      it 'does not alter a html file download' do
+        get :foo_download
+        response.body.should == File.open(Rails.root.join('spec', 'fixtures', 'html_download.html')).read
       end
     end
 

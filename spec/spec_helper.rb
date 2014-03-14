@@ -24,6 +24,7 @@ RSpec.configure do |config|
     get 'footnotes/foo'
     get 'footnotes/foo_holder'
     get 'footnotes/foo_js'
+    get 'footnotes/foo_download'
   end
 
 end

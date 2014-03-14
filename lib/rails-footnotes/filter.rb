@@ -78,7 +78,7 @@ module Footnotes
     protected
       def valid?
         @body.is_a?(String) && performed_render? && valid_format? && valid_content_type? &&
-          !component_request? && !xhr? && !footnotes_disabled?
+          !component_request? && !xhr? && !footnotes_disabled? && !attached_file?
       end
 
       def add_footnotes_without_validation!
@@ -124,6 +124,10 @@ module Footnotes
 
       def footnotes_disabled?
         @controller.params[:footnotes] == "false"
+      end
+
+      def attached_file?
+        !!(@controller.headers['Content-Disposition'] =~ /attachment/)
       end
 
       #
