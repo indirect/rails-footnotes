@@ -28,7 +28,7 @@ describe 'log note' do
 
   before do
     @original_logger = Rails.logger
-    Rails.logger = ActiveSupport::Logger.new(StringIO.new)
+    Rails.logger = Logger.new(StringIO.new)
   end
 
   after do

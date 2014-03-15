@@ -1,7 +1,7 @@
 module Footnotes
   module Notes
     class LogNote
-      class NoteLogger < ActiveSupport::Logger
+      class NoteLogger < Logger
 
         def initialize(logs)
           @logs = logs
