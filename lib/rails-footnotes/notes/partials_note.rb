@@ -2,7 +2,12 @@ require 'rails-footnotes/notes/log_note'
 
 module Footnotes
   module Notes
-    class PartialsNote < LogNote
+    class PartialsNote < AbstractNote
+
+      def valid?
+        false
+      end
+
       def initialize(controller)
         super
         @controller = controller
