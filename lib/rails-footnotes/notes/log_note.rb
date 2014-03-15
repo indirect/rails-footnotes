@@ -1,14 +1,19 @@
 module Footnotes
   module Notes
     class LogNote < AbstractNote
-      @@log = []
 
-      def self.log(message)
-        @@log << message
-      end
+      autoload :NoteLogger, 'rails-footnotes/notes/log_note/note_logger'
 
-      def initialize(controller)
-        @controller = controller
+      cattr_accessor :logs
+      cattr_accessor :original_logger
+
+      def self.start!(controller)
+        self.logs = []
+        self.original_logger = Rails.logger
+        note_logger = NoteLogger.new(self.logs)
+        note_logger.level = self.original_logger.level
+        note_logger.formatter = self.original_logger.formatter
+        Rails.logger = self.original_logger.dup.extend(ActiveSupport::Logger.broadcast(note_logger))
       end
 
       def title
@@ -16,30 +21,16 @@ module Footnotes
       end
 
       def content
-        escape(log.gsub(/\e\[.+?m/, '')).gsub("\n", '<br />')
+        result = escape(log.gsub(/\e\[.+?m/, '')).gsub("\n", '<br />')
+        # Restore formatter
+        Rails.logger = self.class.original_logger
+        result
       end
 
       def log
-        unless @log
-          @log = @@log.join('')
-          @@log = []
-          if rindex = @log.rindex('Processing '+@controller.class.name+'#'+@controller.action_name)
-            @log = @log[rindex..-1]
-          end
-        end
-        @log
+        self.class.logs.join("\n")
       end
 
-      module LoggingExtensions
-        def add(*args, &block)
-          logged_message = super
-          Footnotes::Notes::LogNote.log(logged_message)
-          logged_message
-        end
-      end
-
-      Rails.logger.extend LoggingExtensions
     end
   end
 end
-

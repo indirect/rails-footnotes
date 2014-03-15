@@ -3,7 +3,12 @@ require "spec_helper"
 describe Footnotes::Notes::AbstractNote do
   before do
     @note = Footnotes::Notes::AbstractNote.new
+    @notes = Footnotes::Filter.notes
     Footnotes::Filter.notes = [:abstract]
+  end
+
+  after do
+    Footnotes::Filter.notes = @notes
   end
 
   it {described_class.should respond_to :start!}

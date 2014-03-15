@@ -90,7 +90,7 @@ module Footnotes
       def initialize_notes!
         each_with_rescue(@@klasses) do |klass|
           note = klass.new(@controller)
-          @notes << note if note.respond_to?(:valid?) && note.valid?
+          @notes << note if note.valid?
         end
       end
 
