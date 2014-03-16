@@ -25,6 +25,7 @@ RSpec.configure do |config|
     get 'footnotes/foo_holder'
     get 'footnotes/foo_js'
     get 'footnotes/foo_download'
+    get 'partials/index'
   end
 
 end
