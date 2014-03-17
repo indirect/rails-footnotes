@@ -6,6 +6,7 @@ require 'rails-footnotes/each_with_rescue'
 require 'rails-footnotes/filter'
 require 'rails-footnotes/notes/all'
 require 'rails-footnotes/extension'
+require 'active_support/deprecation'
 
 module Footnotes
   mattr_accessor :before_hooks
@@ -16,6 +17,11 @@ module Footnotes
 
   mattr_accessor :enabled
   @@enabled = false
+
+  def self.run!
+    ActiveSupport::Deprecation.warn "run! is deprecated and will be removed from future releases, use Footnotes.setup or Footnotes.enabled instead.", caller
+    Footnotes.enabled = true
+  end
 
   def self.before(&block)
     @@before_hooks << block
