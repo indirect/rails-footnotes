@@ -1,5 +1,5 @@
-if defined?(Footnotes) && Rails.env.development?
-  Footnotes.run! # first of all
-
-  # ... other init code
+if Rails.env.development?
+  Footnotes.setup do |f|
+    f.enabled = true
+  end
 end
