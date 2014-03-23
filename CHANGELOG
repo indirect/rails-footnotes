@@ -1,3 +1,16 @@
+== Footnotes v4.0.0
+  * Drop support for ruby 1.8
+  * Drop support for rails < 3.2
+  * Add support for rails 4.x
+  * Rewrite of the log note to make it work on all supported rails versions
+  * Rewrite of the partials note to make it work on all supported rails versions
+  * Rewrite of the loading mechanism, allowing to load conditionally footnotes on a per-request basis if wanted
+  * Deprecate Footnotes.run!
+  * Remove backtrace cleaner monkey patchs
+  * Remove support of .rails_footnotes file
+  * New initializer format with ability to configure footnotes more easily
+  * Remove 'general' note
+
 == Footnotes v3.7.0
   * Migrate to Bundler
   * Support only Rails3
