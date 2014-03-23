@@ -21,6 +21,15 @@ module Footnotes
   class << self
     delegate :notes, :to => Filter
     delegate :notes=, :to => Filter
+
+    delegate :prefix, :to => Filter
+    delegate :prefix=, :to => Filter
+
+    delegate :no_style, :to => Filter
+    delegate :no_style=, :to => Filter
+
+    delegate :multiple_notes, :to => Filter
+    delegate :multiple_notes=, :to => Filter
   end
 
   def self.run!
