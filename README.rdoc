@@ -2,8 +2,7 @@
 
 {<img src="https://travis-ci.org/josevalim/rails-footnotes.png" />}[https://travis-ci.org/josevalim/rails-footnotes]
 
-If you are developing in Rails you should know the plugin! It displays
-footnotes in your application for easy debugging, such as sessions,
+Rails footnotes displays footnotes in your application for easy debugging, such as sessions,
 request parameters, cookies, filter chain, routes, queries, etc.
 
 Even more, it contains links to open files directly in your editor including
@@ -11,36 +10,22 @@ your backtrace lines.
 
 == Installation
 
-NOTE: Since this branch aims Rails 3 support, if you want to use it with Rails 2.3 you should check this branch:
+NOTE: Since this branch aims Rails 3+ support, if you want to use footnotes with Rails 2.3 you should use this branch:
 
-    https://github.com/josevalim/rails-footnotes/tree/rails2
+https://github.com/josevalim/rails-footnotes/tree/rails2
 
-Install Rails Footnotes is very easy.
+Installing Rails Footnotes is very easy.
 
 === Rails 3.x/4.x
 
-    gem 'rails-footnotes', '>= 4.0.0'
+    gem 'rails-footnotes', '>= 4.0.0', '<5'
 
 
 After you install RailsFootnotes and add it to your Gemfile, you need to run the generator:
 
   rails generate rails_footnotes:install
 
-=== Rails 2.x (Not maintained, please update to Rails 4)
-
-You can still use an older version of the gem :
-
-In RAILS_ROOT/config/environments/development.rb (yes, you want it only in development):
-
-  gem "rails-footnotes", '< 3.7.0', :group => :development
-
-=== Post initialization
-
-If you want to add alternate logic to config footnotes without commit it to SCM, add your code to .rails_footnotes:
-
-    Footnotes::Filter.notes = []
-
-this code temporarily disables notes for all controllers
+This will create an initializer with default config and some examples.
 
 === Hooks
 
@@ -51,13 +36,15 @@ this code temporarily disables notes for all controllers
         controller.action_name == 'edit' }
     end
 
+=== Editors links
+
 If you are not using Textmate as text editor, MacVim and Sublime Text 2 are also compatible.
 
 *MacVim*
 
-In your environment.rb or in an initializer do:
+In the rails-footnotes initializer do :
 
-    Footnotes::Filter.prefix = 'mvim://open?url=file://%s&line=%d&column=%d'
+    f.prefix = 'mvim://open?url=file://%s&line=%d&column=%d'
 
 Where you are going to choose a prefix compatible with your text editor. The %s is
 replaced by the name of the file, the first %d is replaced by the line number and
@@ -68,7 +55,7 @@ We assume that they appear in that order. "foo://line=%d&file=%s" (%d precedes %
 
 *Sublime* *Text* *2*
 
-1. Keep the Textmate prefix, <tt>Footnotes::Filter.prefix = 'txmt://open?url=file://%s&line=%d&column=%d'</tt>
+1. Keep the Textmate prefix, <tt>f.prefix = 'txmt://open?url=file://%s&line=%d&column=%d'</tt>
 
 2. Install {subl-handler}[https://github.com/asuth/subl-handler]
 
@@ -85,23 +72,23 @@ By default, footnotes are appended at the end of the page with default styleshee
 to change their position, you can define a div with id "footnotes_holder" or define your own stylesheet
 by turning footnotes stylesheet off:
 
-    Footnotes::Filter.no_style = true
+    f.no_style = true
 
 Another option is to allow multiple notes to be opened at the same time:
 
-    Footnotes::Filter.multiple_notes = true
+    f.multiple_notes = true
 
 Finally, you can control which notes you want to show. The default are:
 
-    Footnotes::Filter.notes = [:session, :cookies, :params, :filters, :routes, :env, :queries, :log, :general]
+    f.notes = [:session, :cookies, :params, :filters, :routes, :env, :queries, :log, :general]
 
 == Creating your own notes
 
-Create your notes to integrate with Footnotes is easy.
+Creating your notes to integrate with Footnotes is easy.
 
 1. Create a Footnotes::Notes::YourExampleNote class
 2. Implement the necessary methods (check abstract_note.rb file in lib/notes)
-3. Append your example note in Footnotes::Filter.notes array (usually at the end of your environment file or in an initializer):
+3. Append your example note in Footnotes::Filter.notes array (usually at the end of your environment file or in the initializer):
 
 For example, to create a note that shows info about the user logged in your application you just have to do:
 
@@ -136,9 +123,9 @@ For example, to create a note that shows info about the user logged in your appl
     end
   end
 
-Then put in your environment:
+Then put in your environment, add in your initializer:
 
-  Footnotes::Filter.notes += [:current_user]
+  f.notes += [:current_user]
 
 == Display of the notes
 
@@ -153,11 +140,17 @@ at an appropriate place, your notes will now appear inside div#footnotes_holder
 * Keenan Brock  - http://github.com/kbrock
 * Ivan Storck   - http://github.com/ivanoats
 * Kris Chamber  - http://github.com/kristopher
+* Roman Babenko - http://github.com/romanvbabenko
+* Adrien Siami  - http://github.com/intrepidd
 
 == Bugs and Feedback
 
-If you discover any bugs, please send an e-mail to keenan@thebrocks.net
+If you discover any bugs, please open an issue.
 If you just want to give some positive feedback or drop a line, that's fine too!
+
+=== Version 4.x
+
+Starting from version 4.0, Adren Siami is the maintainer of this plugin.
 
 === Version 3.x
 
@@ -165,6 +158,8 @@ This plugin was maintained until version 3.6 by José Valim
 
 Copyright (c) 2009 José Valim (jose@plataformatec.com.br)
 http://blog.plataformatec.com.br
+
+Until version 4.0, Roman Babenko maintained this plugin.
 
 === Version 2.0
 
