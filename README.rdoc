@@ -10,13 +10,13 @@ your backtrace lines.
 
 == Installation
 
-NOTE: Since this branch aims Rails 3+ support, if you want to use footnotes with Rails 2.3 you should use this branch:
+NOTE: Since this branch aims Rails 3.2+ support, if you want to use footnotes with Rails 2.3 you should use this branch:
 
 https://github.com/josevalim/rails-footnotes/tree/rails2
 
 Installing Rails Footnotes is very easy.
 
-=== Rails 3.x/4.x
+=== Rails 3.2.x/4.x
 
     gem 'rails-footnotes', '>= 4.0.0', '<5'
 
