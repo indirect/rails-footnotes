@@ -18,6 +18,11 @@ module Footnotes
   mattr_accessor :enabled
   @@enabled = false
 
+  class << self
+    delegate :notes, :to => Filter
+    delegate :notes=, :to => Filter
+  end
+
   def self.run!
     ActiveSupport::Deprecation.warn "run! is deprecated and will be removed from future releases, use Footnotes.setup or Footnotes.enabled instead.", caller
     Footnotes.enabled = true
