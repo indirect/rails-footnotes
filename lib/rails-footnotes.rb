@@ -1,6 +1,5 @@
 require 'rails'
 require 'action_controller'
-require 'rails-footnotes/backtracer'
 require 'rails-footnotes/abstract_note'
 require 'rails-footnotes/each_with_rescue'
 require 'rails-footnotes/filter'
