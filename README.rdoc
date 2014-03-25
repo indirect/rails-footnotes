@@ -74,6 +74,15 @@ by turning footnotes stylesheet off:
 
     f.no_style = true
 
+You can also lock the footnotes to the top of the window, hidden by default, and accessible
+via a small button fixed to the top-right of your browser:
+
+    f.lock_top_right = true
+
+To set the font-size for the footnotes:
+
+    f.font_size = '13px'
+
 Another option is to allow multiple notes to be opened at the same time:
 
     f.multiple_notes = true
