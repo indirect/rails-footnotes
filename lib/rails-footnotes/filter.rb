@@ -3,6 +3,8 @@ module Footnotes
     @@no_style = false
     @@multiple_notes = false
     @@klasses = []
+    @@lock_top_right = false
+    @@font_size = '11px'
 
     # Default link prefix is textmate
     @@prefix = 'txmt://open?url=file://%s&amp;line=%d&amp;column=%d'
@@ -16,7 +18,9 @@ module Footnotes
     # :notes          => Class variable that holds the notes to be processed
     # :prefix         => Prefix appended to FootnotesLinks
     # :multiple_notes => Set to true if you want to open several notes at the same time
-    cattr_accessor :no_style, :notes, :prefix, :multiple_notes
+    # :lock_top_right => Lock a btn to toggle notes to the top right of the browser
+    # :font_size      => CSS font-size property
+    cattr_accessor :no_style, :notes, :prefix, :multiple_notes, :lock_top_right, :font_size
 
     class << self
       include Footnotes::EachWithRescue
@@ -136,10 +140,23 @@ module Footnotes
 
       def insert_styles
         #TODO More customizable(reset.css, from file etc.)
+        if @@lock_top_right
+          extra_styles = <<-STYLES
+            #footnotes_debug {position: fixed; top: 0px; right: 0px; width: 100%; z-index: 10000; margin-top: 0;}
+            #footnotes_debug #toggle_footnotes {position: absolute; right: 0; top: 0; background: #fff; border: 1px solid #ccc; color: #9b1b1b; font-size: 20px; text-align: center; padding: 8px; opacity: 0.9;}
+            #footnotes_debug #toggle_footnotes:hover {opacity: 1;}
+            #footnotes_debug #all_footnotes {display: none; padding: 15px; background: #fff; box-shadow: 0 0 5px rgba(0,0,0,0.4);}
+            #footnotes_debug fieldset > div {max-height: 500px; overflow: scroll;}
+          STYLES
+        else
+          extra_styles = <<-STYLES
+            #footnotes_debug #toggle_footnotes {display: none;}
+          STYLES
+        end
         insert_text :before, /<\/head>/i, <<-HTML
         <!-- Footnotes Style -->
         <style type="text/css">
-          #footnotes_debug {font-size: 11px; font-weight: normal; margin: 2em 0 1em 0; text-align: center; color: #444; line-height: 16px;}
+          #footnotes_debug {font-size: #{@@font_size}; font-family: Consolas, monaco, monospace; font-weight: normal; margin: 2em 0 1em 0; text-align: center; color: #444; line-height: 16px; background: #fff;}
           #footnotes_debug th, #footnotes_debug td {color: #444; line-height: 18px;}
           #footnotes_debug a {color: #9b1b1b; font-weight: inherit; text-decoration: none; line-height: 18px;}
           #footnotes_debug table {text-align: center;}
@@ -148,6 +165,7 @@ module Footnotes
           #footnotes_debug .name_values td {vertical-align: top;}
           #footnotes_debug legend {background-color: #fff;}
           #footnotes_debug fieldset {text-align: left; border: 1px dashed #aaa; padding: 0.5em 1em 1em 1em; margin: 1em 2em; color: #444; background-color: #FFF;}
+          #{extra_styles}
           /* Aditional Stylesheets */
           #{@notes.map(&:stylesheet).compact.join("\n")}
         </style>
@@ -158,13 +176,19 @@ module Footnotes
       def insert_footnotes
         # Fieldsets method should be called first
         content = fieldsets
-
+        element_style = ''
+        if @@lock_top_right
+          element_style = 'style="display: none;"'
+        end
         footnotes_html = <<-HTML
         <!-- Footnotes -->
         <div style="clear:both"></div>
         <div id="footnotes_debug">
-          #{links}
-          #{content}
+          <a id="toggle_footnotes" href="#" onclick="Footnotes.toggle('all_footnotes'); return false;">fn</a>
+          <div id="all_footnotes" #{element_style}>
+            #{links}
+            #{content}
+          </div>
           <script type="text/javascript">
             var Footnotes = function() {
 

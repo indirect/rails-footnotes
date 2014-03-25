@@ -29,6 +29,12 @@ module Footnotes
 
     delegate :multiple_notes, :to => Filter
     delegate :multiple_notes=, :to => Filter
+
+    delegate :lock_top_right, :to => Filter
+    delegate :lock_top_right=, :to => Filter
+
+    delegate :font_size, :to => Filter
+    delegate :font_size=, :to => Filter
   end
 
   def self.run!
