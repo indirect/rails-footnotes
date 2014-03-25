@@ -139,7 +139,7 @@ module Footnotes
         insert_text :before, /<\/head>/i, <<-HTML
         <!-- Footnotes Style -->
         <style type="text/css">
-          #footnotes_debug {font-size: 11px; font-weight: normal; margin: 2em 0 1em 0; text-align: center; color: #444; line-height: 16px;}
+          #footnotes_debug {font-size: 11px; font-family: Consolas, monaco, monospace; font-weight: normal; margin: 2em 0 1em 0; text-align: center; color: #444; line-height: 16px;}
           #footnotes_debug th, #footnotes_debug td {color: #444; line-height: 18px;}
           #footnotes_debug a {color: #9b1b1b; font-weight: inherit; text-decoration: none; line-height: 18px;}
           #footnotes_debug table {text-align: center;}
