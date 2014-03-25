@@ -32,6 +32,9 @@ module Footnotes
 
     delegate :lock_top_right, :to => Filter
     delegate :lock_top_right=, :to => Filter
+
+    delegate :font_size, :to => Filter
+    delegate :font_size=, :to => Filter
   end
 
   def self.run!

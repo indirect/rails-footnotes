@@ -4,6 +4,7 @@ module Footnotes
     @@multiple_notes = false
     @@klasses = []
     @@lock_top_right = false
+    @@font_size = '11px'
 
     # Default link prefix is textmate
     @@prefix = 'txmt://open?url=file://%s&amp;line=%d&amp;column=%d'
@@ -18,7 +19,8 @@ module Footnotes
     # :prefix         => Prefix appended to FootnotesLinks
     # :multiple_notes => Set to true if you want to open several notes at the same time
     # :lock_top_right => Lock a btn to toggle notes to the top right of the browser
-    cattr_accessor :no_style, :notes, :prefix, :multiple_notes, :lock_top_right
+    # :font_size      => CSS font-size property
+    cattr_accessor :no_style, :notes, :prefix, :multiple_notes, :lock_top_right, :font_size
 
     class << self
       include Footnotes::EachWithRescue
@@ -154,7 +156,7 @@ module Footnotes
         insert_text :before, /<\/head>/i, <<-HTML
         <!-- Footnotes Style -->
         <style type="text/css">
-          #footnotes_debug {font-size: 11px; font-family: Consolas, monaco, monospace; font-weight: normal; margin: 2em 0 1em 0; text-align: center; color: #444; line-height: 16px; background: #fff;}
+          #footnotes_debug {font-size: #{@@font_size}; font-family: Consolas, monaco, monospace; font-weight: normal; margin: 2em 0 1em 0; text-align: center; color: #444; line-height: 16px; background: #fff;}
           #footnotes_debug th, #footnotes_debug td {color: #444; line-height: 18px;}
           #footnotes_debug a {color: #9b1b1b; font-weight: inherit; text-decoration: none; line-height: 18px;}
           #footnotes_debug table {text-align: center;}
