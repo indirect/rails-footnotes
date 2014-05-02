@@ -96,7 +96,7 @@ Finally, you can control which notes you want to show. The default are:
 Creating your notes to integrate with Footnotes is easy.
 
 1. Create a Footnotes::Notes::YourExampleNote class
-2. Implement the necessary methods (check abstract_note.rb file in lib/rails-footnotes)
+2. Implement the necessary methods (check abstract_note.rb[link:lib/rails-footnotes/abstract_note.rb] file in lib/rails-footnotes)
 3. Append your example note in Footnotes::Filter.notes array (usually at the end of your environment file or in the initializer):
 
 For example, to create a note that shows info about the user logged in your application you just have to do:
