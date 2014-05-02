@@ -10,7 +10,7 @@ your backtrace lines.
 
 == Installation
 
-NOTE: Since this branch aims Rails 3.2+ support, if you want to use footnotes with Rails 2.3 you should use this branch:
+NOTE: Since this branch aims for Rails 3.2+ support, if you want to use footnotes with Rails 2.3 you should use this branch:
 
 https://github.com/josevalim/rails-footnotes/tree/rails2
 
@@ -36,9 +36,9 @@ This will create an initializer with default config and some examples.
         controller.action_name == 'edit' }
     end
 
-=== Editors links
+=== Editor links
 
-If you are not using Textmate as text editor, MacVim and Sublime Text 2 are also compatible.
+Textmate, MacVim and Sublime Text 2 are compatible.
 
 *MacVim*
 
@@ -46,9 +46,9 @@ In the rails-footnotes initializer do :
 
     f.prefix = 'mvim://open?url=file://%s&line=%d&column=%d'
 
-Where you are going to choose a prefix compatible with your text editor. The %s is
+Here you need to choose a prefix compatible with your text editor. The %s is
 replaced by the name of the file, the first %d is replaced by the line number and
-the second %d is replaced by the column.
+the second %d is replaced by the column number.
 
 Take note that the order in which the file name (%s), line number (%d) and column number (%d) appears is important.
 We assume that they appear in that order. "foo://line=%d&file=%s" (%d precedes %s) would throw out an error.
@@ -96,7 +96,7 @@ Finally, you can control which notes you want to show. The default are:
 Creating your notes to integrate with Footnotes is easy.
 
 1. Create a Footnotes::Notes::YourExampleNote class
-2. Implement the necessary methods (check abstract_note.rb file in lib/notes)
+2. Implement the necessary methods (check abstract_note.rb[link:lib/rails-footnotes/abstract_note.rb] file in lib/rails-footnotes)
 3. Append your example note in Footnotes::Filter.notes array (usually at the end of your environment file or in the initializer):
 
 For example, to create a note that shows info about the user logged in your application you just have to do:
@@ -136,10 +136,10 @@ Then put in your environment, add in your initializer:
 
   f.notes += [:current_user]
 
-== Display of the notes
+== Footnote position
 
 By default the notes will be showed at the bottom of your page (appended just before </body>).
-If you'd like these notes on a different place (perhaps for aesthetical reasons) you can edit one of your views and add:
+If you'd like the footnote, to be at a different place (perhaps for aesthetical reasons) you can edit one of your views and add:
   <div id="footnotes_holder"></div>
 at an appropriate place, your notes will now appear inside div#footnotes_holder
 
