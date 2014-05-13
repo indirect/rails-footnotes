@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rails-footnotes (3.7.9)
+    rails-footnotes (4.0.0)
       rails (>= 3.2)
 
 GEM
