@@ -159,8 +159,9 @@ module Footnotes
           #footnotes_debug {font-size: #{@@font_size}; font-family: Consolas, monaco, monospace; font-weight: normal; margin: 2em 0 1em 0; text-align: center; color: #444; line-height: 16px; background: #fff;}
           #footnotes_debug th, #footnotes_debug td {color: #444; line-height: 18px;}
           #footnotes_debug a {color: #9b1b1b; font-weight: inherit; text-decoration: none; line-height: 18px;}
-          #footnotes_debug table {text-align: center;}
+          #footnotes_debug table {text-align: left; width: 100%;table-layout: fixed;}
           #footnotes_debug table td {padding: 5px; border-bottom: 1px solid #ccc;}
+          #footnotes_debug table th {padding: 5px; border-bottom: 1px solid #ccc;}
           #footnotes_debug table tr:nth-child(2n) td {background: #eee;}
           #footnotes_debug tbody {text-align: left;}
           #footnotes_debug .name_values td {vertical-align: top;}
