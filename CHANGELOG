@@ -1,3 +1,8 @@
+== Footnotes v4.0.1
+  * Fix bad count for log note
+  * More robust initializer (thanks kayhide)
+  * Ability to lock the notes on the top right instead of the footer (thanks joshuapaling)
+  * More readable notes (thanks joshuapaling)
 == Footnotes v4.0.0
   * Drop support for ruby 1.8
   * Drop support for rails < 3.2
