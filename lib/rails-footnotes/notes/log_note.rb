@@ -19,18 +19,22 @@ module Footnotes
       end
 
       def title
-        "Log (#{log.count("\n")})"
+        "Log (#{log.count})"
       end
 
       def content
-        result = escape(log.gsub(/\e\[.+?m/, '')).gsub("\n", '<br />')
+        result = '<table>'
+          log.each do |l|
+            result << "<tr><td>#{l.gsub(/\e\[.+?m/, '')}</td></tr>"
+          end
+        result << '</table>'
         # Restore formatter
         Rails.logger = self.class.original_logger
         result
       end
 
       def log
-        self.class.logs.join("\n")
+        self.class.logs
       end
 
     end
