@@ -33,18 +33,25 @@ module Footnotes
       end
 
       def content
-        html = ''
+        html = '<table>'
         self.events.each_with_index do |event, index|
           sql_links = []
           sql_links << "<a href=\"javascript:Footnotes.toggle('qtrace_#{index}')\" style=\"color:#00A;\">trace</a>"
 
           html << <<-HTML
-            <b id="qtitle_#{index}">#{escape(event.type.to_s.upcase)}</b> (#{sql_links.join(' | ')})<br />
-            <span id="sql_#{index}">#{print_query(event.payload[:sql])}</span><br />
-            #{print_name_and_time(event.payload[:name], event.duration / 1000.0)}&nbsp;
-            <p id="qtrace_#{index}" style="display:none;">#{parse_trace(event.trace)}</p><br />
+          <tr>
+            <td>
+              <b id="qtitle_#{index}">#{escape(event.type.to_s.upcase)}</b> (#{sql_links.join(' | ')})
+              <p id="qtrace_#{index}" style="display:none;">#{parse_trace(event.trace)}</p><br />
+            </td>
+            <td>
+              <span id="sql_#{index}">#{print_query(event.payload[:sql])}</span>
+            </td>
+            <td>#{print_name_and_time(event.payload[:name], event.duration / 1000.0)}</td>
+          </tr>
           HTML
         end
+        html << '</table>'
         return html
       end
 
