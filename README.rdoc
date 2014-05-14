@@ -149,7 +149,7 @@ at an appropriate place, your notes will now appear inside div#footnotes_holder
 * Keenan Brock  - http://github.com/kbrock
 * Ivan Storck   - http://github.com/ivanoats
 * Kris Chamber  - http://github.com/kristopher
-* Roman Babenko - http://github.com/romanvbabenko
+* Roman V. Babenko - http://github.com/romanvbabenko
 * Adrien Siami  - http://github.com/intrepidd
 
 == Bugs and Feedback
@@ -163,12 +163,15 @@ Starting from version 4.0, Adren Siami is the maintainer of this plugin.
 
 === Version 3.x
 
+This plugin was maintained until version 4.0 by Roman V. Babenko
+
+Copyright (c) 2010-2014 Roman V. Babenko (romanvbabenko@gmail.com)
+http://romanvbabenko.com
+
 This plugin was maintained until version 3.6 by José Valim
 
 Copyright (c) 2009 José Valim (jose@plataformatec.com.br)
 http://blog.plataformatec.com.br
-
-Until version 4.0, Roman Babenko maintained this plugin.
 
 === Version 2.0
 
