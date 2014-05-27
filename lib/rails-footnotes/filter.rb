@@ -47,7 +47,11 @@ module Footnotes
         if args.empty?
           @@prefix
         else
-          format(@@prefix, *args)
+          if @@prefix.respond_to? :call
+            @@prefix.call *args
+          else
+            format(@@prefix, *args)
+          end
         end
       end
 
