@@ -16,7 +16,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", ">= 3.2"
 
-  s.add_development_dependency "rspec-rails"
+  s.add_development_dependency "rspec-rails", '~> 2.14.0'
   s.add_development_dependency "capybara"
 
   s.files         = `git ls-files`.split("\n")
