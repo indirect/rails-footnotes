@@ -14,6 +14,7 @@ module Footnotes
           begin
             yield item
           rescue Exception => e
+            raise e if Rails.env.test?
             # Discard item if it has a problem
             log_error("Footnotes #{item.to_s.camelize} Exception", e)
             delete_me << item
