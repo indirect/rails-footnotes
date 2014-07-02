@@ -103,6 +103,7 @@ module Footnotes
       attr_accessor :events, :ignore_regexps
 
       def initialize(orm)
+        super() 
         @events = []
         orm.each {|adapter| ActiveSupport::LogSubscriber.attach_to adapter, self}
       end
