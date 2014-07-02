@@ -1,3 +1,6 @@
+== Footnotes v4.0.2
+  * Fix bad display of footnotes table
+  * Fix error with the queries note under Rails 4.1.2 (thanks Panayotis Matsinopoulos)
 == Footnotes v4.0.1
   * Fix bad count for log note
   * More robust initializer (thanks kayhide)
