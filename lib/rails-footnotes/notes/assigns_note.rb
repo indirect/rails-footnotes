@@ -38,7 +38,14 @@ module Footnotes
 
       protected
         def to_table
-          @to_table ||= assigns.inject([]) {|rr, var| rr << [var, escape(assigned_value(var))]}.unshift(['Name', 'Value'])
+          table = assigns.inject([]) do |rr, var|
+            class_name = assigned_value(var).class.name
+            var_name = var.to_s
+            rr << ["<strong>#{var.to_s}</strong>" + "<br /><em>#{class_name}</em>", escape(assigned_value(var).inspect)]
+          end
+
+          table.unshift(['Name', 'Value'])
+          @to_table ||= table
         end
 
         def assigns
@@ -46,8 +53,9 @@ module Footnotes
         end
 
         def assigned_value(key)
-          @controller.instance_variable_get(key).inspect
+          @controller.instance_variable_get(key)
         end
+
     end
   end
 end

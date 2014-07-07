@@ -161,8 +161,10 @@ module Footnotes
           #footnotes_debug a {color: #9b1b1b; font-weight: inherit; text-decoration: none; line-height: 18px;}
           #footnotes_debug table {text-align: left; width: 100%;}
           #footnotes_debug table td {padding: 5px; border-bottom: 1px solid #ccc;}
+          #footnotes_debug table td strong {color: #9b1b1b;}
           #footnotes_debug table th {padding: 5px; border-bottom: 1px solid #ccc;}
           #footnotes_debug table tr:nth-child(2n) td {background: #eee;}
+          #footnotes_debug table tr:nth-child(2n + 1) td {background: #fff;}
           #footnotes_debug tbody {text-align: left;}
           #footnotes_debug .name_values td {vertical-align: top;}
           #footnotes_debug legend {background-color: #fff;}

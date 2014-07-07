@@ -18,7 +18,11 @@ describe Footnotes::Notes::AssignsNote do
   its(:title) {should eql 'Assigns (2)'}
 
   specify {note.send(:assigns).should eql [:@action_has_layout, :@status]}
-  specify {note.send(:to_table).should eql [['Name', 'Value'], [:@action_has_layout, "true"], [:@status, "200"]]}
+  specify {note.send(:to_table).should eql [
+    ["Name", "Value"],
+    ["<strong>@action_has_layout</strong><br /><em>TrueClass</em>", "true"],
+    ["<strong>@status</strong><br /><em>Fixnum</em>", "200"]
+  ]}
 
   describe "Ignored Assigns" do
     before(:each) {Footnotes::Notes::AssignsNote.ignored_assigns = [:@status]}
@@ -32,7 +36,11 @@ describe Footnotes::Notes::AssignsNote do
 
   it "should call #mount_table method with correct params" do
     note.should_receive(:mount_table).with(
-      [['Name', 'Value'], [:@action_has_layout, "true"], [:@status, "200"]], {:summary=>"Debug information for Assigns (2)"})
+      [
+        ["Name", "Value"],
+        ["<strong>@action_has_layout</strong><br /><em>TrueClass</em>", "true"],
+        ["<strong>@status</strong><br /><em>Fixnum</em>", "200"]
+      ], {:summary=>"Debug information for Assigns (2)"})
     note.content
   end
 end
