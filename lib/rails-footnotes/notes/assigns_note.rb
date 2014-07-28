@@ -45,7 +45,6 @@ module Footnotes
           end
 
           table.unshift(['Name', 'Value'])
-          @to_table ||= table
         end
 
         def assigns
