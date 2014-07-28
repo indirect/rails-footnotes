@@ -65,6 +65,20 @@ We assume that they appear in that order. "foo://line=%d&file=%s" (%d precedes %
 
 5. Go to RCDefaultApp (OS System Preferences > DefaultApps). Go to URL section, select "tmxt" extension, and set default applicaiton to "SublHandler".
 
+*Use with Vagrant (and other virtual machines)*
+
+If you're running your app in Vagrant, you'll find that the edit links won't work because the paths point to the Vagrant directory not your native directory. To solve this, you can use a lambda for the prefix and modify the pathname accordingly.
+
+For example,
+
+```
+f.prefix = ->(*args) do
+  filename = args[0].sub '/vagrant', '/Users/jamie/projects/myproject'
+  "subl://open?url=file://#{filename}&line=#{args[1]}&column=#{args[2]}"
+end
+```
+
+replaces the vm directory `/vagrant` with OS X directory where the code is being edited.
 
 *Footnotes* *Display* *Options*
 
