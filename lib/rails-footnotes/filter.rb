@@ -47,6 +47,11 @@ module Footnotes
         if args.empty?
           @@prefix
         else
+          # fixes issue #117
+          if args[0] =~ /\s/
+            args[0].gsub!(/\s/, '%20')
+          end
+
           if @@prefix.respond_to? :call
             @@prefix.call *args
           else
