@@ -48,10 +48,8 @@ module Footnotes
           @@prefix
         else
           # fixes issue #117
-          if args[0] =~ /\s/
-            args[0].gsub!(/\s/, '%20')
-          end
-
+          args.map! { |arg| URI.escape(arg.to_s) }
+          
           if @@prefix.respond_to? :call
             @@prefix.call *args
           else
