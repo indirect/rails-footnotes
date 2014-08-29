@@ -103,6 +103,8 @@ Finally, you can control which notes you want to show. The default are:
 
     f.notes = [:session, :cookies, :params, :filters, :routes, :env, :queries, :log, :general]
 
+Setting <tt>f.notes = []</tt> will show none of the available notes, although the supporting CSS and JavaScript will still be included. To completely disable all rails-footnotes content on a page, include <tt>params[:footnotes] = 'false'</tt> in the request.
+
 == Creating your own notes
 
 Creating your notes to integrate with Footnotes is easy.
