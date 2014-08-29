@@ -1,3 +1,8 @@
+== Footnotes v4.1.0 ==
+  * Allow footnotes url prefix to be a lambda ( Thanks Jamie Lawrence )
+  * Sexier assigns note ( Thanks Joshua Paling )
+  * Fix issues with environment keys not being the same type causing some gems to break ( Thanks Austin Ziegler )
+
 == Footnotes v4.0.2
   * Fix bad display of footnotes table
   * Fix error with the queries note under Rails 4.1.2 (thanks Panayotis Matsinopoulos)
