@@ -12,7 +12,7 @@ module Footnotes
         self.original_logger = Rails.logger
         note_logger = NoteLogger.new(self.logs)
         note_logger.level = self.original_logger.level
-        note_logger.formatter = self.original_logger.kind_of?(Logger) ? self.original_logger.formatter : Logger::SimpleFormatter.new
+        note_logger.formatter = self.original_logger.kind_of?(Logger) ? self.original_logger.formatter : ActiveSupport::Logger::SimpleFormatter.new
         # Rails 3 don't have ActiveSupport::Logger#broadcast so we backported it
         extend_module = defined?(ActiveSupport::Logger) ? ActiveSupport::Logger.broadcast(note_logger) : NoteLogger.broadcast(note_logger)
         Rails.logger = self.original_logger.dup.extend(extend_module)
