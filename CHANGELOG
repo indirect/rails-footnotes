@@ -1,3 +1,5 @@
+== Footnotes v4.1.1 ==
+  * Fix uninitialized constant with Log4r and probably other libraries using the Logger module ( Thanks Brian Tatnall )
 == Footnotes v4.1.0 ==
   * Allow footnotes url prefix to be a lambda ( Thanks Jamie Lawrence )
   * Sexier assigns note ( Thanks Joshua Paling )
