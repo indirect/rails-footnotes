@@ -1,3 +1,5 @@
+== Footnotes v4.1.2 ==
+  * Fix errors when some log formatters return nil
 == Footnotes v4.1.1 ==
   * Fix uninitialized constant with Log4r and probably other libraries using the Logger module ( Thanks Brian Tatnall )
 == Footnotes v4.1.0 ==
