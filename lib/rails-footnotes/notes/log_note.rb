@@ -24,7 +24,7 @@ module Footnotes
 
       def content
         result = '<table>'
-          log.each do |l|
+          log.compact.each do |l|
             result << "<tr><td>#{l.gsub(/\e\[.+?m/, '')}</td></tr>"
           end
         result << '</table>'
