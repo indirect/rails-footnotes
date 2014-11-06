@@ -1,3 +1,5 @@
+== Footnotes v4.1.3 ==
+  * Improve fix done in 4.1.2 that broke support with rails 3 (thanks kirikiriyamama)
 == Footnotes v4.1.2 ==
   * Fix errors when some log formatters return nil
 == Footnotes v4.1.1 ==
