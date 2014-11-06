@@ -26,15 +26,6 @@ describe 'log note' do
     Footnotes.enabled = false
   end
 
-  before do
-    @original_logger = Rails.logger
-    Rails.logger = Logger.new(StringIO.new)
-  end
-
-  after do
-    Rails.logger = @original_logger
-  end
-
   it 'Includes the log in the response' do
     get :index
     log_debug = first('fieldset#log_debug_info div', :visible => false)

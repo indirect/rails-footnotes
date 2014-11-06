@@ -5,7 +5,6 @@ rescue LoadError
 end
 ENV["RAILS_ENV"] ||= 'test'
 require "rails-footnotes"
-Rails.logger = Logger.new(STDOUT)
 
 module FooBar
   class Application < Rails::Application
@@ -19,6 +18,8 @@ ActionController::Base.class_eval do
 end
 
 RSpec.configure do |config|
+
+  Rails.application.initialize!
 
   Rails.application.routes.draw do
     get 'footnotes/foo'
