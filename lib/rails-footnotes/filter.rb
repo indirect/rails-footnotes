@@ -47,6 +47,9 @@ module Footnotes
         if args.empty?
           @@prefix
         else
+          # fixes issue #117
+          args.map! { |arg| URI.escape(arg.to_s) }
+          
           if @@prefix.respond_to? :call
             @@prefix.call *args
           else

@@ -16,6 +16,12 @@ module Footnotes::Notes
   class NoteXNote < TestNote; end
   class NoteYNote < TestNote; end
   class NoteZNote < TestNote; end
+  
+  class FileURINote < TestNote
+    def link
+      "/example/local file path/with-special-chars/öäü/file"
+    end
+  end
 end
 
 describe "Footnotes" do
@@ -59,6 +65,12 @@ describe "Footnotes" do
   it "foonotes_included" do
     footnotes_perform!
     @controller.response_body.should_not == HTML_DOCUMENT
+  end
+
+  it "should escape links with special chars" do
+    note_with_link = Footnotes::Notes::FileURINote.new
+    link = Footnotes::Filter.prefix(note_with_link.link, 1, 1, 1)    
+    link.should eql "txmt://open?url=file:///example/local%20file%20path/with-special-chars/%C3%B6%C3%A4%C3%BC/file&amp;line=1&amp;column=1"
   end
 
   specify "footnotes_not_included_when_request_is_xhr" do
