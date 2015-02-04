@@ -100,7 +100,7 @@ Another option is to allow multiple notes to be opened at the same time:
 
 Finally, you can control which notes you want to show. The default are:
 
-    f.notes = [:session, :cookies, :params, :filters, :routes, :env, :queries, :log, :general]
+    f.notes = [:session, :cookies, :params, :filters, :routes, :env, :queries, :log]
 
 Setting <tt>f.notes = []</tt> will show none of the available notes, although the supporting CSS and JavaScript will still be included. To completely disable all rails-footnotes content on a page, include <tt>params[:footnotes] = 'false'</tt> in the request.
 

@@ -8,7 +8,7 @@ defined?(Footnotes) && Footnotes.setup do |f|
   # and should not be modified anywhere else.
 
   # Only toggle some notes :
-  # f.notes = [:session, :cookies, :params, :filters, :routes, :env, :queries, :log, :general]
+  # f.notes = [:session, :cookies, :params, :filters, :routes, :env, :queries, :log]
 
   # Change the prefix :
   # f.prefix = 'mvim://open?url=file://%s&line=%d&column=%d'
