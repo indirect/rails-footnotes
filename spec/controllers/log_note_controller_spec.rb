@@ -3,6 +3,10 @@ require 'stringio'
 
 describe 'log note' do
 
+  def page
+    Capybara::Node::Simple.new(response.body)
+  end
+
   class ApplicationController < ActionController::Base
   end
 
@@ -12,10 +16,6 @@ describe 'log note' do
       Rails.logger.warn 'bar'
       render :text => '<html><head></head><body></body></html>', :content_type => 'text/html'
     end
-  end
-
-  def page
-    Capybara::Node::Simple.new(response.body)
   end
 
   before :all do

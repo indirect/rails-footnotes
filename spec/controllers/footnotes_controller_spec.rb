@@ -15,7 +15,7 @@ class FootnotesController < ActionController::Base
   end
 
   def foo_download
-    send_file Rails.root.join('spec', 'fixtures', 'html_download.html'), :disposition => 'attachment'
+    send_file Rails.root.join('fixtures', 'html_download.html'), :disposition => 'attachment'
   end
 
 end
@@ -72,7 +72,7 @@ describe FootnotesController do
 
       it 'does not alter a html file download' do
         get :foo_download
-        response.body.should == File.open(Rails.root.join('spec', 'fixtures', 'html_download.html')).read
+        response.body.should == File.open(Rails.root.join('fixtures', 'html_download.html')).read
       end
     end
 

@@ -3,7 +3,6 @@ require 'spec_helper'
 class PartialsController < ActionController::Base
 
   def index
-    prepend_view_path "#{Rails.root.join('spec', 'views')}"
   end
 
 end

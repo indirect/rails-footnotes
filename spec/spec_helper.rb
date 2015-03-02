@@ -4,17 +4,22 @@ begin
 rescue LoadError
 end
 ENV["RAILS_ENV"] ||= 'test'
+require "sprockets/railtie"
 require "rails-footnotes"
 
 module FooBar
   class Application < Rails::Application
     config.secret_key_base = 'foobar'
-    config.root = Dir.new('.')
+    config.root = Dir.new('./spec')
+    config.eager_load = false
   end
 end
 
 ActionController::Base.class_eval do
   include Rails.application.routes.url_helpers
+end
+
+class ApplicationController < ActionController::Base
 end
 
 RSpec.configure do |config|
@@ -27,6 +32,7 @@ RSpec.configure do |config|
     get 'footnotes/foo_js'
     get 'footnotes/foo_download'
     get 'partials/index'
+    get 'files/index'
   end
 
 end

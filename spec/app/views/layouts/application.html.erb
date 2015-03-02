@@ -1,0 +1,12 @@
+<!doctype html>
+<html>
+  <head>
+    <%= javascript_include_tag :foobar %>
+    <%= javascript_include_tag 'http://google.com/whatever.js' %>
+    <%= stylesheet_link_tag :foobar %>
+    <%= stylesheet_link_tag 'http://google.com/whatever.css' %>
+  </head>
+  <body>
+    <%= yield %>
+  </body>
+</html>

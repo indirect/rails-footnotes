@@ -12,3 +12,5 @@ pkg/*
 tags
 /doc
 /myapp
+spec/tmp
+spec/log
