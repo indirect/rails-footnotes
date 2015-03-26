@@ -11,13 +11,13 @@ module Footnotes
     end
 
     def rails_footnotes_before_filter
-      if Footnotes.enabled?
+      if Footnotes.enabled?(self)
         Footnotes::Filter.start!(self)
       end
     end
 
     def rails_footnotes_after_filter
-      if Footnotes.enabled?
+      if Footnotes.enabled?(self)
         filter = Footnotes::Filter.new(self)
         filter.add_footnotes!
         filter.close!(self)

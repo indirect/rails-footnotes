@@ -90,6 +90,43 @@ describe FootnotesController do
       end
     end
 
+    describe 'when footnotes is disabled' do
+      include_context 'has_no_footnotes'
+      before do
+        Footnotes.enabled = false
+        get :foo
+      end
+    end
+
+    describe 'with a proc' do
+
+      it 'yields the controller' do
+        c = nil
+        Footnotes.enabled = proc { |controller| c = controller}
+        get :foo
+        expect(c).to be_kind_of(ActionController::Base)
+      end
+
+      context 'returning true' do
+        include_context 'has_footnotes'
+
+        before do
+          Footnotes.enabled = proc { true }
+          get :foo
+        end
+      end
+
+      context 'returning false' do
+        include_context 'has_no_footnotes'
+
+        before do
+          Footnotes.enabled = proc { false }
+          get :foo
+        end
+      end
+
+    end
+
   end
 
 end
