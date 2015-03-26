@@ -102,7 +102,7 @@ describe FootnotesController do
 
       it 'yields the controller' do
         c = nil
-        Footnotes.enabled = proc { |controller| c = controller}
+        Footnotes.enabled = lambda { |controller| c = controller}
         get :foo
         expect(c).to be_kind_of(ActionController::Base)
       end
@@ -111,7 +111,7 @@ describe FootnotesController do
         include_context 'has_footnotes'
 
         before do
-          Footnotes.enabled = proc { true }
+          Footnotes.enabled = lambda { true }
           get :foo
         end
       end
@@ -120,7 +120,7 @@ describe FootnotesController do
         include_context 'has_no_footnotes'
 
         before do
-          Footnotes.enabled = proc { false }
+          Footnotes.enabled = lambda { false }
           get :foo
         end
       end

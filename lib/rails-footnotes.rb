@@ -50,9 +50,13 @@ module Footnotes
     @@after_hooks << block
   end
 
-  def self.enabled?(*args)
+  def self.enabled?(controller)
     if @@enabled.is_a? Proc
-      @@enabled.call(*args)
+      if @@enabled.arity == 1
+        @@enabled.call(controller)
+      else
+        @@enabled.call
+      end
     else
       !!@@enabled
     end
