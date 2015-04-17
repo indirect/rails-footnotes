@@ -35,6 +35,9 @@ module Footnotes
 
     delegate :font_size, :to => Filter
     delegate :font_size=, :to => Filter
+
+    delegate :default_limit, :to => Filter
+    delegate :default_limit=, :to => Filter
   end
 
   def self.run!

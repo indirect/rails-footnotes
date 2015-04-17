@@ -22,6 +22,9 @@ defined?(Footnotes) && Footnotes.setup do |f|
   # Change font size :
   # f.font_size = '11px'
 
+  # Change default limit :
+  # f.default_limit = 25
+
   # Allow to open multiple notes :
   # f.multiple_notes = true
 end

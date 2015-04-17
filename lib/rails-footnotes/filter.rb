@@ -5,6 +5,7 @@ module Footnotes
     @@klasses = []
     @@lock_top_right = false
     @@font_size = '11px'
+    @@default_limit = 25
 
     # Default link prefix is textmate
     @@prefix = 'txmt://open?url=file://%s&amp;line=%d&amp;column=%d'
