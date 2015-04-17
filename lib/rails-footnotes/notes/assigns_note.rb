@@ -47,7 +47,7 @@ module Footnotes
             else
               escape(var_value.inspect)
             end
-            rr << ["<strong>#{var.to_s}</strong>" + "<br /><em>#{class_name}</em>", var_value]
+            rr << ["<strong>#{var.to_s}</strong>" + "<br /><em>#{class_name}</em>", var_value_string]
           end
 
           table.unshift(['Name', 'Value'])
