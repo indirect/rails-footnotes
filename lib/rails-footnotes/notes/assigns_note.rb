@@ -43,7 +43,7 @@ module Footnotes
             var_name = var.to_s
             var_value = assigned_value(var)
             var_value_string = if var_value.is_a?(ActiveRecord::Relation) && var_value.limit_value.nil?
-              escape(var_value.limit(20).inspect) + '...'
+              escape(var_value.limit(Footnotes::Filter.default_limit).inspect) + '...'
             else
               escape(var_value.inspect)
             end
