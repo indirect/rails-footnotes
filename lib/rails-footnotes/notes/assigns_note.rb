@@ -42,12 +42,10 @@ module Footnotes
             class_name = assigned_value(var).class.name
             var_name = var.to_s
             var_value = assigned_value(var)
-            var_value_string = if var_value.is_a?(ActiveRecord::Relation) && var_value.limit_value.nil?
-              escape(var_value.limit(Footnotes::Filter.default_limit).inspect) + '...'
-            else
-              escape(var_value.inspect)
+            if var_value.is_a?(ActiveRecord::Relation) && var_value.limit_value.nil?
+              var_value = var_value.limit(Footnotes::Filter.default_limit)
             end
-            rr << ["<strong>#{var.to_s}</strong>" + "<br /><em>#{class_name}</em>", var_value_string]
+            rr << ["<strong>#{var.to_s}</strong>" + "<br /><em>#{class_name}</em>", escape(var_value.inspect)]
           end
 
           table.unshift(['Name', 'Value'])
