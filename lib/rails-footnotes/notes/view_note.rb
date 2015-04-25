@@ -24,14 +24,10 @@ module Footnotes
       end
 
       def valid?
-        prefix? && first_render?
+        prefix? && filename && File.exists?(filename)
       end
 
       protected
-
-        def first_render?
-          @template.instance_variable_get(:@_first_render)
-        end
 
         def filename
           @filename ||= self.class.template[:file]
