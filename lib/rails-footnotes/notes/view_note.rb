@@ -1,6 +1,15 @@
 module Footnotes
   module Notes
     class ViewNote < AbstractNote
+      cattr_accessor :template
+
+      def self.start!(controller)
+        @subscriber ||= ActiveSupport::Notifications.subscribe('render_template.action_view') do |*args|
+          event = ActiveSupport::Notifications::Event.new *args
+          self.template = {:file => event.payload[:identifier], :duration => event.duration}
+        end
+      end
+
       def initialize(controller)
         @controller = controller
         @template = controller.instance_variable_get(:@template)
