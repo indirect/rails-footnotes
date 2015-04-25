@@ -18,6 +18,10 @@ module Footnotes
         :edit
       end
 
+      def title
+        "View (#{"%.3f" % self.template[:duration]}ms)"
+      end
+
       def link
         escape(Footnotes::Filter.prefix(filename, 1, 1))
       end
