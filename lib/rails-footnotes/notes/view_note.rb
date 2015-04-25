@@ -1,13 +1,25 @@
 module Footnotes
   module Notes
     class ViewNote < AbstractNote
+      cattr_accessor :template
+
+      def self.start!(controller)
+        @subscriber ||= ActiveSupport::Notifications.subscribe('render_template.action_view') do |*args|
+          event = ActiveSupport::Notifications::Event.new *args
+          self.template = {:file => event.payload[:identifier], :duration => event.duration}
+        end
+      end
+
       def initialize(controller)
         @controller = controller
-        @template = controller.instance_variable_get(:@template)
       end
 
       def row
         :edit
+      end
+
+      def title
+        "View (#{"%.3f" % self.template[:duration]}ms)"
       end
 
       def link
@@ -15,17 +27,13 @@ module Footnotes
       end
 
       def valid?
-        prefix? && first_render?
+        prefix? && filename && File.exists?(filename)
       end
 
       protected
 
-        def first_render?
-          @template.instance_variable_get(:@_first_render)
-        end
-
         def filename
-          @filename ||= @template.instance_variable_get(:@_first_render).filename
+          @filename ||= self.class.template[:file]
         end
 
     end
