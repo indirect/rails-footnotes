@@ -34,7 +34,7 @@ module Footnotes
         end
 
         def filename
-          @filename ||= @template.instance_variable_get(:@_first_render).filename
+          @filename ||= self.class.template[:file]
         end
 
     end
