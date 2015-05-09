@@ -5,8 +5,6 @@ require 'rdoc/task'
 
 desc 'Default: run tests'
 task :default => :spec
-
-desc 'Run tests for Footnotes.'
 RSpec::Core::RakeTask.new(:spec)
 
 desc 'Generate documentation for Footnotes.'
