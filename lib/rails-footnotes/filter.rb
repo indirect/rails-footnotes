@@ -207,14 +207,22 @@ module Footnotes
               }
 
               function hideAllAndToggle(id) {
+                var n = note(id);
+                var display = n.style.display;
                 hideAll();
+                // Restore original display to allow toggling
+                n.style.display = display;
                 toggle(id)
 
                 location.href = '#footnotes_debug';
               }
 
+              function note(id) {
+                return (document.getElementById(id));
+              }
+
               function toggle(id){
-                var el = document.getElementById(id);
+                var el = note(id);
                 if (el.style.display == 'none') {
                   Footnotes.show(el);
                 } else {
