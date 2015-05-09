@@ -6,6 +6,7 @@ end
 ENV["RAILS_ENV"] ||= 'test'
 require "sprockets/railtie"
 require "rails-footnotes"
+require 'capybara/rspec'
 
 module FooBar
   class Application < Rails::Application
@@ -22,9 +23,18 @@ end
 class ApplicationController < ActionController::Base
 end
 
+module Helpers
+  def page
+    Capybara::Node::Simple.new(response.body)
+  end
+end
+
 RSpec.configure do |config|
 
   Rails.application.initialize!
+
+  config.include Capybara::DSL
+  config.include Helpers
 
   Rails.application.routes.draw do
     get 'footnotes/foo'
@@ -34,9 +44,7 @@ RSpec.configure do |config|
     get 'partials/index'
     get 'files/index'
   end
-
 end
 
 require 'rspec/rails'
-require 'capybara/rspec'
 require 'capybara/rails'

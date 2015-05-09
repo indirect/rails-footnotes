@@ -7,13 +7,7 @@ class FilesController < ApplicationController
   end
 
 describe FilesController do
-
   render_views
-  include Capybara::DSL
-
-  def page
-    Capybara::Node::Simple.new(response.body)
-  end
 
   before :all do
     Footnotes.enabled = true

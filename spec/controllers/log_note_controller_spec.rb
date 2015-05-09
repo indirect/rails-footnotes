@@ -3,10 +3,6 @@ require 'stringio'
 
 describe 'log note' do
 
-  def page
-    Capybara::Node::Simple.new(response.body)
-  end
-
   class ApplicationController < ActionController::Base
   end
 

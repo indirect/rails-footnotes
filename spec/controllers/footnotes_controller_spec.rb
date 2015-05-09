@@ -22,10 +22,6 @@ end
 
 describe FootnotesController do
 
-  def page
-    Capybara::Node::Simple.new(response.body)
-  end
-
   shared_examples 'has_footnotes' do
     it 'includes footnotes' do
       get :foo
