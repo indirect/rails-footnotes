@@ -7,10 +7,7 @@ desc 'Default: run tests'
 task :default => :spec
 
 desc 'Run tests for Footnotes.'
-RSpec::Core::RakeTask.new(:spec) do |t|
-  t.pattern = 'spec/**/*_spec.rb'
-  # t.rcov = false
-end
+RSpec::Core::RakeTask.new(:spec)
 
 desc 'Generate documentation for Footnotes.'
 RDoc::Task.new(:rdoc) do |rdoc|
