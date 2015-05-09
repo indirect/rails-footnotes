@@ -9,7 +9,7 @@ describe Footnotes::Notes::StylesheetsNote do
   it {should be_valid}
 
   it "should return css link from html text after #scan_text call" do
-    subject.send(:scan_text, HTML_WITH_CSS).should eql ['/stylesheets/compiled/print.css', '/stylesheets/compiled/print.css']
+    expect(subject.send(:scan_text, HTML_WITH_CSS)).to eql ['/stylesheets/compiled/print.css', '/stylesheets/compiled/print.css']
   end
 end
 

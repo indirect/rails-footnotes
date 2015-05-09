@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'stringio'
 
-describe 'log note' do
+describe 'log note', type: :controller do
 
   class ApplicationController < ActionController::Base
   end
@@ -25,8 +25,8 @@ describe 'log note' do
   it 'Includes the log in the response' do
     get :index
     log_debug = first('fieldset#log_debug_info div', :visible => false)
-    log_debug.should have_content('foo')
-    log_debug.should have_content('bar')
+    expect(log_debug).to have_content('foo')
+    expect(log_debug).to have_content('bar')
   end
 
 end

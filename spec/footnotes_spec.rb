@@ -42,7 +42,7 @@ describe "Footnotes" do
 
   it "footnotes_controller" do
     index = @controller.response.body.index(/This is the HTML page/)
-    index.should eql 334
+    expect(index).to eql 334
   end
 
   context "response_body is file" do
@@ -66,62 +66,62 @@ describe "Footnotes" do
 
   it "foonotes_included" do
     footnotes_perform!
-    @controller.response_body.should_not == HTML_DOCUMENT
+    expect(@controller.response_body).not_to eq(HTML_DOCUMENT)
   end
 
   it "should escape links with special chars" do
     note_with_link = Footnotes::Notes::FileURINote.new
     link = Footnotes::Filter.prefix(note_with_link.link, 1, 1, 1)
-    link.should eql "txmt://open?url=file:///example/local%20file%20path/with-special-chars/%C3%B6%C3%A4%C3%BC/file&amp;line=1&amp;column=1"
+    expect(link).to eql "txmt://open?url=file:///example/local%20file%20path/with-special-chars/%C3%B6%C3%A4%C3%BC/file&amp;line=1&amp;column=1"
   end
 
   specify "footnotes_not_included_when_request_is_xhr" do
     @controller.request.env['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest'
     @controller.request.env['HTTP_ACCEPT'] = 'text/javascript, text/html, application/xml, text/xml, */*'
     footnotes_perform!
-    @controller.response.body.should eql HTML_DOCUMENT
+    expect(@controller.response.body).to eql HTML_DOCUMENT
   end
 
   specify "footnotes_not_included_when_content_type_is_javascript" do
     @controller.response.content_type = 'text/javascript'
     footnotes_perform!
-    @controller.response.body.should eql HTML_DOCUMENT
+    expect(@controller.response.body).to eql HTML_DOCUMENT
   end
 
   specify "footnotes_included_when_content_type_is_html" do
     @controller.response.content_type = 'text/html'
     footnotes_perform!
-    @controller.response.body.should_not eql HTML_DOCUMENT
+    expect(@controller.response.body).not_to eql HTML_DOCUMENT
   end
 
   specify "footnotes_included_when_content_type_is_nil" do
     footnotes_perform!
-    @controller.response.body.should_not eql HTML_DOCUMENT
+    expect(@controller.response.body).not_to eql HTML_DOCUMENT
   end
 
   specify "not_included_when_body_is_not_a_string" do
-    @controller.response.stub(:body).and_return(Time.now)# = Proc.new { Time.now }
-    Footnotes::Filter.new(@controller).send(:valid?).should_not be
-    @controller.response.body.should_not =~ /<!-- Footnotes/
+    allow(@controller.response).to receive(:body).and_return(Time.now)# = Proc.new { Time.now }
+    expect(Footnotes::Filter.new(@controller).send(:valid?)).not_to be
+    expect(@controller.response.body).not_to match(/<!-- Footnotes/)
   end
 
   specify "notes_are_initialized" do
     footnotes_perform!
     test_note = @footnotes.instance_variable_get('@notes').first
-    test_note.class.name.should eql 'Footnotes::Notes::TestNote'
-    test_note.to_sym.should eql :test
+    expect(test_note.class.name).to eql 'Footnotes::Notes::TestNote'
+    expect(test_note.to_sym).to eql :test
   end
 
   specify "notes_links" do
     note = Footnotes::Notes::TestNote.new
-    note.should_receive(:row).twice
+    expect(note).to receive(:row).twice
     @footnotes.instance_variable_set(:@notes, [note])
     footnotes_perform!
   end
 
   specify "notes_fieldset" do
     note = Footnotes::Notes::TestNote.new
-    note.should_receive(:has_fieldset?).exactly(3).times
+    expect(note).to receive(:has_fieldset?).exactly(3).times
     @footnotes.instance_variable_set(:@notes, [note])
     footnotes_perform!
   end
@@ -129,70 +129,70 @@ describe "Footnotes" do
   specify "multiple_notes" do
     Footnotes::Filter.multiple_notes = true
     note = Footnotes::Notes::TestNote.new
-    note.should_receive(:has_fieldset?).twice
+    expect(note).to receive(:has_fieldset?).twice
     @footnotes.instance_variable_set(:@notes, [note])
     footnotes_perform!
   end
 
   specify "notes_are_reset" do
     note = Footnotes::Notes::TestNote.new
-    note.class.should_receive(:close!)
+    expect(note.class).to receive(:close!)
     @footnotes.instance_variable_set(:@notes, [note])
     @footnotes.send(:close!, @controller)
   end
 
   specify "links_helper" do
     note = Footnotes::Notes::TestNote.new
-    @footnotes.send(:link_helper, note).should eql '<a href="#" onclick="">Test</a>'
+    expect(@footnotes.send(:link_helper, note)).to eql '<a href="#" onclick="">Test</a>'
 
-    note.should_receive(:link).once.and_return(:link)
-    @footnotes.send(:link_helper, note).should eql '<a href="link" onclick="">Test</a>'
+    expect(note).to receive(:link).once.and_return(:link)
+    expect(@footnotes.send(:link_helper, note)).to eql '<a href="link" onclick="">Test</a>'
   end
 
   specify "links_helper_has_fieldset?" do
     note = Footnotes::Notes::TestNote.new
-    note.should_receive(:has_fieldset?).once.and_return(true)
-    @footnotes.send(:link_helper, note).should eql '<a href="#" onclick="Footnotes.hideAllAndToggle(\'test_debug_info\');return false;">Test</a>'
+    expect(note).to receive(:has_fieldset?).once.and_return(true)
+    expect(@footnotes.send(:link_helper, note)).to eql '<a href="#" onclick="Footnotes.hideAllAndToggle(\'test_debug_info\');return false;">Test</a>'
   end
 
   specify "links_helper_onclick" do
     note = Footnotes::Notes::TestNote.new
-    note.should_receive(:onclick).twice.and_return(:onclick)
-    @footnotes.send(:link_helper, note).should eql '<a href="#" onclick="onclick">Test</a>'
+    expect(note).to receive(:onclick).twice.and_return(:onclick)
+    expect(@footnotes.send(:link_helper, note)).to eql '<a href="#" onclick="onclick">Test</a>'
 
-    note.should_receive(:has_fieldset?).once.and_return(true)
-    @footnotes.send(:link_helper, note).should eql '<a href="#" onclick="onclick">Test</a>'
+    expect(note).to receive(:has_fieldset?).once.and_return(true)
+    expect(@footnotes.send(:link_helper, note)).to eql '<a href="#" onclick="onclick">Test</a>'
   end
 
   specify "insert_style" do
     @controller.response.body = "<head></head><split><body></body>"
     @footnotes = Footnotes::Filter.new(@controller)
     footnotes_perform!
-    @controller.response.body.split('<split>').first.include?('<!-- Footnotes Style -->').should be
+    expect(@controller.response.body.split('<split>').first.include?('<!-- Footnotes Style -->')).to be
   end
 
   specify "insert_footnotes_inside_body" do
     @controller.response.body = "<head></head><split><body></body>"
     @footnotes = Footnotes::Filter.new(@controller)
     footnotes_perform!
-    @controller.response.body.split('<split>').last.include?('<!-- End Footnotes -->').should be
+    expect(@controller.response.body.split('<split>').last.include?('<!-- End Footnotes -->')).to be
   end
 
   specify "insert_footnotes_inside_holder" do
     @controller.response.body = "<head></head><split><div id='footnotes_holder'></div>"
     @footnotes = Footnotes::Filter.new(@controller)
     footnotes_perform!
-    @controller.response.body.split('<split>').last.include?('<!-- End Footnotes -->').should be
+    expect(@controller.response.body.split('<split>').last.include?('<!-- End Footnotes -->')).to be
   end
 
   specify "insert_text" do
     @footnotes.send(:insert_text, :after, /<head>/, "Graffiti")
     after = "    <head>Graffiti"
-    @controller.response.body.split("\n")[2].should eql after
+    expect(@controller.response.body.split("\n")[2]).to eql after
 
     @footnotes.send(:insert_text, :before, /<\/body>/, "Notes")
     after = "    Notes</body>"
-    @controller.response.body.split("\n")[12].should eql after
+    expect(@controller.response.body.split("\n")[12]).to eql after
   end
 
   describe 'Hooks' do
@@ -201,14 +201,14 @@ describe "Footnotes" do
       specify do
         Footnotes.setup {|config| config.before {|controller, filter| filter.notes -= [:note_y] }}
         Footnotes::Filter.start!(@controller)
-        Footnotes::Filter.notes.should eql [:note_x, :note_z]
+        expect(Footnotes::Filter.notes).to eql [:note_x, :note_z]
       end
     end
     context "after" do
       specify do
         Footnotes.setup {|config| config.after {|controller, filter| filter.notes -= [:note_y] }}
         Footnotes::Filter.start!(@controller)
-        Footnotes::Filter.notes.should eql [:note_x, :note_z]
+        expect(Footnotes::Filter.notes).to eql [:note_x, :note_z]
       end
     end
   end
@@ -224,9 +224,9 @@ describe "Footnotes" do
 
   def template_expects(format)
     if @controller.template.respond_to?(:template_format)
-      @controller.template.stub(:template_format).and_return(format)
+      allow(@controller.template).to receive(:template_format).and_return(format)
     else
-      @controller.template.stub(:format).and_return(format)
+      allow(@controller.template).to receive(:format).and_return(format)
     end
   end
 

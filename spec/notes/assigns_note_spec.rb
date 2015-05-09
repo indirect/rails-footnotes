@@ -5,7 +5,7 @@ require "rails-footnotes/notes/assigns_note"
 describe Footnotes::Notes::AssignsNote do
   let(:note) do
     @controller = double
-    @controller.stub(:instance_variables).and_return([:@action_has_layout, :@status])
+    allow(@controller).to receive(:instance_variables).and_return([:@action_has_layout, :@status])
     @controller.instance_variable_set(:@action_has_layout, true)
     @controller.instance_variable_set(:@status, 200)
     Footnotes::Notes::AssignsNote.new(@controller)
@@ -15,10 +15,14 @@ describe Footnotes::Notes::AssignsNote do
   before(:each) {Footnotes::Notes::AssignsNote.ignored_assigns = []}
 
   it {should be_valid}
-  its(:title) {should eql 'Assigns (2)'}
 
-  specify {note.send(:assigns).should eql [:@action_has_layout, :@status]}
-  specify {note.send(:to_table).should eql [
+  describe '#title' do
+    subject { super().title }
+    it {should eql 'Assigns (2)'}
+  end
+
+  specify {expect(note.send(:assigns)).to eql [:@action_has_layout, :@status]}
+  specify {expect(note.send(:to_table)).to eql [
     ["Name", "Value"],
     ["<strong>@action_has_layout</strong><br /><em>TrueClass</em>", "true"],
     ["<strong>@status</strong><br /><em>Fixnum</em>", "200"]
@@ -26,16 +30,16 @@ describe Footnotes::Notes::AssignsNote do
 
   describe "Ignored Assigns" do
     before(:each) {Footnotes::Notes::AssignsNote.ignored_assigns = [:@status]}
-    it {note.send(:assigns).should_not include :@status}
+    it {expect(note.send(:assigns)).not_to include :@status}
   end
 
   describe "Ignored Assigns by regexp" do
     before(:each) {Footnotes::Notes::AssignsNote.ignored_assigns_pattern = /^@status$/}
-    it {note.send(:assigns).should_not include :@status}
+    it {expect(note.send(:assigns)).not_to include :@status}
   end
 
   it "should call #mount_table method with correct params" do
-    note.should_receive(:mount_table).with(
+    expect(note).to receive(:mount_table).with(
       [
         ["Name", "Value"],
         ["<strong>@action_has_layout</strong><br /><em>TrueClass</em>", "true"],

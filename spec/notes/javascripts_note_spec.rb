@@ -8,7 +8,7 @@ describe Footnotes::Notes::JavascriptsNote do
   it {should be_valid}
 
   it "should return js links from html after #scan_text mehtod call" do
-    subject.send(:scan_text, HTML_WITH_JS).should eql ['/javascripts/all.js', '/javascripts/jquery.js']
+    expect(subject.send(:scan_text, HTML_WITH_JS)).to eql ['/javascripts/all.js', '/javascripts/jquery.js']
   end
 end
 

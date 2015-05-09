@@ -6,7 +6,7 @@ class FilesController < ApplicationController
     end
   end
 
-describe FilesController do
+describe FilesController, type: :controller do
   render_views
 
   before :all do

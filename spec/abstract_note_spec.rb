@@ -11,17 +11,21 @@ describe Footnotes::Notes::AbstractNote do
     Footnotes::Filter.notes = @notes
   end
 
-  it {described_class.should respond_to :start!}
-  it {described_class.should respond_to :close!}
-  it {described_class.should respond_to :title}
+  it {expect(described_class).to respond_to :start!}
+  it {expect(described_class).to respond_to :close!}
+  it {expect(described_class).to respond_to :title}
 
   it {should respond_to :to_sym}
-  its(:to_sym) {should eql :abstract}
 
-  it { described_class.should be_included }
+  describe '#to_sym' do
+    subject { super().to_sym }
+    it {should eql :abstract}
+  end
+
+  it { expect(described_class).to be_included }
   specify do
     Footnotes::Filter.notes = []
-    described_class.should_not be_included
+    expect(described_class).not_to be_included
   end
 
   it { should respond_to :row }
@@ -45,12 +49,12 @@ describe Footnotes::Notes::AbstractNote do
 
   #TODO should be moved to builder
   #helpers
-  specify { subject.escape('<').should eql '&lt;' }
-  specify { subject.escape('&').should eql '&amp;' }
-  specify { subject.escape('>').should eql '&gt;' }
+  specify { expect(subject.escape('<')).to eql '&lt;' }
+  specify { expect(subject.escape('&')).to eql '&amp;' }
+  specify { expect(subject.escape('>')).to eql '&gt;' }
 
-  specify { subject.mount_table([]).should be_blank }
-  specify { subject.mount_table([['h1', 'h2', 'h3']], :class => 'table').should be_blank }
+  specify { expect(subject.mount_table([])).to be_blank }
+  specify { expect(subject.mount_table([['h1', 'h2', 'h3']], :class => 'table')).to be_blank }
 
   specify {
     tab = <<-TABLE
@@ -60,7 +64,7 @@ describe Footnotes::Notes::AbstractNote do
           </table>
           TABLE
 
-    subject.mount_table([['h1'],['r1c1']], :class => 'table').should eql tab
+    expect(subject.mount_table([['h1'],['r1c1']], :class => 'table')).to eql tab
   }
 
   specify {
@@ -70,7 +74,7 @@ describe Footnotes::Notes::AbstractNote do
             <tbody><tr><td>r1c1</td><td>r1c2</td><td>r1c3</td></tr></tbody>
           </table>
           TABLE
-    subject.mount_table([['h1', 'h2', 'h3'],['r1c1', 'r1c2', 'r1c3']]).should eql tab
+    expect(subject.mount_table([['h1', 'h2', 'h3'],['r1c1', 'r1c2', 'r1c3']])).to eql tab
   }
 
   specify {

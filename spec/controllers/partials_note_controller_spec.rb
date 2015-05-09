@@ -7,7 +7,7 @@ class PartialsController < ActionController::Base
 
 end
 
-describe PartialsController do
+describe PartialsController, type: :controller do
 
   render_views
 
@@ -21,7 +21,7 @@ describe PartialsController do
 
   it 'lists the rendered partials' do
     get :index
-    response.body.should have_selector('#footnotes_debug #partials_debug_info table tr', :visible => false, :count => 2)
+    expect(response.body).to have_selector('#footnotes_debug #partials_debug_info table tr', :visible => false, :count => 2)
   end
 
 

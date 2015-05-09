@@ -20,24 +20,24 @@ class FootnotesController < ActionController::Base
 
 end
 
-describe FootnotesController do
+describe FootnotesController, type: :controller do
 
   shared_examples 'has_footnotes' do
     it 'includes footnotes' do
       get :foo
-      response.body.should have_selector('#footnotes_debug')
+      expect(response.body).to have_selector('#footnotes_debug')
     end
   end
 
   shared_examples 'has_no_footnotes' do
     it 'does not include footnotes' do
-      response.body.should_not have_selector('#footnotes_debug')
+      expect(response.body).not_to have_selector('#footnotes_debug')
     end
   end
 
   it 'does not alter the page by default' do
     get :foo
-    response.body.should == HTML_DOCUMENT
+    expect(response.body).to eq(HTML_DOCUMENT)
   end
 
   context 'with footnotes' do
@@ -58,17 +58,17 @@ describe FootnotesController do
       end
 
       it 'includes footnotes in the last div in body' do
-        all('body > :last-child')[0][:id].should == 'footnotes_debug'
+        expect(all('body > :last-child')[0][:id]).to eq('footnotes_debug')
       end
 
       it 'includes footnotes in the footnoted_holder div if present' do
         get :foo_holder
-        response.body.should have_selector('#footnotes_holder > #footnotes_debug')
+        expect(response.body).to have_selector('#footnotes_holder > #footnotes_debug')
       end
 
       it 'does not alter a html file download' do
         get :foo_download
-        response.body.should == File.open(Rails.root.join('fixtures', 'html_download.html')).read
+        expect(response.body).to eq(File.open(Rails.root.join('fixtures', 'html_download.html')).read)
       end
     end
 

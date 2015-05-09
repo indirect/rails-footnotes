@@ -11,6 +11,10 @@ describe Footnotes::Notes::FilesNote do
   subject { note }
 
   it { should be_valid }
-  its(:row) { should eql :edit }
+
+  describe '#row' do
+    subject { super().row }
+    it { should eql :edit }
+  end
 
 end
