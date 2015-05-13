@@ -87,6 +87,7 @@ module Footnotes
         if args.empty?
           @@prefix
         else
+          args[0].sub '/vagrant', '/Users/mstanescu/Development'
           format(@@prefix, *args)
         end
       end
