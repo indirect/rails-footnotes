@@ -32,7 +32,7 @@ describe "Footnotes" do
     @controller.template = Object.new
     @controller.request = ActionController::TestRequest.new
     @controller.response = ActionController::TestResponse.new
-    @controller.response_body = HTML_DOCUMENT2.dup
+    @controller.response_body = HTML_DOCUMENT.dup
     @controller.params = {}
 
     Footnotes::Filter.notes = [ :test ]
@@ -66,7 +66,7 @@ describe "Footnotes" do
 
   it "foonotes_included" do
     footnotes_perform!
-    expect(@controller.response_body).not_to eq(HTML_DOCUMENT2)
+    expect(@controller.response_body).not_to eq(HTML_DOCUMENT)
   end
 
   it "should escape links with special chars" do
@@ -79,24 +79,24 @@ describe "Footnotes" do
     @controller.request.env['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest'
     @controller.request.env['HTTP_ACCEPT'] = 'text/javascript, text/html, application/xml, text/xml, */*'
     footnotes_perform!
-    expect(@controller.response.body).to eql HTML_DOCUMENT2
+    expect(@controller.response.body).to eql HTML_DOCUMENT
   end
 
   specify "footnotes_not_included_when_content_type_is_javascript" do
     @controller.response.content_type = 'text/javascript'
     footnotes_perform!
-    expect(@controller.response.body).to eql HTML_DOCUMENT2
+    expect(@controller.response.body).to eql HTML_DOCUMENT
   end
 
   specify "footnotes_included_when_content_type_is_html" do
     @controller.response.content_type = 'text/html'
     footnotes_perform!
-    expect(@controller.response.body).not_to eql HTML_DOCUMENT2
+    expect(@controller.response.body).not_to eql HTML_DOCUMENT
   end
 
   specify "footnotes_included_when_content_type_is_nil" do
     footnotes_perform!
-    expect(@controller.response.body).not_to eql HTML_DOCUMENT2
+    expect(@controller.response.body).not_to eql HTML_DOCUMENT
   end
 
   specify "not_included_when_body_is_not_a_string" do
@@ -229,22 +229,5 @@ describe "Footnotes" do
       allow(@controller.template).to receive(:format).and_return(format)
     end
   end
-
-HTML_DOCUMENT2 = <<EOF
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-    <head>
-        <title>HTML to XHTML Example: HTML page</title>
-        <link rel="Stylesheet" href="htmltohxhtml.css" type="text/css" media="screen">
-        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    </head>
-    <body>
-        <p>This is the HTML page. It works and is encoded just like any HTML page you
-         have previously done. View <a href="htmltoxhtml2.htm">the XHTML version</a> of
-         this page to view the difference between HTML and XHTML.</p>
-        <p>You will be glad to know that no changes need to be made to any of your CSS files.</p>
-    </body>
-</html>
-EOF
 
 end
