@@ -48,3 +48,20 @@ end
 
 require 'rspec/rails'
 require 'capybara/rails'
+
+HTML_DOCUMENT = <<EOF
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <title>HTML to XHTML Example: HTML page</title>
+        <link rel="Stylesheet" href="htmltohxhtml.css" type="text/css" media="screen">
+        <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    </head>
+    <body>
+        <p>This is the HTML page. It works and is encoded just like any HTML page you
+         have previously done. View <a href="htmltoxhtml2.htm">the XHTML version</a> of
+         this page to view the difference between HTML and XHTML.</p>
+        <p>You will be glad to know that no changes need to be made to any of your CSS files.</p>
+    </body>
+</html>
+EOF
