@@ -6,17 +6,17 @@ module Footnotes
     extend ActiveSupport::Concern
 
     included do
-      prepend_before_filter :rails_footnotes_before_filter
-      after_filter :rails_footnotes_after_filter
+      prepend_before_action :rails_footnotes_before_action
+      after_action :rails_footnotes_after_action
     end
 
-    def rails_footnotes_before_filter
+    def rails_footnotes_before_action
       if Footnotes.enabled?(self)
         Footnotes::Filter.start!(self)
       end
     end
 
-    def rails_footnotes_after_filter
+    def rails_footnotes_after_action
       if Footnotes.enabled?(self)
         filter = Footnotes::Filter.new(self)
         filter.add_footnotes!

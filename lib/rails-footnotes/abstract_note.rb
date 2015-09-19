@@ -39,7 +39,7 @@ module Footnotes
         end
 
         # Action to be called after the Note was used.
-        # This is applied as an after_filter.
+        # This is applied as an after_action.
         #
         def close!(controller = nil)
         end
