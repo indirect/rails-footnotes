@@ -13,4 +13,3 @@ gemfile:
 matrix:
   allow_failures:
     - gemfile: gemfiles/Gemfile.rails-edge
-    - gemfile: gemfiles/Gemfile.rails-3.2.x
