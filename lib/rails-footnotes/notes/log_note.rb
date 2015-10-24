@@ -20,7 +20,7 @@ module Footnotes
           end
         # Rails 3 don't have ActiveSupport::Logger#broadcast so we backported it
         extend_module = defined?(ActiveSupport::Logger) ? ActiveSupport::Logger.broadcast(note_logger) : NoteLogger.broadcast(note_logger)
-        Rails.logger = self.original_logger.dup.extend(extend_module)
+        Rails.logger = self.original_logger.clone.extend(extend_module)
       end
 
       def title
