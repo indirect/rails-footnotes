@@ -1,3 +1,4 @@
+sudo: false
 script: "bundle exec rake"
 rvm:
   - 1.9.3
@@ -5,7 +6,7 @@ rvm:
   - 2.1.6
   - 2.2.2
 gemfile:
-  - gemfiles/Gemfile.rails-3.2.x
+  - gemfiles/Gemfile.rails-3.2.22
   - gemfiles/Gemfile.rails-4.0.x
   - gemfiles/Gemfile.rails-4.1.x
   - gemfiles/Gemfile.rails-4.2.x
@@ -13,4 +14,4 @@ gemfile:
 matrix:
   allow_failures:
     - gemfile: gemfiles/Gemfile.rails-edge
-    - gemfile: gemfiles/Gemfile.rails-3.2.x
+    - gemfile: gemfiles/Gemfile.rails-3.2.22

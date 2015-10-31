@@ -1,3 +1,4 @@
+  * Fix the issue of undefined method using Log4r and Rails 3.2
 == Footnotes v4.1.7 ==
   * Fix notes not collapsing when clicking on them again (#130)*
 == Footnotes v4.1.6 ==
