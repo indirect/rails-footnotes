@@ -6,8 +6,8 @@ module Footnotes
     extend ActiveSupport::Concern
 
     included do
-      prepend_before_filter :rails_footnotes_before_filter
-      after_filter :rails_footnotes_after_filter
+      prepend_before_action :rails_footnotes_before_filter
+      after_action :rails_footnotes_after_filter
     end
 
     def rails_footnotes_before_filter
