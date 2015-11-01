@@ -6,8 +6,13 @@ module Footnotes
     extend ActiveSupport::Concern
 
     included do
-      prepend_before_filter :rails_footnotes_before_filter
-      after_filter :rails_footnotes_after_filter
+      if Rails::VERSION::MAJOR >= 5
+        prepend_before_action :rails_footnotes_before_filter
+        after_action :rails_footnotes_after_filter
+      else
+        prepend_before_filter :rails_footnotes_before_filter
+        after_filter :rails_footnotes_after_filter
+      end
     end
 
     def rails_footnotes_before_filter
