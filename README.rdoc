@@ -37,7 +37,7 @@ This will create an initializer with default config and some examples.
 
 === Editor links
 
-Textmate, MacVim and Sublime Text 2 are compatible.
+Textmate, MacVim and Sublime Text 3 are compatible.
 
 *MacVim*
 
@@ -52,17 +52,11 @@ the second %d is replaced by the column number.
 Take note that the order in which the file name (%s), line number (%d) and column number (%d) appears is important.
 We assume that they appear in that order. "foo://line=%d&file=%s" (%d precedes %s) would throw out an error.
 
-*Sublime* *Text* *2*
+*Sublime* *Text* *3*
 
-1. Keep the Textmate prefix, <tt>f.prefix = 'txmt://open?url=file://%s&line=%d&column=%d'</tt>
+Install {subl}[https://github.com/dhoulb/subl], then use:
 
-2. Install {subl-handler}[https://github.com/asuth/subl-handler]
-
-3. Open subl-handler. Go to preferences (SublHandler > Preferences), and point "Path to subl" to your installed instance. (EG, /Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl). Note: do not escape the whitespaces, subl-handler accounts for those.
-
-4. Install {RCDefault}[http://www.rubicode.com/Software/RCDefaultApp]. It's OSX 10.2, but it works.
-
-5. Go to RCDefaultApp (OS System Preferences > DefaultApps). Go to URL section, select "tmxt" extension, and set default applicaiton to "SublHandler".
+    f.prefix = 'subl://open?url=file://%s&line=%d&column=%d'
 
 *Use* *with* *Vagrant* (*and* *other* *virtual* *machines*)
 
