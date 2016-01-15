@@ -2,7 +2,11 @@ module Footnotes
   module Notes
     class ParamsNote < AbstractNote
       def initialize(controller)
-        @params = controller.params.symbolize_keys
+        @params = if Rails::VERSION::MAJOR >= 5
+          controller.params.to_unsafe_h
+        else
+          controller.params
+        end
       end
 
       def title
