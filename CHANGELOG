@@ -1,4 +1,7 @@
+== Footnotes v4.1.8 ==
   * Fix the issue of undefined method using Log4r and Rails 3.2
+  * Fix some rails 5 compatibility issues (#140) *
+  * Fix bad timing shown in SQL note (#145) *
 == Footnotes v4.1.7 ==
   * Fix notes not collapsing when clicking on them again (#130)*
 == Footnotes v4.1.6 ==
