@@ -47,7 +47,7 @@ module Footnotes
             <td>
               <span id="sql_#{index}">#{print_query(event.payload[:sql])}</span>
             </td>
-            <td>#{print_name_and_time(event.payload[:name], event.duration / 1000.0)}</td>
+            <td>#{print_name_and_time(event.payload[:name], event.duration)}</td>
           </tr>
           HTML
         end
