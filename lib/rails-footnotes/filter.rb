@@ -169,7 +169,7 @@ module Footnotes
           #footnotes_debug table td {padding: 5px; border-bottom: 1px solid #ccc;}
           #footnotes_debug table td strong {color: #9b1b1b;}
           #footnotes_debug table th {padding: 5px; border-bottom: 1px solid #ccc;}
-          #footnotes_debug table tr:nth-child(2n) td {background: #eee;}
+          #footnotes_debug table tr:nth-child(2n) td {background: #f5f5f5;}
           #footnotes_debug table tr:nth-child(2n + 1) td {background: #fff;}
           #footnotes_debug tbody {text-align: left;}
           #footnotes_debug .name_values td {vertical-align: top;}

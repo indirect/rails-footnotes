@@ -23,8 +23,8 @@ module Footnotes
       def title
         queries = self.events.count
         total_time = self.events.map(&:duration).sum
-        query_color = generate_red_color(self.events.count, alert_sql_number)
-        db_color    = generate_red_color(total_time, alert_db_time)
+        query_color = alert_color(self.events.count, alert_sql_number)
+        db_color    = alert_color(total_time, alert_db_time)
 
         <<-TITLE
         <span style="background-color:#{query_color}">Queries (#{queries})</span>
@@ -57,17 +57,16 @@ module Footnotes
 
       protected
       def print_name_and_time(name, time)
-        "<span style='background-color:#{generate_red_color(time, alert_ratio)}'>#{escape(name || 'SQL')} (#{'%.3fms' % time})</span>"
+        "<span style='background-color:#{alert_color(time, alert_ratio)}'>#{escape(name || 'SQL')} (#{'%.3fms' % time})</span>"
       end
 
       def print_query(query)
         escape(query.to_s.gsub(/(\s)+/, ' ').gsub('`', ''))
       end
 
-      def generate_red_color(value, alert)
-        c = ((value.to_f/alert).to_i - 1) * 16
-        c = 0  if c < 0; c = 15 if c > 15; c = (15-c).to_s(16)
-        "#ff#{c*4}"
+      def alert_color(value, threshold)
+        return 'transparent' if value < threshold
+        '#ffff00'
       end
 
       def alert_ratio
@@ -103,7 +102,7 @@ module Footnotes
       attr_accessor :events, :ignore_regexps
 
       def initialize(orm)
-        super() 
+        super()
         @events = []
         orm.each {|adapter| ActiveSupport::LogSubscriber.attach_to adapter, self}
       end
