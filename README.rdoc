@@ -62,7 +62,7 @@ We assume that they appear in that order. "foo://line=%d&file=%s" (%d precedes %
 
 4. Install {RCDefault}[http://www.rubicode.com/Software/RCDefaultApp]. It's OSX 10.2, but it works.
 
-5. Go to RCDefaultApp (OS System Preferences > DefaultApps). Go to URL section, select "tmxt" extension, and set default applicaiton to "SublHandler".
+5. Go to RCDefaultApp (OS System Preferences > DefaultApps). Go to URL section, select "tmxt" extension, and set default application to "SublHandler".
 
 *Use* *with* *Vagrant* (*and* *other* *virtual* *machines*)
 
