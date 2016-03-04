@@ -28,7 +28,7 @@ module Footnotes
         end
 
         def parse_files!
-          asset_paths = Rails.application.config.assets.paths
+          asset_paths = Rails.application.config.try(:assets).try(:paths) || []
           linked_files = []
 
           @files.collect do |file|
