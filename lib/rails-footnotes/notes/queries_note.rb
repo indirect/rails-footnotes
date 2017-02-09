@@ -76,7 +76,7 @@ module Footnotes
       def parse_trace(trace)
         trace.map do |t|
           s = t.split(':')
-          %[<a href="#{escape(Footnotes::Filter.prefix("#{Rails.root.to_s}/#{s[0]}", s[1].to_i, 1))}">#{escape(t)}</a><br />]
+          %[<a href="#{Footnotes::Filter.prefix("#{Rails.root.to_s}/#{s[0]}", s[1].to_i, 1)}">#{escape(t)}</a><br />]
         end.join
       end
     end
