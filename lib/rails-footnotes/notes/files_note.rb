@@ -1,3 +1,4 @@
+require 'pry'
 module Footnotes
   module Notes
     class FilesNote < AbstractNote
@@ -28,18 +29,23 @@ module Footnotes
         end
 
         def parse_files!
-          asset_paths = Rails.application.config.try(:assets).try(:paths) || []
           linked_files = []
 
           @files.collect do |file|
             base_name = File.basename(file)
-            asset_paths.each do |asset_path|
-              results = Dir[File.expand_path(base_name, asset_path) + '*']
-              results.each do |r|
-                linked_files << %[<a href="#{Footnotes::Filter.prefix(r, 1, 1)}">#{File.basename(r)}</a>]
-              end
-              break if results.present?
+            parts = base_name.split("-")
+            undigest_name = if parts.size > 1
+              parts.pop
+              parts.join("-") + File.extname(base_name)
+            else
+              base_name
             end
+
+            if Rails.application.assets_manifest.find_sources(undigest_name).any?
+              filename = Rails.application.assets[undigest_name].filename
+              linked_files << %[<a href="#{Footnotes::Filter.prefix(filename, 1, 1)}">#{File.basename(filename)}</a>]
+            end
+
           end
           @files = linked_files
         end

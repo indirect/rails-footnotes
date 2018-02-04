@@ -44,6 +44,9 @@ RSpec.configure do |config|
     get 'partials/index'
     get 'files/index'
   end
+
+  Rails.application.config.assets.precompile += %w( foobar.js foobar.css )
+
 end
 
 require 'rspec/rails'

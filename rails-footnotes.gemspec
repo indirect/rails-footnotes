@@ -14,11 +14,12 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "rails-footnotes"
 
-  s.add_dependency "rails", ">= 3.2"
+  s.add_dependency "rails", ">= 4.2"
 
-  s.add_development_dependency "rspec-rails", '~> 3.3.2'
-  s.add_development_dependency "sprockets-rails", '~> 2.0'
+  s.add_development_dependency "rspec-rails", '~> 3.7.2'
+  s.add_development_dependency "sprockets-rails", '~> 3.2.1'
   s.add_development_dependency "capybara"
+  s.add_development_dependency "pry"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
