@@ -65,7 +65,12 @@ module Footnotes
       @notes = []
 
       revert_pos(controller.response_body) do
-        @body = controller.response.body
+        @body =
+          begin
+            controller.response.body
+          rescue Exception => e
+            self.class.log_error("Footnotes::Filter initialize Exception", e)
+          end
       end
     end
 
