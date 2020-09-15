@@ -1,6 +1,6 @@
 = Rails Footnotes
 
-{<img src="https://travis-ci.org/josevalim/rails-footnotes.svg" />}[https://travis-ci.org/josevalim/rails-footnotes]
+{<img src="https://travis-ci.org/Intrepidd/rails-footnotes.svg?branch=master" />}[https://travis-ci.org/Intrepidd/rails-footnotes]
 
 Rails footnotes displays footnotes in your application for easy debugging, such as sessions,
 request parameters, cookies, filter chain, routes, queries, etc.
