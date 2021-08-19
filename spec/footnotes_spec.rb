@@ -48,6 +48,7 @@ describe "Footnotes" do
   context "response_body is file" do
     before do
       @file = Tempfile.new("test")
+      def @file.body; read; end
       @file.write "foobarbaz"
       @file.rewind
     end
