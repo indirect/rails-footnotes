@@ -75,7 +75,7 @@ describe FootnotesController, type: :controller do
     describe 'when request is xhr' do
       include_context 'has_no_footnotes'
       before do
-        xhr :get, :foo
+        get :foo, xhr: true
       end
     end
 
