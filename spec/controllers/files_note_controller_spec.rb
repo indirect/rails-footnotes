@@ -1,10 +1,9 @@
 require 'spec_helper'
 
 class FilesController < ApplicationController
-
-    def index
-    end
+  def index
   end
+end
 
 describe FilesController, type: :controller do
   render_views

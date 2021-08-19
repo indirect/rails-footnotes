@@ -3,15 +3,15 @@ require 'spec_helper'
 class FootnotesController < ActionController::Base
 
   def foo
-    render :text => HTML_DOCUMENT, :content_type => 'text/html'
+    render inline: HTML_DOCUMENT, content_type: 'text/html'
   end
 
   def foo_holder
-    render :text => '<html><body><div id="footnotes_holder"></div></body></html>'
+    render inline: '<html><body><div id="footnotes_holder"></div></body></html>'
   end
 
   def foo_js
-    render :text => '<script></script>', :content_type => 'text/javascript'
+    render inline: '<script></script>', content_type: 'text/javascript'
   end
 
   def foo_download

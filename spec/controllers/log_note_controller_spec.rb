@@ -10,7 +10,7 @@ describe 'log note', type: :controller do
     def index
       Rails.logger.error 'foo'
       Rails.logger.warn 'bar'
-      render :text => '<html><head></head><body></body></html>', :content_type => 'text/html'
+      render inline: '<html><head></head><body></body></html>', content_type: 'text/html'
     end
   end
 
