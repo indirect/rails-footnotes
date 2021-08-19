@@ -25,7 +25,7 @@ describe Footnotes::Notes::AssignsNote do
   specify {expect(note.send(:to_table)).to eql [
     ["Name", "Value"],
     ["<strong>@action_has_layout</strong><br /><em>TrueClass</em>", "true"],
-    ["<strong>@status</strong><br /><em>Fixnum</em>", "200"]
+    ["<strong>@status</strong><br /><em>Integer</em>", "200"]
   ]}
 
   describe "Ignored Assigns" do
@@ -43,7 +43,7 @@ describe Footnotes::Notes::AssignsNote do
       [
         ["Name", "Value"],
         ["<strong>@action_has_layout</strong><br /><em>TrueClass</em>", "true"],
-        ["<strong>@status</strong><br /><em>Fixnum</em>", "200"]
+        ["<strong>@status</strong><br /><em>Integer</em>", "200"]
       ], {:summary=>"Debug information for Assigns (2)"})
     note.content
   end
