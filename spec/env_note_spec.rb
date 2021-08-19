@@ -9,11 +9,11 @@ end
 describe Footnotes::Notes::EnvNote do
   let(:controller) {
     FootnotesEnvController.new.tap { |c|
-      c.template = Object.new
-      c.request = ActionController::TestRequest.new
-      c.response = ActionController::TestResponse.new
+      c.template      = Object.new
+      c.request       = ActionDispatch::TestRequest.create
+      c.response      = ActionDispatch::TestResponse.new
       c.response_body = %Q(<html><body></body></html>)
-      c.params = {}
+      c.params        = {}
     }
   }
 
