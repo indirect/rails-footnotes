@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
   s.description = %q{Every Rails page has footnotes that gives information about your application and links back to your editor.}
 
   s.add_dependency "rails", "~> 6.0"
+  s.required_ruby_version = "~> 3.0"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
