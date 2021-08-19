@@ -47,7 +47,7 @@ module Footnotes
         if args.empty?
           @@prefix
         else
-          args.map! { |arg| CGI.escape(arg.to_s) }
+          args.map! { |arg| arg.to_s.split("/").map{|s| ERB::Util.url_encode(s) }.join("/") }
 
           if @@prefix.respond_to? :call
             @@prefix.call *args
