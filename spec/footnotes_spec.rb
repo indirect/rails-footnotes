@@ -30,8 +30,8 @@ describe "Footnotes" do
   before do
     @controller = FootnotesController.new
     @controller.template = Object.new
-    @controller.request = ActionController::TestRequest.new
-    @controller.response = ActionController::TestResponse.new
+    @controller.request = ActionDispatch::TestRequest.create
+    @controller.response = ActionDispatch::TestResponse.new
     @controller.response_body = HTML_DOCUMENT.dup
     @controller.params = {}
 
