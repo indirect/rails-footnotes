@@ -1,4 +1,4 @@
-defined?(Footnotes) && Footnotes.setup do |f|
+Footnotes.setup do |f|
   # Whether or not to enable footnotes
   f.enabled = Rails.env.development?
   # You can also use a lambda / proc to conditionally toggle footnotes
@@ -24,4 +24,4 @@ defined?(Footnotes) && Footnotes.setup do |f|
 
   # Allow to open multiple notes :
   # f.multiple_notes = true
-end
+end unless defined?(Footnotes) && Footnotes.respond_to?(:setup)
