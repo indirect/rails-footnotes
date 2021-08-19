@@ -89,7 +89,7 @@ describe "Footnotes" do
   end
 
   specify "footnotes_included_when_content_type_is_html" do
-    @controller.response.content_type = 'text/html'
+    @controller.response.content_type = 'text/html; charset=utf-8'
     footnotes_perform!
     expect(@controller.response.body).not_to eql HTML_DOCUMENT
   end

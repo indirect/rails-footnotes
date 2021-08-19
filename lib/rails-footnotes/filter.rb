@@ -116,7 +116,8 @@ module Footnotes
       end
 
       def valid_format?
-        ['text/html', nil].include? @controller.response.content_type
+        format = @controller.response.content_type
+        format.nil? || format.include?("text/html")
       end
 
       def valid_content_type?
