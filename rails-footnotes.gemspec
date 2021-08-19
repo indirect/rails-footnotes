@@ -12,15 +12,7 @@ Gem::Specification.new do |s|
   s.summary     = %q{Every Rails page has footnotes that gives information about your application and links back to your editor.}
   s.description = %q{Every Rails page has footnotes that gives information about your application and links back to your editor.}
 
-  s.rubyforge_project = "rails-footnotes"
-
   s.add_dependency "rails", "~> 6.0"
-
-  s.add_development_dependency "rake", "~> 13.0"
-  s.add_development_dependency "rspec-rails", "~> 5.0"
-  s.add_development_dependency "sprockets-rails", "~> 3.2"
-  s.add_development_dependency "capybara", "~> 3.35"
-  s.add_development_dependency "nokogiri", "~> 1.12"
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
