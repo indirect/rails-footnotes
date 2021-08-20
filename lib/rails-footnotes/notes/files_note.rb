@@ -24,7 +24,7 @@ module Footnotes
 
       protected
         def scan_text(text)
-          []
+          raise NotImplementedError, "implement this in your subclass"
         end
 
         def parse_files!
