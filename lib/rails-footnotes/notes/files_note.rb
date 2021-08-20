@@ -32,6 +32,7 @@ module Footnotes
           linked_files = []
 
           @files.collect do |file|
+            file.gsub!(/-[a-f0-9]{64}\./, '.')
             base_name = File.basename(file)
             asset_paths.each do |asset_path|
               results = Dir[File.expand_path(base_name, asset_path) + '*']
