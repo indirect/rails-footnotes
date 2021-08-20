@@ -1,12 +1,11 @@
 .*
+!.github
 !.gitignore
 !.gitmodules
-!.travis.yml
 !*.example
 *.gem
 .bundle
 .rspec_results
-Gemfile.lock
 pkg/*
 /bin
 /coverage
