@@ -9,12 +9,10 @@ on:
 
 jobs:
   test:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
         ruby-version: ['3.0']
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up Ruby
@@ -22,5 +20,9 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+    - name: show files
+      run: find $GITHUB_WORKSPACE
+    - name: show files
+      run: find .
     - name: Run tests
-      run: ./bin/rspec
+      run: $GITHUB_WORKSPACE/bin/rspec
