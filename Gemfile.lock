@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    rails6-footnotes (5.0.2)
+    rails-footnotes (5.0.2)
       rails (~> 6.0)
 
 GEM
@@ -178,7 +178,7 @@ DEPENDENCIES
   capybara (~> 3.35)
   nokogiri (~> 1.12)
   pry (~> 0.14.1)
-  rails6-footnotes!
+  rails-footnotes!
   rake (~> 13.0)
   rspec-rails (~> 5.0)
   sprockets-rails (~> 3.2)

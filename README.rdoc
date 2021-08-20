@@ -10,7 +10,7 @@ your backtrace lines.
 
 Add to your `Gemfile`:
 
-    gem "rails6-footnotes", "~> 5.0"
+    gem "rails-footnotes", "~> 5.0"
 
 Run `bundle install`, then the generator:
 
