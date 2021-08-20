@@ -1,11 +1,10 @@
 Footnotes.setup do |f|
   # Whether or not to enable footnotes
   f.enabled = Rails.env.development?
-  # You can also use a lambda / proc to conditionally toggle footnotes
-  # Example :
+  # You can also use a lambda / proc to conditionally toggle footnotes, like
   # f.enabled = -> { User.current.admin? }
   # Beware of thread-safety though, Footnotes.enabled is NOT thread safe
-  # and should not be modified anywhere else.
+  # and should not be modified outside this initializer.
 
   # Only toggle some notes :
   # f.notes = [:session, :cookies, :params, :filters, :routes, :env, :queries, :log]
@@ -24,4 +23,4 @@ Footnotes.setup do |f|
 
   # Allow to open multiple notes :
   # f.multiple_notes = true
-end unless defined?(Footnotes) && Footnotes.respond_to?(:setup)
+end if defined?(Footnotes) && Footnotes.respond_to?(:setup)
