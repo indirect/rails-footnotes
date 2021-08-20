@@ -18,6 +18,7 @@ describe FilesController, type: :controller do
 
   it 'includes stylesheets assets in the response' do
     get :index
+    expect(response.body).to include("FILES INDEX")
     js_debug = first('fieldset#javascripts_debug_info div', visible: false)
     expect(js_debug).to have_selector('li a', visible: false, count: 1)
     expect(js_debug).to have_selector('li a', text: /foobar\.js/, visible: false)
