@@ -20,9 +20,5 @@ jobs:
       with:
         ruby-version: ${{ matrix.ruby-version }}
         bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-    - name: show files
-      run: find $GITHUB_WORKSPACE
-    - name: show files
-      run: find .
     - name: Run tests
-      run: $GITHUB_WORKSPACE/bin/rspec
+      run: bin/rspec
