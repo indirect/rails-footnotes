@@ -61,6 +61,8 @@ module Footnotes
   end
 end
 
-ActionController::Base.send(:include, Footnotes::RailsFootnotesExtension)
+ActiveSupport.on_load(:action_controller) do
+  ActionController::Base.send(:include, Footnotes::RailsFootnotesExtension)
+end
 
 load Rails.root.join('.rails_footnotes') if Rails.root && Rails.root.join('.rails_footnotes').exist?
