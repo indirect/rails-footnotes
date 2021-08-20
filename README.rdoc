@@ -1,4 +1,4 @@
-= Rails 6 Footnotes
+= Rails Footnotes
 
 Rails footnotes displays footnotes in your application for easy debugging, such as sessions,
 request parameters, cookies, filter chain, routes, queries, etc.
