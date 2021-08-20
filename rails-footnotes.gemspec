@@ -3,7 +3,7 @@ $:.push File.expand_path("../lib", __FILE__)
 require "rails-footnotes/version"
 
 Gem::Specification.new do |s|
-  s.name        = "rails-footnotes"
+  s.name        = "rails6-footnotes"
   s.version     = Footnotes::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Roman V. Babenko", "José Valim", "Keenan Brock", "Duane Johnson", "Adrien Siami", "André Arko"]
