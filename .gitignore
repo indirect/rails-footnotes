@@ -7,7 +7,6 @@
 .bundle
 .rspec_results
 pkg/*
-/bin
 /coverage
 tags
 /doc
