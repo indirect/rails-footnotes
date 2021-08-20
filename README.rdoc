@@ -1,7 +1,5 @@
 = Rails Footnotes
 
-{<img src="https://travis-ci.org/Intrepidd/rails-footnotes.svg?branch=master" />}[https://travis-ci.org/Intrepidd/rails-footnotes]
-
 Rails footnotes displays footnotes in your application for easy debugging, such as sessions,
 request parameters, cookies, filter chain, routes, queries, etc.
 
@@ -10,17 +8,11 @@ your backtrace lines.
 
 == Installation
 
-NOTE: Since this branch aims for Rails 3.2+ support, if you want to use footnotes with Rails 2.3 you should use this branch:
+Add to your `Gemfile`:
 
-https://github.com/josevalim/rails-footnotes/tree/rails2
+    gem "rails-footnotes", "~> 5.0"
 
-Installing Rails Footnotes is very easy.
-
-=== Rails 3.2.x/4.x
-
-    gem 'rails-footnotes', '~> 4.0'
-
-After you install RailsFootnotes and add it to your Gemfile, you need to run the generator:
+Run `bundle install`, then the generator:
 
   rails generate rails_footnotes:install
 
@@ -150,39 +142,7 @@ If you'd like the footnote, to be at a different place (perhaps for aesthetical 
   <div id="footnotes_holder"></div>
 at an appropriate place, your notes will now appear inside div#footnotes_holder
 
-== Collaborators
-
-* Leon Li       - http://github.com/scorpio
-* Keenan Brock  - http://github.com/kbrock
-* Ivan Storck   - http://github.com/ivanoats
-* Kris Chamber  - http://github.com/kristopher
-* Roman V. Babenko - http://github.com/romanvbabenko
-* Adrien Siami  - http://github.com/intrepidd
-
 == Bugs and Feedback
 
 If you discover any bugs, please open an issue.
 If you just want to give some positive feedback or drop a line, that's fine too!
-
-=== Version 4.x
-
-Starting from version 4.0, Adren Siami is the maintainer of this plugin.
-
-=== Version 3.x
-
-This plugin was maintained until version 4.0 by Roman V. Babenko
-
-Copyright (c) 2010-2014 Roman V. Babenko (romanvbabenko@gmail.com)
-http://romanvbabenko.com
-
-This plugin was maintained until version 3.6 by José Valim
-
-Copyright (c) 2009 José Valim (jose@plataformatec.com.br)
-http://blog.plataformatec.com.br
-
-=== Version 2.0
-
-This plugin was created and maintained until version 2.0 by Duane Johnson:
-
-Copyright (c) 2006 InquiryLabs, Inc.
-http://blog.inquirylabs.com
