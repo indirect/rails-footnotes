@@ -1,3 +1,3 @@
 module Footnotes
-  VERSION = "5.0.0"
+  VERSION = "7.0.0"
 end
