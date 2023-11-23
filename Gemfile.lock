@@ -207,5 +207,8 @@ DEPENDENCIES
   rspec-rails (~> 5.0)
   sprockets-rails (~> 3.2)
 
+RUBY VERSION
+   ruby 3.2.2p53
+
 BUNDLED WITH
    2.4.22

@@ -2,6 +2,8 @@ source "https://rubygems.org"
 
 gemspec
 
+ruby file: ".ruby-version"
+
 gem "capybara", "~> 3.35"
 gem "nokogiri", "~> 1.12"
 gem "pry", "~> 0.14.1"
