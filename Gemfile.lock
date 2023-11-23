@@ -193,6 +193,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-20
+  arm64-darwin-22
   x86_64-linux
 
 DEPENDENCIES
@@ -205,4 +206,4 @@ DEPENDENCIES
   sprockets-rails (~> 3.2)
 
 BUNDLED WITH
-   2.2.33
+   2.4.22
