@@ -23,7 +23,7 @@ module Footnotes
         end
 
         def controller_filename
-          @controller_filename ||= Gem.find_files(controller_path).first # tnx https://github.com/MasterLambaster
+          @controller_filename ||= Gem.find_files(controller_path).first
         end
 
         def controller_text
