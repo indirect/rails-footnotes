@@ -27,7 +27,7 @@ module Footnotes
       end
 
       def valid?
-        prefix? && filename && File.exists?(filename)
+        prefix? && filename && File.exist?(filename)
       end
 
       protected
