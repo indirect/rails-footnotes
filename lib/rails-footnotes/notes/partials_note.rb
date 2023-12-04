@@ -2,12 +2,12 @@ module Footnotes
   module Notes
     class PartialsNote < AbstractNote
 
-      cattr_accessor :partials
+      thread_cattr_accessor :partials
 
       def self.start!(controller)
         self.partials = []
         @subscriber ||= ActiveSupport::Notifications.subscribe('render_partial.action_view') do |*args|
-          event = ActiveSupport::Notifications::Event.new *args
+          event = ActiveSupport::Notifications::Event.new(*args)
           self.partials << {:file => event.payload[:identifier], :duration => event.duration}
         end
       end
