@@ -1,18 +1,11 @@
 module Footnotes
   class Filter
-    @@multiple_notes = false
     @@klasses = []
-    @@lock_top_right = false
     @@font_size = '11px'
     @@default_limit = 25
 
     # Default link prefix is textmate
     @@prefix = 'txmt://open?url=file://%s&amp;line=%d&amp;column=%d'
-
-    # Edit notes
-    @@notes = [ :controller, :view, :layout, :partials, :stylesheets, :javascripts ]
-    # Show notes
-    @@notes += [ :assigns, :session, :cookies, :params, :filters, :routes, :env, :queries, :log]
 
     # :no_style       => If you don't want the style to be appended to your pages
     # :notes          => Class variable that holds the notes to be processed
@@ -21,9 +14,17 @@ module Footnotes
     # :lock_top_right => Lock a btn to toggle notes to the top right of the browser
     # :font_size      => CSS font-size property
     # :default_limit  => Default limit for ActiveRecord:Relation in assigns note
-    cattr_accessor :notes, :prefix, :multiple_notes, :lock_top_right, :font_size, :default_size
+    cattr_accessor :prefix, :font_size, :default_limit
 
+    thread_cattr_accessor :notes, default: [
+      # Edit notes
+      :controller, :view, :layout, :partials, :stylesheets, :javascripts,
+      # Show notes
+      :assigns, :session, :cookies, :params, :filters, :routes, :env, :queries, :log
+    ]
     thread_cattr_accessor :no_style, default: false
+    thread_cattr_accessor :multiple_notes, default: false
+    thread_cattr_accessor :lock_top_right, default: false
 
     class << self
       include Footnotes::EachWithRescue
@@ -36,7 +37,7 @@ module Footnotes
         self.each_with_rescue(Footnotes.before_hooks) {|hook| hook.call(controller, self)}
 
         @@klasses = []
-        self.each_with_rescue(@@notes.flatten) do |note|
+        self.each_with_rescue(notes.flatten) do |note|
           klass = "Footnotes::Notes::#{note.to_s.camelize}Note".constantize
           klass.start!(controller) if klass.respond_to?(:start!)
           @@klasses << klass
@@ -152,7 +153,7 @@ module Footnotes
 
       def insert_styles
         #TODO More customizable(reset.css, from file etc.)
-        if @@lock_top_right
+        if lock_top_right
           extra_styles = <<-STYLES
             #footnotes_debug {position: fixed; top: 0px; right: 0px; width: 100%; z-index: 10000; margin-top: 0;}
             #footnotes_debug #toggle_footnotes {position: absolute; right: 0; top: 0; background: #fff; border: 1px solid #ccc; color: #9b1b1b; font-size: 20px; text-align: center; padding: 8px; opacity: 0.9;}
@@ -193,7 +194,7 @@ module Footnotes
         # Fieldsets method should be called first
         content = fieldsets
         element_style = ''
-        if @@lock_top_right
+        if lock_top_right
           element_style = 'style="display: none;"'
         end
         footnotes_html = <<-HTML
@@ -209,7 +210,7 @@ module Footnotes
             var Footnotes = function() {
 
               function hideAll(){
-                #{close unless @@multiple_notes}
+                #{close unless multiple_notes}
               }
 
               function hideAllAndToggle(id) {
