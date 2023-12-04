@@ -1,28 +1,37 @@
 module Footnotes
   class Filter
-    @@no_style = false
-    @@multiple_notes = false
     @@klasses = []
-    @@lock_top_right = false
-    @@font_size = '11px'
-    @@default_limit = 25
 
-    # Default link prefix is textmate
-    @@prefix = 'txmt://open?url=file://%s&amp;line=%d&amp;column=%d'
-
-    # Edit notes
-    @@notes = [ :controller, :view, :layout, :partials, :stylesheets, :javascripts ]
-    # Show notes
-    @@notes += [ :assigns, :session, :cookies, :params, :filters, :routes, :env, :queries, :log]
-
-    # :no_style       => If you don't want the style to be appended to your pages
-    # :notes          => Class variable that holds the notes to be processed
-    # :prefix         => Prefix appended to FootnotesLinks
-    # :multiple_notes => Set to true if you want to open several notes at the same time
-    # :lock_top_right => Lock a btn to toggle notes to the top right of the browser
-    # :font_size      => CSS font-size property
     # :default_limit  => Default limit for ActiveRecord:Relation in assigns note
-    cattr_accessor :no_style, :notes, :prefix, :multiple_notes, :lock_top_right, :font_size, :default_limit
+    # :font_size      => CSS font-size property
+    # :lock_top_right => Lock a btn to toggle notes to the top right of the browser
+    # :multiple_notes => Set to true if you want to open several notes at the same time
+    # :no_style       => If you don't want the style to be appended to your pages
+    # :prefix         => Prefix appended to FootnotesLinks
+    # :notes          => Class variable that holds the notes to be processed
+    thread_cattr_accessor :default_limit, default: 25
+    thread_cattr_accessor :font_size, default: '11px'
+    thread_cattr_accessor :lock_top_right, default: false
+    thread_cattr_accessor :multiple_notes, default: false
+    thread_cattr_accessor :no_style, default: false
+    thread_cattr_accessor :prefix, default: 'txmt://open?url=file://%s&amp;line=%d&amp;column=%d'
+    thread_cattr_accessor :notes, default: [
+      :assigns,
+      :controller,
+      :cookies,
+      :env,
+      :filters,
+      :javascripts,
+      :layout,
+      :log,
+      :params,
+      :partials,
+      :queries,
+      :routes,
+      :session,
+      :stylesheets,
+      :view
+    ]
 
     class << self
       include Footnotes::EachWithRescue
@@ -35,7 +44,7 @@ module Footnotes
         self.each_with_rescue(Footnotes.before_hooks) {|hook| hook.call(controller, self)}
 
         @@klasses = []
-        self.each_with_rescue(@@notes.flatten) do |note|
+        self.each_with_rescue(notes.flatten) do |note|
           klass = "Footnotes::Notes::#{note.to_s.camelize}Note".constantize
           klass.start!(controller) if klass.respond_to?(:start!)
           @@klasses << klass
@@ -44,17 +53,17 @@ module Footnotes
 
       # If none argument is sent, simply return the prefix.
       # Otherwise, replace the args in the prefix.
-      #
+      alias_method :read_prefix, :prefix
       def prefix(*args)
         if args.empty?
-          @@prefix
+          read_prefix
         else
           args.map! { |arg| arg.to_s.split("/").map{|s| ERB::Util.url_encode(s) }.join("/") }
 
-          if @@prefix.respond_to? :call
-            @@prefix.call *args
+          if read_prefix.respond_to? :call
+            read_prefix.call(*args)
           else
-            format(@@prefix, *args)
+            format(read_prefix, *args)
           end
         end
       end
@@ -97,7 +106,7 @@ module Footnotes
 
       def add_footnotes_without_validation!
         initialize_notes!
-        insert_styles unless @@no_style
+        insert_styles unless no_style
         insert_footnotes
       end
 
@@ -151,7 +160,7 @@ module Footnotes
 
       def insert_styles
         #TODO More customizable(reset.css, from file etc.)
-        if @@lock_top_right
+        if lock_top_right
           extra_styles = <<-STYLES
             #footnotes_debug {position: fixed; top: 0px; right: 0px; width: 100%; z-index: 10000; margin-top: 0;}
             #footnotes_debug #toggle_footnotes {position: absolute; right: 0; top: 0; background: #fff; border: 1px solid #ccc; color: #9b1b1b; font-size: 20px; text-align: center; padding: 8px; opacity: 0.9;}
@@ -167,7 +176,7 @@ module Footnotes
         insert_text :before, /<\/head>/i, <<-HTML
         <!-- Footnotes Style -->
         <style type="text/css">
-          #footnotes_debug {font-size: #{@@font_size}; font-family: Consolas, monaco, monospace; font-weight: normal; margin: 2em 0 1em 0; text-align: center; color: #444; line-height: 16px; background: #fff;}
+          #footnotes_debug {font-size: #{font_size}; font-family: Consolas, monaco, monospace; font-weight: normal; margin: 2em 0 1em 0; text-align: center; color: #444; line-height: 16px; background: #fff;}
           #footnotes_debug th, #footnotes_debug td {color: #444; line-height: 18px;}
           #footnotes_debug a {color: #9b1b1b; font-weight: inherit; text-decoration: none; line-height: 18px;}
           #footnotes_debug table {text-align: left; width: 100%;}
@@ -192,7 +201,7 @@ module Footnotes
         # Fieldsets method should be called first
         content = fieldsets
         element_style = ''
-        if @@lock_top_right
+        if lock_top_right
           element_style = 'style="display: none;"'
         end
         footnotes_html = <<-HTML
@@ -208,7 +217,7 @@ module Footnotes
             var Footnotes = function() {
 
               function hideAll(){
-                #{close unless @@multiple_notes}
+                #{close unless multiple_notes}
               }
 
               function hideAllAndToggle(id) {
