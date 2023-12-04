@@ -1,11 +1,11 @@
 module Footnotes
   module Notes
     class ViewNote < AbstractNote
-      cattr_accessor :template
+      thread_cattr_accessor :template
 
       def self.start!(controller)
         @subscriber ||= ActiveSupport::Notifications.subscribe('render_template.action_view') do |*args|
-          event = ActiveSupport::Notifications::Event.new *args
+          event = ActiveSupport::Notifications::Event.new(*args)
           self.template = {:file => event.payload[:identifier], :duration => event.duration}
         end
       end
@@ -19,7 +19,7 @@ module Footnotes
       end
 
       def title
-        "View (#{"%.3f" % self.template[:duration]}ms)"
+        "View (#{"%.3f" % template[:duration]}ms)"
       end
 
       def link
@@ -34,7 +34,7 @@ module Footnotes
 
         def filename
           return @filename if defined?(@filename)
-          @filename = self.class.template.try(:[], :file)
+          @filename = template.try(:[], :file)
         end
 
     end
