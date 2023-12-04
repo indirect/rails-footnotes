@@ -1,11 +1,7 @@
 module Footnotes
   class Filter
     @@klasses = []
-    @@font_size = '11px'
     @@default_limit = 25
-
-    # Default link prefix is textmate
-    @@prefix = 'txmt://open?url=file://%s&amp;line=%d&amp;column=%d'
 
     # :no_style       => If you don't want the style to be appended to your pages
     # :notes          => Class variable that holds the notes to be processed
@@ -14,7 +10,7 @@ module Footnotes
     # :lock_top_right => Lock a btn to toggle notes to the top right of the browser
     # :font_size      => CSS font-size property
     # :default_limit  => Default limit for ActiveRecord:Relation in assigns note
-    cattr_accessor :prefix, :font_size, :default_limit
+    cattr_accessor :default_limit
 
     thread_cattr_accessor :notes, default: [
       # Edit notes
@@ -25,6 +21,8 @@ module Footnotes
     thread_cattr_accessor :no_style, default: false
     thread_cattr_accessor :multiple_notes, default: false
     thread_cattr_accessor :lock_top_right, default: false
+    thread_cattr_accessor :prefix, default: 'txmt://open?url=file://%s&amp;line=%d&amp;column=%d'
+    thread_cattr_accessor :font_size, default: '11px'
 
     class << self
       include Footnotes::EachWithRescue
@@ -46,17 +44,17 @@ module Footnotes
 
       # If none argument is sent, simply return the prefix.
       # Otherwise, replace the args in the prefix.
-      #
+      alias_method :read_prefix, :prefix
       def prefix(*args)
         if args.empty?
-          @@prefix
+          read_prefix
         else
           args.map! { |arg| arg.to_s.split("/").map{|s| ERB::Util.url_encode(s) }.join("/") }
 
-          if @@prefix.respond_to? :call
-            @@prefix.call *args
+          if read_prefix.respond_to? :call
+            read_prefix.call(*args)
           else
-            format(@@prefix, *args)
+            format(read_prefix, *args)
           end
         end
       end
@@ -169,7 +167,7 @@ module Footnotes
         insert_text :before, /<\/head>/i, <<-HTML
         <!-- Footnotes Style -->
         <style type="text/css">
-          #footnotes_debug {font-size: #{@@font_size}; font-family: Consolas, monaco, monospace; font-weight: normal; margin: 2em 0 1em 0; text-align: center; color: #444; line-height: 16px; background: #fff;}
+          #footnotes_debug {font-size: #{font_size}; font-family: Consolas, monaco, monospace; font-weight: normal; margin: 2em 0 1em 0; text-align: center; color: #444; line-height: 16px; background: #fff;}
           #footnotes_debug th, #footnotes_debug td {color: #444; line-height: 18px;}
           #footnotes_debug a {color: #9b1b1b; font-weight: inherit; text-decoration: none; line-height: 18px;}
           #footnotes_debug table {text-align: left; width: 100%;}
