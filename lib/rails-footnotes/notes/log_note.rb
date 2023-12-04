@@ -4,10 +4,11 @@ module Footnotes
 
       autoload :NoteLogger, 'rails-footnotes/notes/log_note/note_logger'
 
-      thread_cattr_accessor :logs, default: []
+      thread_cattr_accessor :logs
       thread_cattr_accessor :original_logger
 
       def self.start!(controller)
+        self.logs = []
         self.original_logger = Rails.logger
         note_logger = NoteLogger.new(self.logs)
         note_logger.level = self.original_logger.level

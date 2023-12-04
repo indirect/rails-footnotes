@@ -7,8 +7,8 @@ require 'rails-footnotes/notes/all'
 require 'rails-footnotes/extension'
 
 module Footnotes
-  thread_mattr_accessor :before_hooks, default: []
-  thread_mattr_accessor :after_hooks, default: []
+  thread_mattr_accessor :before_hooks
+  thread_mattr_accessor :after_hooks
   thread_mattr_accessor :enabled, default: false
 
   class << self
@@ -58,6 +58,9 @@ module Footnotes
     yield self
   end
 end
+
+Footnotes.before_hooks = []
+Footnotes.after_hooks = []
 
 ActiveSupport.on_load(:action_controller) do
   ActionController::Base.send(:include, Footnotes::RailsFootnotesExtension)
