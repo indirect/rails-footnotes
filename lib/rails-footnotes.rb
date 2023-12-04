@@ -1,5 +1,6 @@
 require 'rails'
 require 'action_controller'
+require 'active_support/core_ext/module/attribute_accessors_per_thread'
 require 'rails-footnotes/abstract_note'
 require 'rails-footnotes/each_with_rescue'
 require 'rails-footnotes/filter'
