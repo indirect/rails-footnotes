@@ -17,9 +17,12 @@ module Footnotes
           else
             defined?(ActiveSupport::Logger) ? ActiveSupport::Logger::SimpleFormatter.new : Logger::SimpleFormatter.new
           end
-        # Rails 3 don't have ActiveSupport::Logger#broadcast so we backported it
-        extend_module = defined?(ActiveSupport::Logger) ? ActiveSupport::Logger.broadcast(note_logger) : NoteLogger.broadcast(note_logger)
-        Rails.logger = self.original_logger.clone.extend(extend_module)
+
+        if ::Rails::VERSION::STRING < "7.1"
+          ::Rails.logger.extend(::ActiveSupport::Logger.broadcast(note_logger))
+        else
+          ::Rails.logger = ::ActiveSupport::BroadcastLogger.new(::Rails.logger, note_logger)
+        end
       end
 
       def title
