@@ -1,3 +1,5 @@
+require "active_record"
+
 module Footnotes
   module Notes
     class AssignsNote < AbstractNote
@@ -40,8 +42,11 @@ module Footnotes
         def to_table
           table = assigns.inject([]) do |rr, var|
             class_name = assigned_value(var).class.name
-            var_name = var.to_s
-            rr << ["<strong>#{var.to_s}</strong>" + "<br /><em>#{class_name}</em>", escape(assigned_value(var).inspect)]
+            var_value = assigned_value(var)
+            if var_value.is_a?(ActiveRecord::Relation) && var_value.limit_value.nil?
+              var_value = var_value.limit(Footnotes::Filter.default_limit)
+            end
+            rr << ["<strong>#{var.to_s}</strong>" + "<br /><em>#{class_name}</em>", escape(var_value.inspect)]
           end
 
           table.unshift(['Name', 'Value'])

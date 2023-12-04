@@ -11,3 +11,5 @@ gem "rake", "~> 13.0"
 gem "rspec-rails", "~> 6.0"
 gem "sprockets-rails", "~> 3.2"
 gem "matrix", "~> 0.4.2"
+
+gem "sqlite3", "~> 1.6"

@@ -5,6 +5,7 @@ module Footnotes
     @@klasses = []
     @@lock_top_right = false
     @@font_size = '11px'
+    @@default_limit = 25
 
     # Default link prefix is textmate
     @@prefix = 'txmt://open?url=file://%s&amp;line=%d&amp;column=%d'
@@ -20,7 +21,8 @@ module Footnotes
     # :multiple_notes => Set to true if you want to open several notes at the same time
     # :lock_top_right => Lock a btn to toggle notes to the top right of the browser
     # :font_size      => CSS font-size property
-    cattr_accessor :no_style, :notes, :prefix, :multiple_notes, :lock_top_right, :font_size
+    # :default_limit  => Default limit for ActiveRecord:Relation in assigns note
+    cattr_accessor :no_style, :notes, :prefix, :multiple_notes, :lock_top_right, :font_size, :default_limit
 
     class << self
       include Footnotes::EachWithRescue
