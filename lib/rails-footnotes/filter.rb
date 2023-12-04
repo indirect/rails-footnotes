@@ -1,28 +1,37 @@
 module Footnotes
   class Filter
     @@klasses = []
-    @@default_limit = 25
 
-    # :no_style       => If you don't want the style to be appended to your pages
-    # :notes          => Class variable that holds the notes to be processed
-    # :prefix         => Prefix appended to FootnotesLinks
-    # :multiple_notes => Set to true if you want to open several notes at the same time
-    # :lock_top_right => Lock a btn to toggle notes to the top right of the browser
-    # :font_size      => CSS font-size property
     # :default_limit  => Default limit for ActiveRecord:Relation in assigns note
-    cattr_accessor :default_limit
-
-    thread_cattr_accessor :notes, default: [
-      # Edit notes
-      :controller, :view, :layout, :partials, :stylesheets, :javascripts,
-      # Show notes
-      :assigns, :session, :cookies, :params, :filters, :routes, :env, :queries, :log
-    ]
-    thread_cattr_accessor :no_style, default: false
-    thread_cattr_accessor :multiple_notes, default: false
-    thread_cattr_accessor :lock_top_right, default: false
-    thread_cattr_accessor :prefix, default: 'txmt://open?url=file://%s&amp;line=%d&amp;column=%d'
+    # :font_size      => CSS font-size property
+    # :lock_top_right => Lock a btn to toggle notes to the top right of the browser
+    # :multiple_notes => Set to true if you want to open several notes at the same time
+    # :no_style       => If you don't want the style to be appended to your pages
+    # :prefix         => Prefix appended to FootnotesLinks
+    # :notes          => Class variable that holds the notes to be processed
+    thread_cattr_accessor :default_limit, default: 25
     thread_cattr_accessor :font_size, default: '11px'
+    thread_cattr_accessor :lock_top_right, default: false
+    thread_cattr_accessor :multiple_notes, default: false
+    thread_cattr_accessor :no_style, default: false
+    thread_cattr_accessor :prefix, default: 'txmt://open?url=file://%s&amp;line=%d&amp;column=%d'
+    thread_cattr_accessor :notes, default: [
+      :assigns,
+      :controller,
+      :cookies,
+      :env,
+      :filters,
+      :javascripts,
+      :layout,
+      :log,
+      :params,
+      :partials,
+      :queries,
+      :routes,
+      :session,
+      :stylesheets,
+      :view
+    ]
 
     class << self
       include Footnotes::EachWithRescue
