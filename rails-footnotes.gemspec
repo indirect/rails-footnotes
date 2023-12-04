@@ -1,6 +1,4 @@
-# -*- encoding: utf-8 -*-
-$:.push File.expand_path("../lib", __FILE__)
-require "rails-footnotes/version"
+require_relative "./lib/rails-footnotes/version"
 
 Gem::Specification.new do |s|
   s.name        = "rails-footnotes"
