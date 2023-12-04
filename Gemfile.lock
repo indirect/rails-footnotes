@@ -104,6 +104,7 @@ GEM
     drb (2.2.0)
       ruby2_keywords
     erubi (1.12.0)
+    gem-release (2.2.2)
     globalid (1.2.1)
       activesupport (>= 6.1)
     i18n (1.14.1)
@@ -238,6 +239,7 @@ PLATFORMS
 
 DEPENDENCIES
   capybara (~> 3.35)
+  gem-release (~> 2.2)
   matrix (~> 0.4.2)
   nokogiri (~> 1.12)
   pry (~> 0.14.1)
