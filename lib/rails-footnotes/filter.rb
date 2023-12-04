@@ -65,7 +65,9 @@ module Footnotes
       @notes = []
 
       revert_pos(controller.response_body) do
-        @body = controller.response.body
+        if controller.response.stream.respond_to?(:body)
+          @body = controller.response.body
+        end
       end
     end
 
