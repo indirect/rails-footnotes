@@ -1,6 +1,5 @@
 module Footnotes
   class Filter
-    @@no_style = false
     @@multiple_notes = false
     @@klasses = []
     @@lock_top_right = false
@@ -22,7 +21,9 @@ module Footnotes
     # :lock_top_right => Lock a btn to toggle notes to the top right of the browser
     # :font_size      => CSS font-size property
     # :default_limit  => Default limit for ActiveRecord:Relation in assigns note
-    cattr_accessor :no_style, :notes, :prefix, :multiple_notes, :lock_top_right, :font_size, :default_limit
+    cattr_accessor :notes, :prefix, :multiple_notes, :lock_top_right, :font_size, :default_size
+
+    thread_cattr_accessor :no_style, default: false
 
     class << self
       include Footnotes::EachWithRescue
@@ -97,7 +98,7 @@ module Footnotes
 
       def add_footnotes_without_validation!
         initialize_notes!
-        insert_styles unless @@no_style
+        insert_styles unless no_style
         insert_footnotes
       end
 
