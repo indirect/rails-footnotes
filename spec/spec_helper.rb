@@ -30,12 +30,12 @@ module Helpers
 end
 
 RSpec.configure do |config|
-
   Rails.application.initialize!
 
   config.include Capybara::DSL
   config.include Helpers
   config.example_status_persistence_file_path = ".rspec_results"
+  config.filter_run_when_matching :focus
 
   Rails.application.routes.draw do
     get 'footnotes/foo'
