@@ -4,7 +4,7 @@ gemspec
 
 ruby file: ".ruby-version"
 
-gem "capybara", "~> 3.35"
+gem "capybara", "~> 3.40"
 gem "gem-release", "~> 2.2"
 gem "matrix", "~> 0.4.2"
 gem "nokogiri", "~> 1.16"
