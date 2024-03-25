@@ -236,16 +236,16 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
-  capybara (~> 3.40)
+  capybara (~> 3.35)
   gem-release (~> 2.2)
   matrix (~> 0.4.2)
-  nokogiri (~> 1.16)
+  nokogiri (~> 1.12)
   pry (~> 0.14.1)
   rails-footnotes!
   rake (~> 13.0)
-  rspec-rails (~> 6.1)
+  rspec-rails (~> 6.0)
   sprockets-rails (~> 3.2)
-  sqlite3 (~> 1.7)
+  sqlite3 (~> 1.6)
 
 RUBY VERSION
    ruby 3.2.2p53
