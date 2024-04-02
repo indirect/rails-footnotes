@@ -184,7 +184,7 @@ GEM
       rake (>= 12.2)
       thor (~> 1.0, >= 1.2.2)
       zeitwerk (~> 2.6)
-    rake (13.1.0)
+    rake (13.2.0)
     rdoc (6.6.3.1)
       psych (>= 4.0.0)
     regexp_parser (2.9.0)
@@ -242,7 +242,7 @@ DEPENDENCIES
   nokogiri (~> 1.16)
   pry (~> 0.14.1)
   rails-footnotes!
-  rake (~> 13.0)
+  rake (~> 13.2)
   rspec-rails (~> 6.1)
   sprockets-rails (~> 3.2)
   sqlite3 (~> 1.7)
