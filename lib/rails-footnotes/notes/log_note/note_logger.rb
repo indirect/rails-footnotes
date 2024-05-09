@@ -5,6 +5,7 @@ module Footnotes
 
         def initialize(logs)
           @logs = logs
+          super(nil)
         end
 
         def add(severity, message = nil, progname = nil, &block)
