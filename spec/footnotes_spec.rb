@@ -57,7 +57,7 @@ describe "Footnotes" do
     end
   end
 
-  context "response_body is Rack::File::Iterator" do
+  context "response_body is Rack::Files::Iterator" do
     before do
       @controller = FootnotesController.new
       @controller.template = Object.new
@@ -69,7 +69,7 @@ describe "Footnotes" do
       Footnotes::Filter.multiple_notes = false
       @footnotes = Footnotes::Filter.new(@controller)
 
-      @file = Rack::File::Iterator.new("README.md", (0..-1), {})
+      @file = Rack::Files::Iterator.new("README.md", (0..-1), {})
       @controller.response_body = @file
     end
 
