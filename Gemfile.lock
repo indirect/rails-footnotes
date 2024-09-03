@@ -198,10 +198,10 @@ GEM
     rspec-mocks (3.13.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.13.0)
-    rspec-rails (7.0.0)
-      actionpack (>= 7.0)
-      activesupport (>= 7.0)
-      railties (>= 7.0)
+    rspec-rails (6.1.5)
+      actionpack (>= 6.1)
+      activesupport (>= 6.1)
+      railties (>= 6.1)
       rspec-core (~> 3.13)
       rspec-expectations (~> 3.13)
       rspec-mocks (~> 3.13)
@@ -243,7 +243,7 @@ DEPENDENCIES
   pry (~> 0.14.1)
   rails-footnotes!
   rake (~> 13.2)
-  rspec-rails (~> 7.0)
+  rspec-rails (~> 6.1)
   sprockets-rails (~> 3.5)
   sqlite3 (~> 1.7)
 
