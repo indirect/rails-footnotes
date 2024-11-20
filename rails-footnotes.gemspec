@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.summary     = %q{Every Rails page has footnotes that gives information about your application and links back to your editor.}
   s.description = %q{Every Rails page has footnotes that gives information about your application and links back to your editor.}
 
-  s.add_dependency "rails", "~> 7.0"
+  s.add_dependency "rails", ">= 7", "< 9"
   s.required_ruby_version = ">= 3.0"
 
   # Specify which files should be added to the gem when it is released.
