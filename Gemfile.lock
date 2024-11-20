@@ -122,7 +122,7 @@ GEM
       net-smtp
     marcel (1.0.4)
     matrix (0.4.2)
-    method_source (1.0.0)
+    method_source (1.1.0)
     mini_mime (1.1.5)
     minitest (5.25.1)
     mutex_m (0.2.0)
@@ -140,7 +140,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.16.7-x86_64-linux)
       racc (~> 1.4)
-    pry (0.14.2)
+    pry (0.15.0)
       coderay (~> 1.1)
       method_source (~> 1.0)
     psych (5.1.2)
@@ -240,7 +240,7 @@ DEPENDENCIES
   gem-release (~> 2.2)
   matrix (~> 0.4.2)
   nokogiri (~> 1.16)
-  pry (~> 0.14.1)
+  pry (~> 0.15.0)
   rails-footnotes!
   rake (~> 13.2)
   rspec-rails (~> 7.0)
