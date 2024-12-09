@@ -141,9 +141,9 @@ GEM
     net-smtp (0.5.0)
       net-protocol
     nio4r (2.7.4)
-    nokogiri (1.16.8-arm64-darwin)
+    nokogiri (1.17.0-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.16.8-x86_64-linux)
+    nokogiri (1.17.0-x86_64-linux)
       racc (~> 1.4)
     pry (0.15.0)
       coderay (~> 1.1)
@@ -243,7 +243,7 @@ DEPENDENCIES
   capybara (~> 3.40)
   gem-release (~> 2.2)
   matrix (~> 0.4.2)
-  nokogiri (~> 1.16)
+  nokogiri (~> 1.17)
   pry (~> 0.15.0)
   rails-footnotes!
   rake (~> 13.2)
