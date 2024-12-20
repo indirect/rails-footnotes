@@ -107,7 +107,7 @@ GEM
     diff-lcs (1.5.1)
     drb (2.2.1)
     erubi (1.13.0)
-    gem-release (2.2.2)
+    gem-release (2.2.3)
     globalid (1.2.1)
       activesupport (>= 6.1)
     i18n (1.14.6)
