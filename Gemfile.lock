@@ -244,7 +244,7 @@ DEPENDENCIES
   capybara (~> 3.40)
   gem-release (~> 2.2)
   matrix (~> 0.4.2)
-  nokogiri (~> 1.17)
+  nokogiri (~> 1.16)
   pry (~> 0.15.0)
   rails-footnotes!
   rake (~> 13.2)
