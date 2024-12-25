@@ -145,7 +145,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.17.2-x86_64-linux)
       racc (~> 1.4)
-    pry (0.15.0)
+    pry (0.15.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
     psych (5.2.1)
@@ -245,7 +245,7 @@ DEPENDENCIES
   gem-release (~> 2.2)
   matrix (~> 0.4.2)
   nokogiri (~> 1.17)
-  pry (~> 0.15.0)
+  pry (~> 0.15.2)
   rails-footnotes!
   rake (~> 13.2)
   rspec-rails (~> 7.1)
