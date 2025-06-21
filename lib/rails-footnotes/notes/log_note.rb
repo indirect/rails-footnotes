@@ -33,9 +33,9 @@ module Footnotes
       def content
         result = '<table>'
           log.compact.each do |l|
-            result << "<tr><td>#{l.gsub(/\e\[.+?m/, '')}</td></tr>"
+            result += "<tr><td>#{l.gsub(/\e\[.+?m/, '')}</td></tr>"
           end
-        result << '</table>'
+        result += '</table>'
         # Restore formatter
         Rails.logger = self.class.original_logger
         result
