@@ -36,7 +36,7 @@ module Footnotes
           sql_links = []
           sql_links << "<a href=\"javascript:Footnotes.toggle('qtrace_#{index}')\" style=\"color:#00A;\">trace</a>"
 
-          html << <<-HTML
+          html += <<-HTML
           <tr>
             <td>
               <b id="qtitle_#{index}">#{escape(event.type.to_s.upcase)}</b> (#{sql_links.join(' | ')})
@@ -49,7 +49,7 @@ module Footnotes
           </tr>
           HTML
         end
-        html << '</table>'
+        html += '</table>'
         return html
       end
 
