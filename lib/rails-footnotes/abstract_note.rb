@@ -169,7 +169,7 @@ module Footnotes
         def hash_to_xml_attributes(hash)
           newstring = ""
           hash.each do |key, value|
-            newstring << "#{key.to_s}=\"#{value.gsub('"','\"')}\" "
+            newstring += "#{key.to_s}=\"#{value.gsub('"','\"')}\" "
           end
           return newstring
         end

@@ -287,7 +287,7 @@ module Footnotes
         html = ''
         order.uniq!
         order.each do |row|
-          html << "#{row.is_a?(String) ? row : row.to_s.camelize}: #{links[row].join(" | \n")}<br />"
+          html += "#{row.is_a?(String) ? row : row.to_s.camelize}: #{links[row].join(" | \n")}<br />"
         end
         html
       end
@@ -298,7 +298,7 @@ module Footnotes
         content = ''
         each_with_rescue(@notes) do |note|
           next unless note.has_fieldset?
-          content << <<-HTML
+          content += <<-HTML
             <fieldset id="#{note.to_sym}_debug_info" style="display: none">
               <legend>#{note.legend}</legend>
               <div>#{note.content}</div>
@@ -315,7 +315,7 @@ module Footnotes
         javascript = ''
         each_with_rescue(@notes) do |note|
           next unless note.has_fieldset?
-          javascript << close_helper(note)
+          javascript += close_helper(note)
         end
         javascript
       end
