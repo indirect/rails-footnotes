@@ -5,7 +5,7 @@ Gem::Specification.new do |s|
   s.version     = Footnotes::VERSION
   s.authors     = ["Roman V. Babenko", "José Valim", "Keenan Brock", "Duane Johnson", "Adrien Siami", "André Arko"]
   s.email       = ["andre@arko.net"]
-  s.homepage    = "http://github.com/indirect/rails-footnotes"
+  s.homepage    = "https://github.com/indirect/rails-footnotes"
   s.summary     = %q{Every Rails page has footnotes that gives information about your application and links back to your editor.}
   s.description = %q{Every Rails page has footnotes that gives information about your application and links back to your editor.}
 
