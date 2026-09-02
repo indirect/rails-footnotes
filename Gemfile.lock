@@ -145,9 +145,10 @@ GEM
       racc (~> 1.4)
     nokogiri (1.17.2-x86_64-linux)
       racc (~> 1.4)
-    pry (0.15.2)
+    pry (0.16.0)
       coderay (~> 1.1)
       method_source (~> 1.0)
+      reline (>= 0.6.0)
     psych (5.2.1)
       date
       stringio
@@ -193,7 +194,7 @@ GEM
     rdoc (6.8.1)
       psych (>= 4.0.0)
     regexp_parser (2.9.0)
-    reline (0.5.12)
+    reline (0.7.0)
       io-console (~> 0.5)
     rspec-core (3.13.2)
       rspec-support (~> 3.13.0)
@@ -245,7 +246,7 @@ DEPENDENCIES
   gem-release (~> 2.2)
   matrix (~> 0.4.2)
   nokogiri (~> 1.17)
-  pry (~> 0.15.2)
+  pry (~> 0.16.0)
   rails-footnotes!
   rake (~> 13.2)
   rspec-rails (~> 7.1)
